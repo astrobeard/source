@@ -15,6 +15,7 @@ import sys
 if __name__ == "__main__": 
 	indata = h5py.File(sys.argv[1], 'r')["Outputs/Output1/nodeData"]
 	with h5py.File(sys.argv[2], 'w') as outfile: 
+		print(indata["satellitePositionX"]) 
 		outfile.create_dataset("satellitePositionX", 
 			indata["satellitePositionX"][:], dtype = 'f') 
 		outfile.create_dataset("satellitePositionY", 
