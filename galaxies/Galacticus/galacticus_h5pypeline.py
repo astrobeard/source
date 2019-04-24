@@ -15,7 +15,7 @@ import sys
 if __name__ == "__main__": 
 	indata = h5py.File(sys.argv[1], 'r')["Outputs/Output1/nodeData"]
 	with h5py.File(sys.argv[2], 'w') as outdata: 
-		keys = tuple(["satellitePositionX" "satellitePositionY", 
+		keys = tuple(["satellitePositionX", "satellitePositionY", 
 			"satellitePositionZ", "satelliteVelocityX", "satelliteVelocityY", 
 			"satelliteVelocityZ"])
 		
