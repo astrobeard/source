@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding = "UTF-8"?> 
+
+<!-- Subhalos in CDM --> 
+<parameter> 
+	<formatVersion>2</formatVersion> 
+	<version>0.9.4</version> 
+
+	<!-- verbosity --> 
+	<verbosityLevel value="2"/> 
+
+	<!-- Component selection --> 
+	<treeNodeMethodBasic value="standard"/> 
+	<treeNodeMethodHotHalo value="null"/> 
+	<treeNodeMethodBlackHole value="null"/> 
+	<treeNodeMethodDarkmatterProfile value="scale"/> 
+	<treeNodeMethodDisk value="null"/> 
+	<treeNodeMethodSatellite value="orbiting"/> 
+	<treeNodeMethodSpheroid value="null"/> 
+	<treeNodeMethodSpin value="null"/> 
+
+	<!-- Cosmological parameters and options --> 
+	<cosmologyFunctionsMethod value="matterLambda"/> 
+	<cosmologyParameterMethod value="simple"/> 
+		<HubbleConstant value="69.7"/> 
+		<OmegaMatter value="0.2812"/> 
+		<OmegaDarkEnergy value="0.7188"/> 
+		<OmegaBaryon value="0.04611"/> 
+		<temperatureCMB value="2.72548"/> 
+	</cosmologyParametersMethod> 
+
+	<!-- Dark Matter Particle --> 
+	<darkMatterParticleMethod value="CDM"/> 
+
+	<!-- Power Spectrum Options --> 
+	<powerSpectrumPrimordialMethod value="powerlaw">
+		<index value="0.961"/> 
+		<wavenumberReference value="1.0"/> 
+		<running value="0.0"/> 
+	</powerSpectrumPrimordialMethod> 
+	<cosmologicalMassVarianceMethod value="filteredPower"> 
+		<sigma_8 value="0.817"/> 
+		<monotonicInterpolation value="true"/> 
+		<powerSpectrumWindowFunctionMethod value="topHat"/> 
+	</cosmologicalMassVarianceMethod> 
+	<transferFunctionMethod value="eisensteinHu1999">
+		<neutrinoNumberEffective value="3.04"/> 
+		<neutrinoMassSummed value="0.000"/> 
+	</transferfunctionMethod> 
+
+	<!-- Structure Growth --> 
+	<linearGrowthmethod value="simple"/> 
+
+	<!-- Critical overdensity for halo collapse --> 
+	<criticalOverdensityMethod value="sphericalCollapseMatterLambda"/> 
+
+	<!-- Dark Matter halo mass function solver --> 
+	<haloMassFunctionmethod value="tinker2008"/> 
+
+	<!-- Dark matter profile concentrations --> 
+	<darkMatterProfileConcentrationMethod value="diemerKravtsov2014"/> 
+
+	
+
+
