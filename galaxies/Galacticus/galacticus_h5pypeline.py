@@ -16,19 +16,22 @@ if __name__ == "__main__":
 	indata = h5py.File(sys.argv[1], 'r')["Outputs/Output1/nodeData"]
 	with h5py.File(sys.argv[2], 'w') as outfile: 
 		print(indata["satellitePositionX"][:]) 
+
 		outfile.create_dataset("satellitePositionX", 
-			indata["satellitePositionX"][:], dtype = 'f') 
+			(len(indata["satellitePositionX"]),), dtype = 'f') 
 		outfile.create_dataset("satellitePositionY", 
-			indata["satellitePositionY"][:], dtype = 'f') 
+			(len(indata["satellitePositionY"]),), dtype = 'f')
 		outfile.create_dataset("satellitePositionZ", 
-			indata["satellitePositionZ"][:], dtype = 'f') 
+			(len(indata["satellitePositionZ"]),), dtype = 'f')
 		outfile.create_dataset("satelliteVelocityX", 
-			indata["satelliteVelocityX"][:], dtype = 'f') 
+			(len(indata["satelliteVelocityX"]),), dtype = 'f')
 		outfile.create_dataset("satelliteVelocityY", 
-			indata["satelliteVelocityY"][:], dtype = 'f') 
+			(len(indata["satelliteVelocityY"]),), dtype = 'f')
 		outfile.create_dataset("satelliteVelocityZ", 
-			indata["satelliteVelocityZ"][:], dtype = 'f') 
-	
+			(len(indata["satelliteVelocityZ"]),), dtype = 'f')
+
+
+		outfile["satellitePositionX"] = indata["satellitePositionX"][:]
 
 
 
