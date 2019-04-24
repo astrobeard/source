@@ -118,6 +118,6 @@
 	<outputRedshifts value="0.0"/>
 
 	<!-- Output file -->
-	<galacticusOutputFileName value="users/PAS1005/data/Galacticus/subhalosCDM.hdf5"/>
+	<galacticusOutputFileName value="users/PAS1005/giganano/data/Galacticus/subhalosCDM.hdf5"/>
 	
 </parameters>
