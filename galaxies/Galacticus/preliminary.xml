@@ -59,6 +59,68 @@
 	<!-- Dark matter profile concentrations --> 
 	<darkMatterProfileConcentrationMethod value="diemerKravtsov2014"/> 
 
+	<!-- Merger Tree building options --> 
+	<mergerTreeConstructMethod value="build"/> 
+	<mergerTreeBuilderMethod value="cole2000">
+		<accretionLimit value="0.1"/> 
+		<mergeProbability value="0.1"/> 
+		<redshiftMaximum value="30"/> 
+	</mergerTreeBuilderMethod> 
+	<treeBranchingMethod value="modifiedPress-Schechter"/> 
+	<treeBranchingModifierMethod value="null"/> 
+	<modifiedPressSchechterG0 value="0.57"/> 
+	<modifiedPressSchechterGamma1 value="0.38"/> 
+	<modifiedPressSchechterGamma2 value="-0.01"/> 
+	<modifiedPressSchechterFirstOrderAccuracy value="0.1"/> 
+	<mergerTreeBuildHaloMassMinimum value="1.0e12"/> 
+	<mergerTreeBuildHaloMassMaximum value="2.0e12"/> 
+	<mergerTreeBuildTreesPerDecade value="20"/> 
+	<mergerTreeMassResolutionMethod value="fixed">
+		<massResolution value="1.0e9"/> 
+	</mergerTreeMassResolutionMethod> 
+
+	<!-- Structure formation options --> 
+	<virialDensityContrastMethod value="sphericalCollapseMatterLambda"/> 
+
+	<!-- Dark Matter halo profile --> 
+	<darkMatterProfilemethod value="NFW"/> 
+
+	<!-- Halo accretion options --> 
+	<accretionHaloMethod value="null"/> 
+
+	<!-- hot halo gas model options --> 
+	<hotHaloMassDistributionMethod value="null"/> 
+
+	<!-- orbit model options --> 
+	<satelliteOrbitingDestructionMass value="0.0"/> 
+	<satelliteOrbitingDestructionMassIsFractional value="true"/> 
+	<satelliteDynamicalFrictionMethod value="chandrasekhar1943"/> 
+	<satelliteTidalStrippingMethod value="zentner2005"/> 
+	<satelliteTidalHeatingMethod value="gnedin1999"/> 
+	<satelliteTidalStrippingZentner2005Rate value="1.0"/> 
+
+	<!-- satellite merger options --> 
+	<satelliteMergingRemnantSizeMethod value="null"/> 
+
+	<!-- Numerical tolerances --> 
+	<odeToleranceAbsolute value="0.01"/> 
+	<odeToleranceRelative value="0.01"/> 
+	<timestepHostAbsolute value="1.00"/> 
+	<timestepHostRelative value="0.10"/> 
+	<timestepSimpleAbsolute value="10.00"/> 
+	<timestepSimpleRelative value="10.00"/> 
+
+	<!-- output options --> 
+	<mergerTreeOutputReferences value="false"/> 
+	<outputTimestepHistory value="false"/> 
+	<outputVirialData value="true"/> 
+	<outputRedshifts value="0.0"/> 
+
+	<!-- output file --> 
+	<galacticusOutputFileName value="subhalosCDM.hdf5"/> 
+
+</parameters> 
+
 	
 
 
