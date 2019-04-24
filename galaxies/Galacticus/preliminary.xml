@@ -26,7 +26,7 @@
 		<OmegaDarkEnergy value="0.7188"/> 
 		<OmegaBaryon value="0.04611"/> 
 		<temperatureCMB value="2.72548"/> 
-	</cosmologyParametersMethod> 
+	</cosmologyParameterMethod> 
 
 	<!-- Dark Matter Particle --> 
 	<darkMatterParticleMethod value="CDM"/> 
@@ -45,7 +45,7 @@
 	<transferFunctionMethod value="eisensteinHu1999">
 		<neutrinoNumberEffective value="3.04"/> 
 		<neutrinoMassSummed value="0.000"/> 
-	</transferfunctionMethod> 
+	</transferFunctionMethod> 
 
 	<!-- Structure Growth --> 
 	<linearGrowthmethod value="simple"/> 
