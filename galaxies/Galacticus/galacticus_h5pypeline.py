@@ -14,25 +14,13 @@ import sys
 
 if __name__ == "__main__": 
 	indata = h5py.File(sys.argv[1], 'r')["Outputs/Output1/nodeData"]
-	with h5py.File(sys.argv[2], 'w') as outfile: 
-		print(indata["satellitePositionX"][:]) 
-
-		# outfile.create_dataset("satellitePositionX", 
-		# 	(len(indata["satellitePositionX"]),), dtype = 'f') 
-		# outfile.create_dataset("satellitePositionY", 
-		# 	(len(indata["satellitePositionY"]),), dtype = 'f')
-		# outfile.create_dataset("satellitePositionZ", 
-		# 	(len(indata["satellitePositionZ"]),), dtype = 'f')
-		# outfile.create_dataset("satelliteVelocityX", 
-		# 	(len(indata["satelliteVelocityX"]),), dtype = 'f')
-		# outfile.create_dataset("satelliteVelocityY", 
-		# 	(len(indata["satelliteVelocityY"]),), dtype = 'f')
-		# outfile.create_dataset("satelliteVelocityZ", 
-		# 	(len(indata["satelliteVelocityZ"]),), dtype = 'f')
-
-
-		outfile["satellitePositionX"] = indata["satellitePositionX"][:]
-
+	with h5py.File(sys.argv[2], 'w') as outdata: 
+		keys = tuple(["satellitePositionX" "satellitePositionY", 
+			"satellitePositionZ", "satelliteVelocityX", "satelliteVelocityY", 
+			"satelliteVelocityZ"])
+		
+		for i in keys: 
+			outdata[i] = keys[i][:]
 
 
 
