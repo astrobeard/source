@@ -20,7 +20,7 @@ if __name__ == "__main__":
 			"satelliteVelocityZ"])
 		
 		for i in keys: 
-			outdata[i] = keys[i][:]
+			outdata[i] = indata[i][:]
 
 
 
