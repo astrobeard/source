@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Subhalos in CDM -->
+<parameters>
+  <formatVersion>2</formatVersion>
+  <version>0.9.4</version>
+
+  <!-- Verbosity -->
+  <verbosityLevel value="2"/>
+  
+  <!-- Component selection -->
+  <treeNodeMethodBasic value="standard"/>
+  <treeNodeMethodHotHalo value="null"/>
+  <treeNodeMethodBlackHole value="null"/>
+  <treeNodeMethodDarkMatterProfile value="scale"/>
+  <treeNodeMethodDisk value="null"/>
+  <treeNodeMethodSatellite value="orbiting"/>
+  <treeNodeMethodSpheroid value="null"/>
+  <treeNodeMethodSpin value="null"/>
+
+  <!-- Cosmological parameters and options -->
+  <cosmologyFunctionsMethod value="matterLambda"/>
+  <cosmologyParametersMethod value="simple">
+    <HubbleConstant value="69.7"/>
+    <OmegaMatter value="0.2812"/>
+    <OmegaDarkEnergy value="0.7188"/>
+    <OmegaBaryon value="0.04611"/>
+    <temperatureCMB value="2.72548"/>
+  </cosmologyParametersMethod>
+
+  <!-- Dark matter particle -->
+  <darkMatterParticleMethod value="CDM"/>
+  
+  <!--  Power spectrum options  -->
+  <powerSpectrumPrimordialMethod value="powerLaw">
+    <index value="0.961"/>
+    <wavenumberReference value="1.0"/>
+    <running value="0.0"/>
+  </powerSpectrumPrimordialMethod>
+  <cosmologicalMassVarianceMethod value="filteredPower">
+    <sigma_8 value="0.817"/>
+    <monotonicInterpolation value="true"/>
+    <powerSpectrumWindowFunctionMethod value="topHat"/>
+  </cosmologicalMassVarianceMethod>
+  <transferFunctionMethod value="eisensteinHu1999">
+    <neutrinoNumberEffective value="3.04"/>
+    <neutrinoMassSummed value="0.000"/>
+  </transferFunctionMethod>
+
+  <!--  Structure growth -->
+  <linearGrowthMethod value="simple"/>
+
+  <!-- Critical overdensity for halo collapse -->
+  <criticalOverdensityMethod value="sphericalCollapseMatterLambda"/>
+
+  <!-- Dark matter halo mass function solver -->
+  <haloMassFunctionMethod value="tinker2008"/>
+ 
+  <!-- Dark matter profile concentrations -->
+  <darkMatterProfileConcentrationMethod value="diemerKravtsov2014"/>
+
+  <!-- Merger tree building options -->
+  <mergerTreeConstructMethod value="build"/>
+  <mergerTreeBuilderMethod value="cole2000">
+    <accretionLimit   value="0.1"/>
+    <mergeProbability value="0.1"/>
+    <redshiftMaximum value="30"/>
+  </mergerTreeBuilderMethod>
+  <treeBranchingMethod value="modifiedPress-Schechter"/>
+  <treeBranchingModifierMethod value="null"/>
+  <modifiedPressSchechterG0 value="0.57"/>
+  <modifiedPressSchechterGamma1 value="0.38"/>
+  <modifiedPressSchechterGamma2 value="-0.01"/>
+  <modifiedPressSchechterFirstOrderAccuracy value="0.1"/>
+  <mergerTreeBuildHaloMassMinimum value="1.0e12"/>
+  <mergerTreeBuildHaloMassMaximum value="2.0e12"/>
+  <mergerTreeBuildTreesPerDecade value="20"/>
+  <mergerTreeMassResolutionMethod value="fixed">
+    <massResolution value="1.0e9"/>
+  </mergerTreeMassResolutionMethod>
+  
+  <!-- Structure formation options -->
+  <virialDensityContrastMethod  value="sphericalCollapseMatterLambda"/>
+ 
+  <!-- Dark matter halo profile -->
+  <darkMatterProfileMethod value="NFW"/>
+  
+  <!-- Halo accretion options -->
+  <accretionHaloMethod value="null"/>
+
+  <!-- Hot halo gas model options -->
+  <hotHaloMassDistributionMethod value="null"/>
+
+  <!-- Orbit model options -->
+  <satelliteOrbitingDestructionMass value="0.0"/>
+  <satelliteOrbitingDestructionMassIsFractional value="true"/>
+  <satelliteDynamicalFrictionMethod value="chandrasekhar1943"/>
+  <satelliteTidalStrippingMethod value="zentner2005"/>
+  <satelliteTidalHeatingMethod value="gnedin1999"/>
+  <satelliteTidalStrippingZentner2005Rate value="1.0"/>
+  <!-- pullen, benson, moustakas  -->
+
+  <!-- Satellite merger options -->
+  <satelliteMergingRemnantSizeMethod value="null"/>
+  
+  <!-- Numerical tolerances -->
+  <odeToleranceAbsolute   value="0.01"/>
+  <odeToleranceRelative   value="0.01"/>
+  <timestepHostAbsolute   value="1.00"/>
+  <timestepHostRelative   value="0.10"/>
+  <timestepSimpleAbsolute value="10.00"/>
+  <timestepSimpleRelative value="10.00"/>
+
+  <!-- Output options -->
+  <mergerTreeOutputReferences value="false"/>
+  <outputTimestepHistory      value="false"/>
+  <outputVirialData           value="true" />
+  <outputRedshifts            value="0.0"/>
+
+  <!-- Output file -->
+  <galacticusOutputFileName value="subhalosCDM.hdf5"/>
+  
+</parameters>
