@@ -158,7 +158,7 @@ static int file_dimension(char *file, int hlength) {
 	int i; 
 	int dim = 0; 
 	char *line = (char *) malloc (LINESIZE * sizeof(char)); 
-	for (i = 0; i < hlength; i++) {
+	for (i = 0; i <= hlength; i++) {
 		if (fgets(line, LINESIZE, in) == NULL) { 
 			fclose(in); 
 			free(line); 
