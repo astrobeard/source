@@ -37,6 +37,17 @@ typedef struct snapshot {
  */
 extern int populate_data_from_file(SNAPSHOT *snap, char *file, char comment); 
 
+/* 
+ * Frees up the memory stored within a SNAPSHOT 
+ * 
+ * Parameters 
+ * ========== 
+ * snap: 		The SNAPSHOT struct itself 
+ * 
+ * source: snapshot_utils.c 
+ */ 
+extern void free_snapshot(SNAPSHOT *snap); 
+
 
 
 #endif /* SNAPSHOT_H */ 
