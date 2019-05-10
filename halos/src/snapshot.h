@@ -33,7 +33,7 @@ typedef struct snapshot {
  * ========== 
  * file:		The name of the file as a character pointer 
  * 
- * source: snapshot_io.hc
+ * source: snapshot_io.c
  */
 extern int populate_data_from_file(SNAPSHOT *snap, char *file, char comment); 
 
