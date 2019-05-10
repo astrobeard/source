@@ -27,8 +27,7 @@ int main(void) {
 		}
 	}
 
-
-	free(snap); 
+	free_snapshot(snap); 
 	return 0; 
 
 }
