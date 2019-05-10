@@ -5,7 +5,7 @@ structural parameters at each output timestep.
 
 ARGV:
 =====
-1)		The name of the intput hdf5 file
+1)		The name of the intput hdf5 file 
 2) 		The name of the output hdf5 file 
 """
 
