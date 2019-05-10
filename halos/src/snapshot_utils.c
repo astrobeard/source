@@ -44,4 +44,14 @@ extern long *range(long start, long stop) {
 
 }
 
+extern long *zeroes(long length) {
+
+	long i, *arr = (long *) malloc (length * sizeof(length)); 
+	for (i = 0l; i < length; i++) {
+		arr[i] = 0l; 
+	}
+	return arr; 
+	
+}
+
 

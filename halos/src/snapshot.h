@@ -74,6 +74,7 @@ extern void free_snapshot(SNAPSHOT *snap);
  */ 
 extern long *range(long start, long stop); 
 
+extern long *zeroes(long length);
 
 
 #endif /* SNAPSHOT_H */ 
