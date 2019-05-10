@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -c -fPIC 
 OBJECTS = snapshot_io.o snapshot_utils.o shapshot_subs.o 
 
-all: snapshot.so test.o 
+all: snapshot.so 
 
 .PHONY: clean 
 
