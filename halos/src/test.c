@@ -7,7 +7,7 @@
 /* 
  * Currently running tests on snapshot file I/O. 
  */ 
-static int main(void) {
+int main(void) {
 
 	printf("Initializing snapshot....\n"); 
 	SNAPSHOT *snap; 
