@@ -1,5 +1,5 @@
 
 *.vice/* 
 *.sublime-workspace
-
+*.sublime-project
 
