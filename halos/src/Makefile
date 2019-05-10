@@ -1,7 +1,7 @@
 
 CC = gcc 
 CFLAGS = -c -fPIC 
-OBJECTS = snapshot_io.o snapshot_utils.o shapshot_subs.o 
+OBJECTS = snapshot_io.o snapshot_utils.o snapshot_subs.o 
 
 all: snapshot.so 
 
