@@ -5,17 +5,17 @@
 #ifndef SNAPSHOT_H 
 #define SNAPSHOT_H 
 
-#define max(a, b) { 
+#define max(a, b) ({ 
 	__typeof__ (a) _a = (a); 
 	__typeof__ (b) _b = (b); 
 	_a > _b ? _a : _b; 
-} 
+}) 
 
-#define min(a, b) {
+#define min(a, b) ({
 	__typeof__ (a) _a = (a); 
 	__typeof__ (b) _b = (b); 
 	_a < _b ? _a : _b; 	
-}
+}) 
 
 /* 
  * The snapshot struct. This is the struct that will store the data read in 
