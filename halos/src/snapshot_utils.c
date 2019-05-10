@@ -17,4 +17,31 @@ extern void free_snapshot(SNAPSHOT *snap) {
 
 }
 
+/* 
+ * Emulates python's range function 
+ * 
+ * Parameters 
+ * ========== 
+ * start:		The starting value of the resultant array 
+ * stop: 		The stopping value of the resultant array 
+ * 
+ * Returns 
+ * ======= 
+ * An array of longs containing every value between start and 
+ * stop - 1l (inclusive). 
+ */ 
+extern long *range(long start, long stop) {
+
+	/* Allocate memory */ 
+	long *arr = (long *) malloc ((stop - start) * sizeof(long)); 
+	long i; 
+	/* Store every value between start and stop - 1l (inclusive) */
+	for (i = start; i < stop; i++) {
+		arr[i] = i; 
+	}
+	/* Return the resulting array */ 
+	return arr; 
+
+}
+
 

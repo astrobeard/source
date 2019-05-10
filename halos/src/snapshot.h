@@ -3,7 +3,7 @@
  */ 
 
 #ifndef SNAPSHOT_H 
-#define SNAPSHOT_H
+#define SNAPSHOT_H 
 
 
 /* 
@@ -47,6 +47,21 @@ extern int populate_data_from_file(SNAPSHOT *snap, char *file, char comment);
  * source: snapshot_utils.c 
  */ 
 extern void free_snapshot(SNAPSHOT *snap); 
+
+/* 
+ * Emulates python's range function 
+ * 
+ * Parameters 
+ * ========== 
+ * start:		The starting value of the resultant array 
+ * stop: 		The stopping value of the resultant array 
+ * 
+ * Returns 
+ * ======= 
+ * An array of longs containing every value between start and 
+ * stop - 1l (inclusive). 
+ */ 
+extern long *range(long start, long stop); 
 
 
 
