@@ -23,7 +23,7 @@ int main(void) {
 	int i, j; 
 	for (i = 0; i < 10; i++) {
 		for (j = 0; j < (*snap).num_cols; j++) {
-			printf("snap[%d][%d] = %lf\n", i, j, snap[i][j]); 
+			printf("snap[%d][%d] = %lf\n", i, j, (*snap).data[i][j]); 
 		}
 	}
 
