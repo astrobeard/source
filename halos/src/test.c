@@ -10,7 +10,7 @@
 int main(void) {
 
 	printf("Initializing snapshot....\n"); 
-	SNAPSHOT *snap; 
+	SNAPSHOT *snap = (SNAPSHOT *) malloc (sizeof(snap)); 
 	printf("Snapshot initialized....\n"); 
 	printf("Reading file....\n"); 
 	int test = populate_data_from_file(snap, 
@@ -28,6 +28,7 @@ int main(void) {
 	}
 
 	free_snapshot(snap); 
+	free(snap); 
 	return 0; 
 
 }
