@@ -10,8 +10,8 @@ all: snapshot.so test.o
 snapshot.so: $(OBJECTS) 
 	$(CC) *.o -shared -o snapshot.so 
 
-test.o: test.c snapshot.h 
-	$(CC) test.c -o test.o 
+test.o: test.c snapshot.h snapshot_io.c 
+	$(CC) test.c snapshot_io.c -o test.o 
 
 %.o: %.c 
 	$(CC) $(CFLAGS) $< -o $@ 

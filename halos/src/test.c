@@ -19,7 +19,17 @@ int main(void) {
 	printf("File read!\n"); 
 	printf("snap.num_rows: %ld\n", (*snap).num_rows); 
 	printf("snap.num_cols: %d\n", (*snap).num_cols); 
-	return 0;  
+
+	int i, j; 
+	for (i = 0; i < 10; i++) {
+		for (j = 0; j < (*snap).num_cols; j++) {
+			printf("snap[%d][%d] = %lf\n", i, j, snap[i][j]); 
+		}
+	}
+
+
+	free(snap); 
+	return 0; 
 
 }
 
