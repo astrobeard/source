@@ -15,13 +15,11 @@
 extern void generate_ordered_subsamples(SNAPSHOT *snap, int num_samples, 
 	int col_num) {
 
-	long *indeces = range((*snap).num_rows); 
-
 }
 
 static long *sort_indeces(SNAPSHOT *snap) {
 
-	long *indeces = range((*snap).num_rows); 
+	long *indeces = range(0, (*snap).num_rows); 
 	return indeces; 
 
 }
