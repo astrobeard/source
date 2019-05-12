@@ -1,12 +1,12 @@
 /*
- * In this script the file I/O for the snapshot object is written. 
+ * In this script the file I/O for the dataframe object is written. 
  */ 
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h> 
-#include "snapshot.h" 
+#include "dataframe.h" 
 
 /* ----------- static routine comment headers not duplicated here ----------- */ 
 static int header_length(char *file, char comment); 
@@ -16,16 +16,16 @@ static long num_lines(char *file);
 static long LINESIZE = 100000l; 
 
 /* 
- * Reads in the data from a file and stores it in a snapshot object's data 
+ * Reads in the data from a file and stores it in a dataframe object's data 
  * field. 
  * 
  * Parameters 
  * ========== 
  * file:		The name of the file as a character pointer 
  * 
- * header: snapshot.h 
+ * header: dataframe.h 
  */
-extern int populate_data_from_file(SNAPSHOT *snap, char *file, char comment) { 
+extern int populate_data_from_file(DATAFRAME *df, char *file, char comment) { 
 
 	int hlen = header_length(file, comment);
 
@@ -33,11 +33,11 @@ extern int populate_data_from_file(SNAPSHOT *snap, char *file, char comment) {
 	 * Determine the number of data points and the dimensionality of the 
 	 * data file from the static routines below. 
 	 */ 
-	snap -> num_rows = num_lines(file) - header_length(file, comment); 
-	snap -> num_cols = file_dimension(file, hlen); 
+	df -> num_rows = num_lines(file) - header_length(file, comment); 
+	df -> num_cols = file_dimension(file, hlen); 
 
 	/* Error checking */ 
-	if ((*snap).num_rows == 0 || (*snap).num_cols == -1) {
+	if ((*df).num_rows == 0 || (*df).num_cols == -1) {
 		return 1; 
 	} else {} 
 
@@ -57,12 +57,12 @@ extern int populate_data_from_file(SNAPSHOT *snap, char *file, char comment) {
 	}
 
 	/* Allocate memory for the data */ 
-	snap -> data = (double **) malloc ((*snap).num_rows * sizeof(double *)); 
-	for (i = 0l; i < (*snap).num_rows; i++) {
-		snap -> data[i] = (double *) malloc ((*snap).num_cols * sizeof(double)); 
-		/* Read in each value at a time and store it within the snapshot */ 
-		for (j = 0; j < (*snap).num_cols; j++) {
-			if (fscanf(in, "%lf", &(snap -> data[i][j]))) {
+	df -> data = (double **) malloc ((*df).num_rows * sizeof(double *)); 
+	for (i = 0l; i < (*df).num_rows; i++) {
+		df -> data[i] = (double *) malloc ((*df).num_cols * sizeof(double)); 
+		/* Read in each value at a time and store it within the dataframe */ 
+		for (j = 0; j < (*df).num_cols; j++) {
+			if (fscanf(in, "%lf", &(df -> data[i][j]))) {
 				continue; 
 			} else { 
 				fclose(in); 
