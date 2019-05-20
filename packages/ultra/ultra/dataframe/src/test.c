@@ -20,7 +20,7 @@ int main(void) {
 
 	int i, j; 
 	for (i = 0; i < 10; i++) {
-		for (j = 0; j < df.num_cols; j++) {
+		for (j = 0; j < (*df).num_cols; j++) {
 			printf("ordered_x[%d][%d] = %lf\n", i, j, (*ordered_x).data[i][j]); 
 		}
 	}
