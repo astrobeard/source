@@ -197,8 +197,8 @@ extern double *copy_double_ptr(double *arr, long length) {
  */ 
 extern long *range(long start, long stop) {
 
-	long i, *arr = (long *) malloc (length * sizeof(long)); 
-	for (i = 0l; i < length; i++) {
+	long i, *arr = (long *) malloc ((stop - start) * sizeof(long)); 
+	for (i = 0l; i < stop - start; i++) {
 		arr[i] = i; 
 	} 
 	return arr; 

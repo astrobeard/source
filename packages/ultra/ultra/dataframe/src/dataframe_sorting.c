@@ -7,6 +7,7 @@
 
 /* ---------- Static routine comment headers not duplicated here  ---------- */ 
 static long *rank_indeces(DATAFRAME df, int column); 
+static void ptr_swap(long *arr, long i, long j); 
 
 
 /* 
