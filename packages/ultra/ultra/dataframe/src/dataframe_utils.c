@@ -292,6 +292,37 @@ extern double ptr_mean(double *arr, long length) {
 		return ptr_sum(arr, length) / length; 
 	}
 
+} 
+
+/* 
+ * Sorts a double pointer array from least to greatest. 
+ *  
+ * Parameters 
+ * ========== 
+ * arr: 		The array to sort 
+ * length: 		The length of the array 
+ * 
+ * Returns 
+ * ======= 
+ * Type *double :: The sorted array, which will have the same length 
+ * 
+ * header: utils.h 
+ */ 
+extern double *ptr_sort(double *arr, long length) {
+
+	double i, j, *sorted = copy_double_ptr(arr, length); 
+	for (i = 0l; i < length; i++) {
+		for (j = 0l; j < length; j++) {
+			if (sorted[j] > sorted[i]) {
+				double tmp = sorted[i]; 
+				sorted[i] = sorted[j]; 
+				sorted[j] = tmp; 
+			} else {
+				continue; 
+			}
+		}
+	}
+
 }
 
 

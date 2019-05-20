@@ -16,13 +16,11 @@ int main(void) {
 		return 1; 
 	} else {} 
 
-	DATAFRAME *ordered_x = dfcolumn_order(*df, 3); 
+	double *arr = ptr_sort(dfcolumn(*df, 3), (*df).num_rows); 
 
 	int i, j; 
-	for (i = 0; i < 10; i++) {
-		for (j = 0; j < (*df).num_cols; j++) {
-			printf("ordered_x[%d][%d] = %lf\n", i, j, (*ordered_x).data[i][j]); 
-		}
+	for (i = 0; i < 25; i++) {
+		printf("arr[%d] = %lf\n", i, arr[i]); 
 	}
 
 	// int i, j; 

@@ -279,7 +279,7 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
  * 
  * header: dataframe.h 
  */ 
-extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
+// extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
 
 
 

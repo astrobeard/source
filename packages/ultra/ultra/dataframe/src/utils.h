@@ -145,6 +145,22 @@ extern double ptr_sum(double *arr, long length);
  */ 
 extern double ptr_mean(double *arr, long length); 
 
+/* 
+ * Sorts a double pointer array from least to greatest. 
+ *  
+ * Parameters 
+ * ========== 
+ * arr: 		The array to sort 
+ * length: 		The length of the array 
+ * 
+ * Returns 
+ * ======= 
+ * Type *double :: The sorted array, which will have the same length 
+ * 
+ * header: utils.h 
+ */ 
+extern double *ptr_sort(double *arr, long length); 
+
 #endif /* UTILS_H */ 
 
 

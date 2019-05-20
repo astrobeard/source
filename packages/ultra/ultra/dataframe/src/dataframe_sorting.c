@@ -26,24 +26,11 @@ static long next_minimum_index(DATAFRAME df, int column, int *tracker);
  * 
  * header: dataframe.h 
  */ 
-extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column) {
+// extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column) {
 
-	int j; 
-	long i, *order = rank_indeces(df, column); 
-	DATAFRAME *new = dataframe_initialize(); 
-	new -> num_rows = df.num_rows; 
-	new -> num_cols = df.num_cols; 
-	new -> data = (double **) malloc (df.num_rows * sizeof(double *)); 
-	for (i = 0l; i < df.num_rows; i++) {
-		new -> data[i] = (double *) malloc (df.num_cols * sizeof(double)); 
-		for (j = 0; j < df.num_cols; j++) {
-			new -> data[i][j] = df.data[order[i]][j]; 
-		} 
-	} 
-	free(order); 
-	return new; 
+// 	DATAFRAME *new = 
 
-} 
+// } 
 
 /* 
  * Determines the order of row numbers that would sort the dataframe from 
