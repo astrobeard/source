@@ -155,7 +155,7 @@ static void long_ptr_swap(long *arr, long i, long j) {
 
 } 
 
-static void double_ptr_swap(double *arr, long i, long i) {
+static void double_ptr_swap(double *arr, long i, long j) {
 
 	double x = arr[i]; 
 	double y = arr[j]; 
