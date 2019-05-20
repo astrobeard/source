@@ -197,7 +197,7 @@ extern double dfcolumn_mean(DATAFRAME df, int column);
  * 
  * header: dataframe.h 
  */ 
-extern double dfcolumn_median(DATAFRAME df, int column); 
+// extern double dfcolumn_median(DATAFRAME df, int column); 
 
 
 
