@@ -11,8 +11,8 @@ all: dataframe.so
 dataframe.so: $(OBJECTS) 
 	$(CC) *.o -shared -o dataframe.so 
 
-test.o: test.c dataframe.h dataframe_io.c dataframe_subs.c dataframe_utils.c 
-	$(CC) test.c dataframe_io.c dataframe_subs.c dataframe_utils.c -o test.o 
+test.o: utils.h dataframe.h *.c 
+	$(CC) *.c -o test.o 
 
 %.o: %.c *.h
 	$(CC) $(CFLAGS) $< -o $@ 

@@ -149,6 +149,40 @@ extern double dfcolumn_mean(DATAFRAME df, int column) {
 		return ptr_mean(dfcolumn(df, column), df.num_rows); 
 	}
 
+} 
+
+/* 
+ * Determine the median of a column of the dataframe 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column number to find the median of 
+ * 
+ * Returns
+ * ======= 
+ * Type double :: The median of the data in that column 
+ * 0 if the column number is not allowed 
+ * 
+ * header: dataframe.h 
+ */ 
+extern double dfcolumn_median(DATAFRAME df, int column) {
+
+	if (column < 0 || column >= df.num_cols) {
+		return 0; 
+	} else {
+		double median; 
+		DATAFRAME *dummy = rank_by_column(df, column); 
+		if (df.num_cols % 2 == 0) {
+			median = (df.data[df.num_cols / 2][column] + 
+				df.data[df.num_cols / 2 - 1][column]) / 2; 
+		} else {
+			median = df.data[df.num_cols / 2][column]; 
+		} 
+		free_dataframe(dummy); 
+		return median; 
+	}
+
 }
 
 

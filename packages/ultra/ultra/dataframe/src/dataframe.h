@@ -179,6 +179,23 @@ extern double dfcolumn_sum(DATAFRAME df, int column);
  */ 
 extern double dfcolumn_mean(DATAFRAME df, int column); 
 
+/* 
+ * Determine the median of a column of the dataframe 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column number to find the median of 
+ * 
+ * Returns
+ * ======= 
+ * Type double :: The median of the data in that column 
+ * 0 if the column number is not allowed 
+ * 
+ * header: dataframe.h 
+ */ 
+extern double dfcolumn_median(DATAFRAME df, int column); 
+
 
 
 
