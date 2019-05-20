@@ -63,7 +63,8 @@ static long *rank_indeces(DATAFRAME df, int column) {
 	long i; 
 	int *tracker = int_zeroes(df.num_rows); 
 	long *sorted = (long *) malloc (df.num_rows * sizeof(long)); 
-	for (i = 0l; i < df.num_rows; i++) {
+	for (i = 0l; i < df.num_rows; i++) { 
+		printf("\r%ld of %ld", i, df.num_rows); 
 		long index = next_minimum_index(df, column, tracker); 
 		tracker[index] = 1; 
 		sorted[i] = index; 
