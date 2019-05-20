@@ -341,7 +341,8 @@ extern double *ptr_sort(double *arr, long length) {
 			} else {
 				continue; 
 			}
-		}
+		} 
+		printf("i = %ld ; j = %ld ; smallest = %ld\n", i, j, smallest); 
 		ptr_swap(arr, i, smallest); 
 	} 
 	// printf("\n"); 
