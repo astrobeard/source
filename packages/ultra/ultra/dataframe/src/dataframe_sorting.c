@@ -11,6 +11,53 @@ static long *rank_indeces(DATAFRAME df, int column);
 static void long_ptr_swap(long *arr, long i, long j); 
 static void double_ptr_swap(double *arr, long i, long j); 
 
+extern DATAFRAME **sort(DATAFRAME df, int column, double *binspace, 
+	long num_bins) {
+
+	long i, j; 
+	int k; 
+	DATAFRAME **sorted = dataframe_array_initialize(num_bins); 
+	for (i = 0l; i < num_bins; i++) {
+		sorted[i] = sieve_new_frame(df, column, binspace[i], 4); 
+		sieve_same_frame(sorted[i], column, binspace[i + 1], 2); 
+	} 
+	return sorted; 
+
+}
+
+/* 
+ * Determine the number of rows that fall within specified bins (i.e. a 
+ * histogram) based on the values in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column number to get counts based on 
+ * binspace: 	The binspace to sort based on 
+ * num_bins: 	The number of bins in the binspace. This should be one less 
+ * 				than the number of values in the binspace array. 
+ * 
+ * Returns 
+ * ======= 
+ * Type *long :: The counts within each bin 
+ * 
+ * header: dataframe.h 
+ */ 
+extern long *hist(DATAFRAME df, int column, double *binspace, long num_bins) {
+
+	long i, *counts = (long *) malloc (num_bins * sizeof(long)); 
+	for (i = 0l; i < df.num_rows; i++) {
+		long bin = get_bin_number(df.data[i][column], binspace, num_bins); 
+		if (bin != -1l) {
+			counts[bin]++; 
+		} else {
+			continue; 
+		} 
+	} 
+	return counts; 
+
+}
+
 /* 
  * Sorts the data from least to greatest based on the values in a given 
  * column. 
@@ -47,39 +94,6 @@ extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column) {
 } 
 
 /* 
- * Determine the number of rows that fall within specified bins (i.e. a 
- * histogram) based on the values in a given column. 
- * 
- * Parameters 
- * ========== 
- * df: 			The dataframe itself 
- * column: 		The column number to get counts based on 
- * binspace: 	The binspace to sort based on 
- * num_bins: 	The number of bins in the binspace. This should be one less 
- * 				than the number of values in the binspace array. 
- * 
- * Returns 
- * ======= 
- * Type *long :: The counts within each bin 
- * 
- * header: dataframe.h 
- */ 
-extern long *hist(DATAFRAME df, int column, double *binspace, long num_bins) {
-
-	long i, *counts = (long *) malloc (num_bins * sizeof(long)); 
-	for (i = 0l; i < df.num_rows; i++) {
-		long bin = get_bin_number(df.data[i][column], binspace, num_bins); 
-		if (bin != -1l) {
-			counts[bin]++; 
-		} else {
-			continue; 
-		} 
-	} 
-	return counts; 
-
-}
-
-/* 
  * Determines the bin number of a given value within a specified binspace. 
  * 
  * Parameters 
@@ -109,6 +123,19 @@ static long get_bin_number(double value, double *binspace, long num_bins) {
 
 }
 
+/* 
+ * Determine the indeces that would sort the dataframe from least to greatest 
+ * according to the data in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column to sort based on 
+ * 
+ * Returns
+ * ======= 
+ * Type *long :: The indeces which sort the data from least to greatest. 
+ */ 
 static long *rank_indeces(DATAFRAME df, int column) {
 
 	/* Run the operations on a copy of the indeces */ 
@@ -155,6 +182,15 @@ static void long_ptr_swap(long *arr, long i, long j) {
 
 } 
 
+/* 
+ * Swap the i'th and j'th elements of a double pointer array 
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		The double pointer array itself 
+ * i: 			The first index 
+ * j: 			The second index 
+ */ 
 static void double_ptr_swap(double *arr, long i, long j) {
 
 	double x = arr[i]; 
