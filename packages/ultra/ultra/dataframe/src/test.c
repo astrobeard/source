@@ -33,7 +33,7 @@ int main(void) {
 
 	int i;
 	for (i = 0; i < 10; i++) {
-		printf("arr[%ld] = %lf\n", i, arr[i]); 
+		printf("arr[%d] = %lf\n", i, arr[i]); 
 	}
 
 	// int i, j; 
