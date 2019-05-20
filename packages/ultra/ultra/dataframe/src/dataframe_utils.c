@@ -310,7 +310,8 @@ extern double ptr_mean(double *arr, long length) {
  */ 
 extern double *ptr_sort(double *arr, long length) {
 
-	double i, j, *sorted = copy_double_ptr(arr, length); 
+	long i, j; 
+	double *sorted = copy_double_ptr(arr, length); 
 	for (i = 0l; i < length; i++) {
 		for (j = 0l; j < length; j++) {
 			if (sorted[j] > sorted[i]) {
