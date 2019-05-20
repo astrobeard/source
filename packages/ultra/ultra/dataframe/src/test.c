@@ -2,33 +2,28 @@
 #include <stdlib.h> 
 #include <string.h> 
 #include <stdio.h> 
-#include "snapshot.h" 
+#include "dataframe.h" 
 
 /* 
- * Currently running tests on snapshot file I/O. 
+ * Currently running tests on dataframe file I/O. 
  */ 
-int main(void) {
+int main(void) { 
 
-	printf("Initializing snapshot....\n"); 
-	SNAPSHOT *snap = (SNAPSHOT *) malloc (sizeof(SNAPSHOT)); 
-	printf("Snapshot initialized....\n"); 
-	printf("Reading file....\n"); 
-	int test = populate_data_from_file(snap, 
+	DATAFRAME *df = dataframe_initialize(); 
+	if (populate_from_file(df, 
 		"/Users/astrobeard/Work/Research/data/Vishnu/Vishnu_z0p0.dat", 
-		'#'); 
-	printf("File read!\n"); 
-	printf("snap.num_rows: %ld\n", (*snap).num_rows); 
-	printf("snap.num_cols: %d\n", (*snap).num_cols); 
+		'#')) { 
+		return 1; 
+	} else {} 
 
 	int i, j; 
 	for (i = 0; i < 10; i++) {
-		for (j = 0; j < (*snap).num_cols; j++) {
-			printf("snap[%d][%d] = %lf\n", i, j, (*snap).data[i][j]); 
+		for (j = 0; j < (*df).num_cols; j++) {
+			printf("df.data[%d][%d] = %lf\n", i, j, (*df).data[i][j]); 
 		}
 	}
 
-	free_snapshot(snap); 
-	free(snap); 
+	free_dataframe(df); 
 	return 0; 
 
 }

@@ -1,7 +1,7 @@
 
 CC = gcc 
 CFLAGS = -c -fPIC 
-OBJECTS = dataframe_sieve.o dataframe_utils.o dataframe_sorting.o 
+OBJECTS = dataframe_sieve.o dataframe_utils.o dataframe_sorting.o dataframe_io.o 
 
 all: dataframe.so 
 
@@ -10,8 +10,8 @@ all: dataframe.so
 dataframe.so: $(OBJECTS) 
 	$(CC) *.o -shared -o dataframe.so 
 
-# test.o: test.c snapshot.h snapshot_io.c 
-# 	$(CC) test.c snapshot_io.c snapshot_utils.c -o test.o 
+test.o: test.c dataframe.h dataframe_io.c dataframe_utils.c 
+	$(CC) test.c dataframe_io.c dataframe_utils.c -o test.o 
 
 %.o: %.c *.h
 	$(CC) $(CFLAGS) $< -o $@ 

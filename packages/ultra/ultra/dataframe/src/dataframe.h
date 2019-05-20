@@ -75,6 +75,34 @@ extern void free_dataframe(DATAFRAME *df);
 extern void free_dataframe_array(DATAFRAME **df, int n); 
 
 
+/* --------------------------- FILE I/O FUNCTIONS --------------------------- */ 
+
+/* 
+ * Reads in the data from a file and stores it in a dataframe object's data 
+ * field. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			A pointer to the dataframe to populate 
+ * file:		The name of the file as a character pointer 
+ * comment: 	The commenting character 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure reading the file 
+ * 
+ * source: dataframe_io.c 
+ */
+extern int populate_from_file(DATAFRAME *df, char *file, char comment); 
+
+
+
+
+
+
+
+
+
 /* ---------------------------- DATAFRAME SUBS ---------------------------- */ 
 
 /* 

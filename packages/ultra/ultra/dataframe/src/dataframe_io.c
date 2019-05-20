@@ -21,13 +21,20 @@ static long LINESIZE = 100000l;
  * 
  * Parameters 
  * ========== 
+ * df: 			A pointer to the dataframe to populate 
  * file:		The name of the file as a character pointer 
+ * comment: 	The commenting character 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure reading the file 
  * 
  * header: dataframe.h 
  */
-extern int populate_data_from_file(DATAFRAME *df, char *file, char comment) { 
+extern int populate_from_file(DATAFRAME *df, char *file, char comment) { 
 
-	int hlen = header_length(file, comment);
+	int j, hlen = header_length(file, comment); 
+	long i; 
 
 	/* 
 	 * Determine the number of data points and the dimensionality of the 
@@ -46,8 +53,6 @@ extern int populate_data_from_file(DATAFRAME *df, char *file, char comment) {
 	in = fopen(file, "r"); 
 	if (in == NULL) return 1;
 	char *line = (char *) malloc (LINESIZE * sizeof(char)); 
-	long i; 
-	int j; 
 	for (j = 0; j < hlen; j++) {
 		if (fgets(line, LINESIZE, in) == NULL) {
 			return 1; 

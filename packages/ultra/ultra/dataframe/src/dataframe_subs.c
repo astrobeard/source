@@ -33,7 +33,7 @@ extern double column_mean(DATAFRAME df, int column) {
 		sum += df.data[i][column]; /* Add each element */ 
 	} 
 	/* Return total of number of points */ 
-	return sum / data.num_rows; 
+	return sum / df.num_rows; 
 
 } 
 
@@ -53,6 +53,7 @@ extern double column_mean(DATAFRAME df, int column) {
  */ 
 extern double column_min(DATAFRAME df, int column) {
 
+	double minimum; 
 	if (df.num_rows <= 0) { 
 		return 0; /* Return zero if there isn't any data */ 
 	} else if (df.num_rows == 1) { 
@@ -86,6 +87,7 @@ extern double column_min(DATAFRAME df, int column) {
  */ 
 extern double column_max(DATAFRAME df, int column) {
 
+	double maximum; 
 	if (df.num_rows <= 0) {
 		return 0; /* Return zero if there isn't any data */ 
 	} else if (df.num_rows == 1) {
