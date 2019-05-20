@@ -18,10 +18,7 @@ int main(void) {
 	} else {} 
 
 	int i; 
-	double *arr = (double *) malloc (10000 * sizeof(double)); 
-	for (i = 0; i < 10000; i++) {
-		arr[i] = (*df).data[i][3]; 
-	}
+	double *arr = ptr_sort(dfcolumn(*df, 3), (*df).num_rows); 
 
 	printf("ptr_min(arr) = %lf\n", ptr_min(arr, 10000)); 
 	arr = ptr_sort(arr, 10000); 
