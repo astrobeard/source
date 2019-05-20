@@ -333,7 +333,7 @@ extern double *ptr_sort(double *arr, long length) {
 	double *sorted = copy_double_ptr(arr, length); 
 
 	for (i = 0l; i < length - 1; i++) { 
-		// printf("\r%ld of %ld", i, length); 
+		printf("\r%ld of %ld", i, length); 
 		long smallest = i; 
 		for (j = i + 1l; j < length; j++) {
 			if (sorted[j] <= sorted[smallest]) {
@@ -342,10 +342,9 @@ extern double *ptr_sort(double *arr, long length) {
 				continue; 
 			}
 		} 
-		printf("i = %ld ; j = %ld ; smallest = %ld\n", i, j, smallest); 
 		ptr_swap(sorted, i, smallest); 
 	} 
-	// printf("\n"); 
+	printf("\n"); 
 	return sorted; 
 
 }

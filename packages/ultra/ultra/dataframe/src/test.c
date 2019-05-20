@@ -17,23 +17,15 @@ int main(void) {
 		return 1; 
 	} else {} 
 
-	double *arr = (double *) malloc (10 * sizeof(double)); 
-	arr[0] = 95; 
-	arr[1] = 23; 
-	arr[2] = 67; 
-	arr[3] = 55; 
-	arr[4] = 82; 
-	arr[5] = 27; 
-	arr[6] = 38; 
-	arr[7] = 62; 
-	arr[8] = 12; 
-	arr[9] = 71; 
+	int i; 
+	double *arr = (double *) malloc (10000 * sizeof(double)); 
+	for (i = 0; i < 10000; i++) {
+		arr[i] = (*df).data[i][3]; 
+	}
 
-	double *test = ptr_sort(arr, 10); 
-
-	int i;
-	for (i = 0; i < 10; i++) {
-		printf("test[%d] = %lf\n", i, test[i]); 
+	arr = ptr_sort(arr, 10000); 
+	for (i = 0; i < 25; i++) {
+		printf("arr[%d] = %lf\n", i, arr[i]); 
 	}
 
 	// int i, j; 
