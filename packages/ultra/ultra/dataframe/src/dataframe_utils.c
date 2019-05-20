@@ -1,9 +1,10 @@
 
 #include <stdlib.h> 
-#include <stdio.h> 
 #include "dataframe.h" 
 #include "utils.h" 
 
+/* ---------- Static routine comment headers not duplicated here  ---------- */ 
+static void ptr_swap(double *arr, long i, long j); 
 
 /* 
  * Allocates memory for a dataframe struct and returns the pointer. 
@@ -163,6 +164,8 @@ extern long *long_zeroes(long length) {
  * Returns 
  * ======= 
  * A copy of the array in a different block of memory. 
+ * 
+ * header: utils.h 
  */ 
 extern double *copy_double_ptr(double *arr, long length) {
 
@@ -176,6 +179,31 @@ extern double *copy_double_ptr(double *arr, long length) {
 	return copy; 
 
 } 
+
+/* 
+ * Emulates python's range function by taking in a start and a stop and 
+ * returning an array from start to stop - 1l (inclusive) 
+ * 
+ * Parameters 
+ * ========== 
+ * start: 		The starting value 
+ * stop: 		The stopping value 
+ * 
+ * Returns 
+ * ======= 
+ * Type *long :: The resultant array from start to stop - 1l 
+ * 
+ * header: utils.h 
+ */ 
+extern long *range(long start, long stop) {
+
+	long i, *arr = (long *) malloc (length * sizeof(long)); 
+	for (i = 0l; i < length; i++) {
+		arr[i] = i; 
+	} 
+	return arr; 
+
+}
 
 /* 
  * Finds the minimum value in a double pointer array  
@@ -296,24 +324,6 @@ extern double ptr_mean(double *arr, long length) {
 } 
 
 /* 
- * Swap the i'th and j'th elements of a double pointer array 
- * 
- * Parameters 
- * ========== 
- * arr: 		The double pointer array itself 
- * i: 			The first index 
- * j: 			The second index 
- */ 
-extern void ptr_swap(double *arr, long i, long j) {
-
-	double x = arr[i]; 
-	double y = arr[j]; 
-	arr[i] = y; 
-	arr[j] = x; 
-
-}
-
-/* 
  * Sorts a double pointer array from least to greatest. 
  *  
  * Parameters 
@@ -329,11 +339,15 @@ extern void ptr_swap(double *arr, long i, long j) {
  */ 
 extern double *ptr_sort(double *arr, long length) {
 
+	/* Run the operations on a copy of the array */ 
 	long i, j; 
 	double *sorted = copy_double_ptr(arr, length); 
 
 	for (i = 0l; i < length - 1; i++) { 
-		printf("\r%ld of %ld", i, length); 
+		/* 
+		 * Look at each subsequent element of the array and find the smallest 
+		 * one. Then swap the minimum for the current position.  
+		 */ 
 		long smallest = i; 
 		for (j = i + 1l; j < length; j++) {
 			if (sorted[j] <= sorted[smallest]) {
@@ -344,10 +358,29 @@ extern double *ptr_sort(double *arr, long length) {
 		} 
 		ptr_swap(sorted, i, smallest); 
 	} 
-	printf("\n"); 
+	/* The largest element will naturally fall into the last position */ 
 	return sorted; 
 
+} 
+
+/* 
+ * Swap the i'th and j'th elements of a double pointer array 
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		The double pointer array itself 
+ * i: 			The first index 
+ * j: 			The second index 
+ */ 
+static void ptr_swap(double *arr, long i, long j) {
+
+	double x = arr[i]; 
+	double y = arr[j]; 
+	arr[i] = y; 
+	arr[j] = x; 
+
 }
+
 
 
 

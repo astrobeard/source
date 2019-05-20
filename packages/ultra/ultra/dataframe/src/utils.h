@@ -75,8 +75,27 @@ extern long *long_zeroes(long length);
  * Returns 
  * ======= 
  * A copy of the array in a different block of memory. 
+ * 
+ * source: dataframe_utils.c 
  */ 
 extern double *copy_double_ptr(double *arr, long length); 
+
+/* 
+ * Emulates python's range function by taking in a start and a stop and 
+ * returning an array from start to stop - 1l (inclusive) 
+ * 
+ * Parameters 
+ * ========== 
+ * start: 		The starting value 
+ * stop: 		The stopping value 
+ * 
+ * Returns 
+ * ======= 
+ * Type *long :: The resultant array from start to stop - 1l 
+ * 
+ * source: dataframe_utils.c 
+ */ 
+extern long *range(long start, long stop); 
 
 /* 
  * Finds the minimum value in a double pointer array  

@@ -3,7 +3,6 @@
 #include <string.h> 
 #include <stdio.h> 
 #include "dataframe.h" 
-#include "utils.h" 
 
 /* 
  * Currently running tests on dataframe subs.  
@@ -17,14 +16,10 @@ int main(void) {
 		return 1; 
 	} else {} 
 
-	int i; 
-	double *arr = ptr_sort(dfcolumn(*df, 3), (*df).num_rows); 
-
-	printf("ptr_min(arr) = %lf\n", ptr_min(arr, 10000)); 
-	arr = ptr_sort(arr, 10000); 
+	DATAFRAME *sorted = dfcolumn_order(*df, 3); 
 	for (i = 0; i < 25; i++) {
-		printf("arr[%d] = %lf\n", i, arr[i]); 
-	}
+		printf("sorted[%d][3] = %lf\n", i, (*sorted).data[i][3]); 
+	} 
 
 	// int i, j; 
 	// for (i = 0; i < (*df).num_cols; i++) {
@@ -37,7 +32,7 @@ int main(void) {
 	// 	printf("====================\n"); 
 	// }
 
-	free(arr); 
+	free_dataframe(sorted); 
 	free_dataframe(df); 
 	return 0; 
 

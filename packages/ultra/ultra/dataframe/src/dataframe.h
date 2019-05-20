@@ -263,6 +263,7 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
 
 
 /* --------------------------- SORTING FUNCTIONS --------------------------- */ 
+
 /* 
  * Sorts the data from least to greatest based on the values in a given 
  * column. 
@@ -279,7 +280,7 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
  * 
  * header: dataframe.h 
  */ 
-// extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
+extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
 
 
 
