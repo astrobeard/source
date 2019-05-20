@@ -23,6 +23,7 @@ int main(void) {
 		arr[i] = (*df).data[i][3]; 
 	}
 
+	printf("ptr_min(arr) = %lf\n", ptr_min(arr, 10000)); 
 	arr = ptr_sort(arr, 10000); 
 	for (i = 0; i < 25; i++) {
 		printf("arr[%d] = %lf\n", i, arr[i]); 
