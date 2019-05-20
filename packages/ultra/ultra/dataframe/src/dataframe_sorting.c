@@ -128,8 +128,8 @@ static long *rank_indeces(DATAFRAME df, int column) {
 				continue; 
 			}
 		} 
-		double_ptr_swap(col, i, j); 
-		long_ptr_swap(indeces, i, j); 
+		double_ptr_swap(col, i, smallest); 
+		long_ptr_swap(indeces, i, smallest); 
 		printf("\r%ld of %ld", i, df.num_rows); 
 	} 
 	printf("\n"); 

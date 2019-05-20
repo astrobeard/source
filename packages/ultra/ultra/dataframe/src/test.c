@@ -16,7 +16,7 @@ int main(void) {
 		return 1; 
 	} else {} 
 
-	int i; 
+	int i;
 	DATAFRAME *ordered = dfcolumn_order(*df, 3); 
 	for (i = 0; i < 25; i++) {
 		printf("ordered[%d] = %lf\n", i, (*ordered).data[i][3]); 
