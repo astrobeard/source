@@ -312,17 +312,19 @@ extern double *ptr_sort(double *arr, long length) {
 
 	long i, j; 
 	double *sorted = copy_double_ptr(arr, length); 
-	for (i = 0l; i < length; i++) {
-		for (j = 0l; j < length; j++) {
-			if (sorted[j] > sorted[i]) {
+	for (i = 0l; i < length; i++) { 
+		printf("\r%ld of %ld", i, length); 
+		for (j = i + 1l; j < length; j++) { 
+			if (sorted[j] > sorted[i]) { 
 				double tmp = sorted[i]; 
 				sorted[i] = sorted[j]; 
 				sorted[j] = tmp; 
-			} else {
+			} else { 
 				continue; 
-			}
+			} 
 		}
 	} 
+	printf("\n"); 
 	return sorted; 
 
 }
