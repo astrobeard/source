@@ -8,7 +8,8 @@
 /* ---------- Static routine comment headers not duplicated here  ---------- */ 
 static long get_bin_number(double value, double *binspace, long num_bins); 
 static long *rank_indeces(DATAFRAME df, int column); 
-static void ptr_swap(long *arr, long i, long j); 
+static void long_ptr_swap(long *arr, long i, long j); 
+static void double_ptr_swap(double *arr, long i, long i); 
 
 /* 
  * Sorts the data from least to greatest based on the values in a given 
@@ -112,6 +113,7 @@ static long *rank_indeces(DATAFRAME df, int column) {
 
 	/* Run the operations on a copy of the indeces */ 
 	long i, j, *indeces = range(0, df.num_rows); 
+	double *col = dfcolumn(df, column); /* Pull a copy, this is faster */ 
 
 	for (i = 0l; i < df.num_rows; i++) {
 		/* 
@@ -120,13 +122,14 @@ static long *rank_indeces(DATAFRAME df, int column) {
 		 */ 
 		long smallest = i; 
 		for (j = i + 1l; j < df.num_rows; j++) {
-			if (df.data[j][column] <= df.data[smallest][column]) {
+			if (col[j] <= col[smallest]) {
 				smallest = j; 
 			} else {
 				continue; 
 			}
-		}
-		ptr_swap(indeces, i, j); 
+		} 
+		double_ptr_swap(col, i, j); 
+		long_ptr_swap(indeces, i, j); 
 		printf("\r%ld of %ld", i, df.num_rows); 
 	} 
 	printf("\n"); 
@@ -143,10 +146,19 @@ static long *rank_indeces(DATAFRAME df, int column) {
  * i: 			The first index 
  * j: 			The second index 
  */ 
-static void ptr_swap(long *arr, long i, long j) {
+static void long_ptr_swap(long *arr, long i, long j) {
 
 	long x = arr[i]; 
 	long y = arr[j]; 
+	arr[i] = y; 
+	arr[j] = x; 
+
+} 
+
+static void double_ptr_swap(double *arr, long i, long i) {
+
+	double x = arr[i]; 
+	double y = arr[j]; 
 	arr[i] = y; 
 	arr[j] = x; 
 

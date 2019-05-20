@@ -17,14 +17,9 @@ int main(void) {
 	} else {} 
 
 	int i; 
-	double *bins = (double *) malloc (14 * sizeof(double)); 
-	for (i = 0; i < 14; i++) {
-		bins[i] = 10 * i; 
-	}
-
-	long *counts = hist(*df, 3, bins, 13); 
-	for (i = 0; i < 13; i++) {
-		printf("counts[%d] = %ld\n", i, counts[i]); 
+	DATAFRAME *ordered = dfcolumn_order(df, 3); 
+	for (i = 0; i < 25; i++) {
+		printf("ordered[%d] = %lf\n", i, (*ordered).data[i][3]); 
 	}
 
 	// int i, j; 
@@ -38,8 +33,7 @@ int main(void) {
 	// 	printf("====================\n"); 
 	// }
 
-	free(bins); 
-	free(counts); 
+	free_dataframe(ordered); 
 	free_dataframe(df); 
 	return 0; 
 
