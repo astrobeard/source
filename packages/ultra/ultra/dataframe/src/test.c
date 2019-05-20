@@ -23,7 +23,8 @@ int main(void) {
 		printf("dfcolumn_max(%d) = %lf\n", i, dfcolumn_max(*df, i)); 
 		printf("dfcolumn_sum(%d) = %lf\n", i, dfcolumn_sum(*df, i)); 
 		printf("dfcolumn_mean(%d) = %lf\n", i, dfcolumn_mean(*df, i)); 
-		printf("====================\n");
+		printf("dfcolumn_median(%d) = %lf\n", i, dfcolumn_median(*df, i)); 
+		printf("====================\n"); 
 	}
 
 	free_dataframe(df); 
