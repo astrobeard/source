@@ -17,11 +17,16 @@ int main(void) {
 		return 1; 
 	} else {} 
 
-	double *arr = ptr_sort(dfcolumn(*df, 3), (*df).num_rows); 
+	double *arr = (double *) malloc (10000 * sizeof(double)); 
+	long i; 
+	for (i = 0l; i < 10000l; i++) {
+		arr[i] = (*df).data[i][3]; 
+	} 
 
-	int i, j; 
-	for (i = 0; i < 25; i++) {
-		printf("arr[%d] = %lf\n", i, arr[i]); 
+	arr = ptr_sort(arr, 10000); 
+
+	for (i = 0l; i < 25l; i++) {
+		printf("arr[%ld] = %lf\n", i, arr[i]); 
 	}
 
 	// int i, j; 
@@ -35,7 +40,7 @@ int main(void) {
 	// 	printf("====================\n"); 
 	// }
 
-	// free_dataframe(ordered_x); 
+	free(arr); 
 	free_dataframe(df); 
 	return 0; 
 

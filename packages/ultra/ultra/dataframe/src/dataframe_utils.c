@@ -296,6 +296,24 @@ extern double ptr_mean(double *arr, long length) {
 } 
 
 /* 
+ * Swap the i'th and j'th elements of a double pointer array 
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		The double pointer array itself 
+ * i: 			The first index 
+ * j: 			The second index 
+ */ 
+extern void ptr_swap(double *arr, long i, long j) {
+
+	double x = arr[i]; 
+	double y = arr[j]; 
+	arr[i] = y; 
+	arr[j] = x; 
+
+}
+
+/* 
  * Sorts a double pointer array from least to greatest. 
  *  
  * Parameters 
@@ -313,17 +331,18 @@ extern double *ptr_sort(double *arr, long length) {
 
 	long i, j; 
 	double *sorted = copy_double_ptr(arr, length); 
-	for (i = 0l; i < length; i++) { 
+
+	for (i = 0l; i < length - 1; i++) { 
 		printf("\r%ld of %ld", i, length); 
-		for (j = i + 1l; j < length; j++) { 
-			if (sorted[j] > sorted[i]) { 
-				double tmp = sorted[i]; 
-				sorted[i] = sorted[j]; 
-				sorted[j] = tmp; 
-			} else { 
+		long smallest = i; 
+		for (j = i + 1l; j < length; j++) {
+			if (arr[j] <= arr[smallest]) {
+				smallest = j; 
+			} else {
 				continue; 
-			} 
+			}
 		}
+		ptr_swap(arr, i, smallest); 
 	} 
 	printf("\n"); 
 	return sorted; 
