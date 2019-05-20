@@ -282,6 +282,26 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
  */ 
 extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
 
+/* 
+ * Determine the number of rows that fall within specified bins (i.e. a 
+ * histogram) based on the values in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column number to get counts based on 
+ * binspace: 	The binspace to sort based on 
+ * num_bins: 	The number of bins in the binspace. This should be one less 
+ * 				than the number of values in the binspace array. 
+ * 
+ * Returns 
+ * ======= 
+ * Type *long :: The counts within each bin 
+ * 
+ * header: dataframe.h 
+ */ 
+extern long *hist(DATAFRAME df, int column, double *binspace, long num_bins); 
+
 
 
 

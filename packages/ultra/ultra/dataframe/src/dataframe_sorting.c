@@ -6,9 +6,9 @@
 #include "utils.h" 
 
 /* ---------- Static routine comment headers not duplicated here  ---------- */ 
+static long get_bin_number(double value, double *binspace, long num_bins); 
 static long *rank_indeces(DATAFRAME df, int column); 
 static void ptr_swap(long *arr, long i, long j); 
-
 
 /* 
  * Sorts the data from least to greatest based on the values in a given 
@@ -44,6 +44,69 @@ extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column) {
 	return new; 
 
 } 
+
+/* 
+ * Determine the number of rows that fall within specified bins (i.e. a 
+ * histogram) based on the values in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column number to get counts based on 
+ * binspace: 	The binspace to sort based on 
+ * num_bins: 	The number of bins in the binspace. This should be one less 
+ * 				than the number of values in the binspace array. 
+ * 
+ * Returns 
+ * ======= 
+ * Type *long :: The counts within each bin 
+ * 
+ * header: dataframe.h 
+ */ 
+extern long *hist(DATAFRAME df, int column, double *binspace, long num_bins) {
+
+	long i, *counts = (long *) malloc (num_bins * sizeof(long)); 
+	for (i = 0l; i < df.num_rows; i++) {
+		long bin = get_bin_number(df.data[i][column], binspace, num_bins); 
+		if (bin != -1l) {
+			counts[bin]++; 
+		} else {
+			continue; 
+		} 
+	} 
+	return counts; 
+
+}
+
+/* 
+ * Determines the bin number of a given value within a specified binspace. 
+ * 
+ * Parameters 
+ * ========== 
+ * value: 		The value to get the bin number for 
+ * binspace: 	The bin edges 
+ * num_bins: 	The number of bins. This should be one less than the number of 
+ * 				values in the binspace array. 
+ * 
+ * Returns 
+ * ======= 
+ * Type long :: The bin value itself 
+ */ 
+static long get_bin_number(double value, double *binspace, long num_bins) {
+
+	long i; 
+	for (i = 0l; i < num_bins; i++) {
+		/* If the value is between two bin edges */ 
+		if (binspace[i] <= value && value <= binspace[i + 1l]) {
+			return i; 
+		} else {
+			continue; 
+		} 
+	} 
+	/* The value is not within the binspace. Return -1l on failure. */ 
+	return -1l; 
+
+}
 
 static long *rank_indeces(DATAFRAME df, int column) {
 
