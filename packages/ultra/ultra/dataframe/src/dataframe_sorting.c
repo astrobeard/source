@@ -64,7 +64,9 @@ static long *rank_indeces(DATAFRAME df, int column) {
 			}
 		}
 		ptr_swap(indeces, i, j); 
+		printf("\r%ld of %ld", i, df.num_rows); 
 	} 
+	printf("\n"); 
 	return indeces; 
 
 } 
