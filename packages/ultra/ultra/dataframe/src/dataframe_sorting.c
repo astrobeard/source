@@ -9,7 +9,7 @@
 static long get_bin_number(double value, double *binspace, long num_bins); 
 static long *rank_indeces(DATAFRAME df, int column); 
 static void long_ptr_swap(long *arr, long i, long j); 
-static void double_ptr_swap(double *arr, long i, long i); 
+static void double_ptr_swap(double *arr, long i, long j); 
 
 /* 
  * Sorts the data from least to greatest based on the values in a given 
