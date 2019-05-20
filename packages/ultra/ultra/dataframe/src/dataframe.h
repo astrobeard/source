@@ -63,6 +63,9 @@ extern void free_dataframe(DATAFRAME *df);
 extern void free_dataframe_array(DATAFRAME **df, int n); 
 
 
+
+
+
 /* --------------------------- FILE I/O FUNCTIONS --------------------------- */ 
 
 /* 
@@ -260,87 +263,23 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
 
 
 /* --------------------------- SORTING FUNCTIONS --------------------------- */ 
-
 /* 
- * Generates equal number samples from least to greatest based on the values 
- * within a given column. 
+ * Sorts the data from least to greatest based on the values in a given 
+ * column. 
  * 
  * Parameters 
  * ========== 
- * df: 				The dataframe to sort 
- * column: 			The column to sort based on 
- * num_bins: 		The number of bins to sort into 
+ * df: 			The dataframe itself 
+ * column: 		The column number to take the index of 
  * 
  * Returns 
  * ======= 
- * Type: **DATAFRAME. An array of dataframes sorted into equal number bins from 
- * least to greatest based on a column number. 
+ * Type DATAFRAME :: A new dataframe with the same rows, but sorted least to 
+ * greatest according to the column'th value in each row. 
  * 
  * header: dataframe.h 
  */ 
-extern DATAFRAME **equal_number_samples(DATAFRAME df, int column, 
-	int num_bins); 
-
-/* 
- * Obtain counts within a specified binspace (i.e. histogram counts) based on 
- * the values in a given column. 
- * 
- * Parameters 
- * ========== 
- * df: 				The dataframe holding the data 
- * column: 			The column to sort by 
- * binspace: 		A pointer to the histogram bin edges 
- * num_bins: 		The number of bins. This is the number of elements in the 
- * 					binspace array minus 1. 
- * 
- * Returns 
- * ======= 
- * Type: *long. The counts within each bin. 
- * 
- * source: dataframe_sorting.c 
- */ 
-extern long *histogram(DATAFRAME df, int column, double *binspace, 
-	int num_bins); 
-
-/* 
- * Sorts the data within the dataframe based on a given column from least to 
- * greatest and returns a new dataframe. 
- * 
- * Parameters 
- * ========== 
- * df: 			The dataframe to sort 
- * column: 		The column to sort based on 
- * 
- * Returns 
- * ======= 
- * A dataframe whose data are sorted. 
- * 
- * header: dataframe.h 
- */ 
-extern DATAFRAME *rank_by_column(DATAFRAME df, int column); 
-
-/* 
- * Sorts the data within a dataframe into a given binspace based on the 
- * values within a given column. 
- * 
- * Parameters 
- * ========== 
- * df: 				The dataframe to sort 
- * column: 			The column to sort based on 
- * binspace: 		The binspace to sort the data into 
- * num_bins: 		The number of bins. This is the number of elements in the 
- * 					binspace array minus 1. 
- * 
- * Returns 
- * ======= 
- * Type: **DATAFRAME. The array of dataframes that hold the data points that 
- * lie in each bin. 
- * 
- * header: dataframe.h 
- */ 
-extern DATAFRAME **sort_by_bins(DATAFRAME df, int column, double *binspace, 
-	int num_bins); 
-
+extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
 
 
 
