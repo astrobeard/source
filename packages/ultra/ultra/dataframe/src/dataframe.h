@@ -5,18 +5,6 @@
 #ifndef DATAFRAME_H 
 #define DATAFRAME_H 
 
-#define max(a, b) ({ \
-	__typeof__ (a) _a = (a); \
-	__typeof__ (b) _b = (b); \
-	_a > _b ? _a : _b; \
-}) 
-
-#define min(a, b) ({ \
-	__typeof__ (a) _a = (a); \
-	__typeof__ (b) _b = (b); \
-	_a < _b ? _a : _b; \
-}) 
-
 /* 
  * The dataframe struct. This is the struct that will store the data read in 
  * from a halo catalog. 
@@ -106,53 +94,90 @@ extern int populate_from_file(DATAFRAME *df, char *file, char comment);
 /* ---------------------------- DATAFRAME SUBS ---------------------------- */ 
 
 /* 
- * Determine the arithmetic mean of a given column of the dataframe. 
+ * Takes a column from the data and returns a double pointer to it 
  * 
  * Parameters 
  * ========== 
- * df: 			The dataframe itself 
- * column: 		The column number to find the mean of 
- * 
- * Returns 
- * =======
- * Type double: The mean of the given column number 
- * 
- * source: dataframe_subs.c 
- */ 
-extern double column_mean(DATAFRAME df, int column); 
-
-/* 
- * Determines the minimum of a given column of the dataframe. 
- * 
- * Parameters 
- * ========== 
- * df: 			The dataframe itself 
- * column: 		The column number to find the minimum of 
+ * df: 			The dataframe to take the column from 
+ * column: 		The column number to take 
  * 
  * Returns 
  * ======= 
- * Type double: The minimum value 
+ * Type *double :: The column'th element of each row in the dataframe 
+ * NULL if the column number is not allowed 
  * 
  * source: dataframe_subs.c 
  */ 
-extern double column_min(DATAFRAME df, int column); 
+extern double *dfcolumn(DATAFRAME df, int column); 
 
 /* 
- * Determines the maximum of a given column of the dataframe. 
+ * Determine the minimum value in a column of the dataframe 
  * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
- * column: 		The column number to find the maximum of 
+ * column: 		The column index to take the minimum value from 
  * 
  * Returns 
  * ======= 
- * Type double: The maximum value 
+ * Type double :: The minimum value stored in that column of the data 
+ * NULL if the column number is not allowed 
+ * 
+ * source: dataframe_subs.c 
+ */ 
+extern double dfcolumn_min(DATAFRAME df, int column); 
+
+/* 
+ * Determine the maximum value in a column of the dataframe 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column index to take the minimum value of 
+ * 
+ * Returns 
+ * ======= 
+ * Type double :: The maximum value stored in that column of the data 
+ * NULL if the column number is not allowed 
+ * 
+ * source: dataframe_subs.c 
+ */ 
+extern double dfcolumn_max(DATAFRAME df, int column); 
+
+/* 
+ * Determine the sum of the values stored in a column of the dataframe 
+ * 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column index to take the minimum value of 
+ * 
+ * Returns 
+ * ======= 
+ * Type double :: The sum of the values in that column 
+ * NULL if the column number is not allowed 
+ * 
+ * source: dataframe_subs.c 
+ */ 
+extern double dfcolumn_sum(DATAFRAME df, int column); 
+
+/* 
+ * Determine the arithmetic mean of the value stored in a column of the dataframe 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column index to take the minimum value of 
+ * 
+ * Returns 
+ * ======= 
+ * Type double :: The arithmetic mean of the data in that column 
+ * NULL if the column number is not allowed 
  * 
  * header: dataframe.h 
  */ 
-extern double column_max(DATAFRAME df, int column); 
-
+extern double dfcolumn_mean(DATAFRAME df, int column); 
 
 
 

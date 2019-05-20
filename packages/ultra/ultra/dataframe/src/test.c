@@ -5,7 +5,7 @@
 #include "dataframe.h" 
 
 /* 
- * Currently running tests on dataframe file I/O. 
+ * Currently running tests on dataframe subs.  
  */ 
 int main(void) { 
 
@@ -17,10 +17,13 @@ int main(void) {
 	} else {} 
 
 	int i, j; 
-	for (i = 0; i < 10; i++) {
-		for (j = 0; j < (*df).num_cols; j++) {
-			printf("df.data[%d][%d] = %lf\n", i, j, (*df).data[i][j]); 
-		}
+	for (i = 0; i < (*df).num_cols; i++) {
+		printf("====================\n"); 
+		printf("dfcolumn_min(%d) = %lf\n", i, dfcolumn_min(*df, i)); 
+		printf("dfcolumn_max(%d) = %lf\n", i, dfcolumn_max(*df, i)); 
+		printf("dfcolumn_sum(%d) = %lf\n", i, dfcolumn_sum(*df, i)); 
+		printf("dfcolumn_mean(%d) = %lf\n", i, dfcolumn_mean(*df, i)); 
+		printf("====================\n");
 	}
 
 	free_dataframe(df); 
