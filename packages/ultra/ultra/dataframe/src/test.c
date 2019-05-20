@@ -29,11 +29,11 @@ int main(void) {
 	arr[8] = 12; 
 	arr[9] = 71; 
 
-	arr = ptr_sort(arr, 10); 
+	double *test = ptr_sort(arr, 10); 
 
 	int i;
 	for (i = 0; i < 10; i++) {
-		printf("arr[%d] = %lf\n", i, arr[i]); 
+		printf("test[%d] = %lf\n", i, test[i]); 
 	}
 
 	// int i, j; 
