@@ -3,6 +3,7 @@
 #include <string.h> 
 #include <stdio.h> 
 #include "dataframe.h" 
+#include "utils.h" 
 
 /* 
  * Currently running tests on dataframe subs.  
