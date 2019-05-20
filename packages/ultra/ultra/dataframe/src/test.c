@@ -34,7 +34,7 @@ int main(void) {
 	// 	printf("====================\n"); 
 	// }
 
-	free_dataframe(ordered_x); 
+	// free_dataframe(ordered_x); 
 	free_dataframe(df); 
 	return 0; 
 

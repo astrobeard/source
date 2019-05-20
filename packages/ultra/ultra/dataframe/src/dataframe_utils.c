@@ -322,7 +322,8 @@ extern double *ptr_sort(double *arr, long length) {
 				continue; 
 			}
 		}
-	}
+	} 
+	return sorted; 
 
 }
 
