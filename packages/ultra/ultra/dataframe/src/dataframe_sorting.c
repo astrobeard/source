@@ -58,46 +58,49 @@ extern int dfcolumn_order(DATAFRAME *df, int column) {
 
 } 
 
-extern int dfcolumn_sort(DATAFRAME df, int column, double *binspace, 
-	long num_bins, DATAFRAME **sorted) {
+/* 
+ * Take the data from a source dataframe and put into a destination dataframe 
+ * only the data which lie in a given bin based on the values in a given 
+ * column. 
+ * 
+ * Parameters 
+ * ========== 
+ * source: 			The source dataframe 
+ * dest: 			The destination dataframe 
+ * column: 			The column number that binning is based on 
+ * bin: 			The left and right bin edges 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always, anything else would be a system error 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_bin(DATAFRAME source, DATAFRAME *dest, int column, 
+	double *bin) {
 
-	/* 
-	 * Bookkeeping 
-	 * =========== 
-	 * counts: 		The number of data points in each bin 
-	 * indeces: 	The index of the next row to fill 
-	 * i, j, k: 	for-looping 
-	 */ 
-	int k; 
-	long i, j; 
-	long *counts = long_zeroes(num_bins), *indeces = long_zeroes(num_bins); 
-	hist(df, column, binspace, num_bins, counts); 
+	/* The number of points that lie in this bin */ 
+	int j;  
+	long i, n = 0l, *counts = (long *) malloc (sizeof(long)); 
+	*counts = 0l; 
+	hist(source, column, bin, 1l, counts); 
+	dest -> num_rows = *counts; 
+	dest -> num_cols = source.num_cols; 
 
-	/* Allocate memory for each data set */ 
-	for (i = 0l; i < num_bins; i++) {
-		sorted[i] -> data = (double **) malloc (counts[i] * sizeof(double *)); 
-	} 
-
-	/* Start going through the original data */ 
-	for (i = 0l; i < df.num_rows; i++) {
-		/* Get the bin number of this data point */ 
-		long bin = get_bin_number(df.data[i][column], binspace, num_bins); 
-		if (bin != -1l) {
-			/* If this point is on the binspace, allocate memory */ 
-			sorted[i] -> data[indeces[bin]] = (double *) malloc (df.num_cols * 
+	dest -> data = (double **) malloc (*counts * sizeof(double *)); 
+	for (i = 0l; i < source.num_rows; i++) { 
+		if (!get_bin_number(source.data[i][column], bin, 1l)) {
+			dest -> data[n] = (double *) malloc (source.num_cols * 
 				sizeof(double)); 
-			for (j = 0; j < df.num_cols; j++) { 
-				/* Copy the data point directly */ 
-				sorted[indeces[bin]] -> data[i][j] = df.data[i][j]; 
+			for (j = 0; j < source.num_cols; j++) {
+				dest -> data[n][j] = source.data[i][j]; 
 			} 
-			indeces[bin]++; /* Next row */ 
+			n++; 
 		} else { 
 			continue; 
 		} 
 	} 
-	/* Free up memory and return a 0 for success */ 
 	free(counts); 
-	free(indeces); 
 	return 0; 
 
 } 

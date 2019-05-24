@@ -276,6 +276,27 @@ extern int sieve(DATAFRAME *df, int column, double value, int relational_code);
 extern int dfcolumn_order(DATAFRAME *df, int column); 
 
 /* 
+ * Take the data from a source dataframe and put into a destination dataframe 
+ * only the data which lie in a given bin based on the values in a given 
+ * column. 
+ * 
+ * Parameters 
+ * ========== 
+ * source: 			The source dataframe 
+ * dest: 			The destination dataframe 
+ * column: 			The column number that binning is based on 
+ * bin: 			The left and right bin edges 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always, anything else would be a system error 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_bin(DATAFRAME source, DATAFRAME *dest, int column, 
+	double *bin); 
+
+/* 
  * Determine the number of data points that fall within specified bin (i.e. 
  * a histogram) based on the values in a given column of the dataframe. 
  * 

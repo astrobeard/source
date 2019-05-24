@@ -63,8 +63,10 @@ extern int dfcolumn_min(DATAFRAME df, int column, double *ptr) {
 
 	if (column < 0 || column >= df.num_cols) {
 		return 1; /* return 1 on failure */ 
-	} else {
-		*ptr = ptr_min(dfcolumn(df, column), df.num_rows); 
+	} else { 
+		double *col = dfcolumn(df, column); 
+		*ptr = ptr_min(col, df.num_rows); 
+		free(col); 
 		return 0; 
 	}
 
@@ -89,8 +91,10 @@ extern int dfcolumn_max(DATAFRAME df, int column, double *ptr) {
 
 	if (column < 0 || column >= df.num_cols) {
 		return 1; /* return 1 on failure */ 
-	} else {
-		*ptr = ptr_max(dfcolumn(df, column), df.num_rows); 
+	} else { 
+		double *col = dfcolumn(df, column); 
+		*ptr = ptr_max(col, df.num_rows); 
+		free(col); 
 		return 0; 
 	} 
 
@@ -115,8 +119,10 @@ extern int dfcolumn_sum(DATAFRAME df, int column, double *ptr) {
 
 	if (column < 0 || column >= df.num_cols) {
 		return 1; /* return 1 on failure */ 
-	} else {
-		*ptr = ptr_sum(dfcolumn(df, column), df.num_rows); 
+	} else { 
+		double *col = dfcolumn(df, column); 
+		*ptr = ptr_sum(col, df.num_rows); 
+		free(col); 
 		return 0; 
 	}
 
@@ -143,7 +149,9 @@ extern int dfcolumn_mean(DATAFRAME df, int column, double *ptr) {
 	if (column < 0 || column >= df.num_cols) { 
 		return 1; /* return 1 on failure */ 
 	} else { 
-		*ptr = ptr_mean(dfcolumn(df, column), df.num_rows); 
+		double *col = dfcolumn(df, column); 
+		*ptr = ptr_mean(col, df.num_rows); 
+		free(col); 
 		return 0; 
 	} 
 
@@ -170,7 +178,8 @@ extern int dfcolumn_median(DATAFRAME df, int column, double *ptr) {
 		return 1; /* return 1 on failure */ 
 	} else {
 		/* Sort that row from least to greatest */ 
-		double *sorted_column = ptr_sort(dfcolumn(df, column), df.num_rows); 
+		double *col = dfcolumn(df, column); 
+		double *sorted_column = ptr_sort(col, df.num_rows); 
 		if (df.num_rows % 2 == 0) { 
 			/* 
 			 * If there's an even number of data points, the median is the 
@@ -182,6 +191,7 @@ extern int dfcolumn_median(DATAFRAME df, int column, double *ptr) {
 			/* If there's an odd number, the median is the middle value */ 
 			*ptr = sorted_column[(df.num_rows - 1l) / 2l]; 
 		} 
+		free(col); 
 		free(sorted_column); 
 		return 0; 
 	}
@@ -210,8 +220,9 @@ extern int dfcolumn_std(DATAFRAME df, int column, double *ptr) {
 	} else { 
 		/* Find the squared difference between each data point and the mean */ 
 		long i; 
-		double mean = ptr_mean(dfcolumn(df, column), df.num_rows); 
+		double *col = dfcolumn(df, column); 
 		double *diff = (double *) malloc (df.num_rows * sizeof(double)); 
+		double mean = ptr_mean(col, df.num_rows); 
 		for (i = 0l; i < df.num_rows; i++) {
 			diff[i] = pow(df.data[i][column] - mean, 2); 
 		} 
@@ -221,6 +232,7 @@ extern int dfcolumn_std(DATAFRAME df, int column, double *ptr) {
 		 */ 
 		mean = ptr_mean(diff, df.num_rows); 
 		free(diff); 
+		free(col); 
 		*ptr = sqrt(mean); 
 		return 0; 
 	}

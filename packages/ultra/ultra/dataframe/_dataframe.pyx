@@ -35,19 +35,10 @@ else:
 from ctypes import * 
 clib = cdll.LoadLibrary("%sdataframe/src/dataframe.so" % (_DIRECTORY_)) 
 
-# cdef extern from "./src/dataframe.h": 
-# 	int populate_from_file(DATAFRAME *df, char *file, char comment) 
-# 	double *dfcolumn(DATAFRAME df, int column) 
-# 	double dfcolumn_min(DATAFRAME df, int column) 
-# 	double dfcolumn_max(DATAFRAME df, int column) 
-# 	double dfcolumn_sum(DATAFRAME df, int column) 
-# 	double dfcolumn_mean(DATAFRAME df, int column) 
-
 class __dataframe(Structure): 
 	"""
 	Wraps the C structure version of the dataframe 
 	"""
-
 	_fields_ = [
 		("data", POINTER(POINTER(c_double))), 
 		("num_rows", c_long), 
@@ -68,7 +59,7 @@ class dataframe(object):
 		elif isinstance(arg, __dataframe): 
 			self.__mirror = arg 
 			if "labels" in kwargs.keys(): 
-				self.__labels = labels 
+				self.__labels = kwargs["labels"]  
 			else: 
 				raise SystemError("Internal Error") 
 		else: 
@@ -445,6 +436,58 @@ labels: %d""" % (len(columns), len(labels)))
 		else: 
 			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
 
+	def sort(self, key, binspace): 
+		"""
+		Sort the dataframe into bins based on the values in a given column. 
+
+		Parameters 
+		========== 
+		key :: str [case-insensitive] 
+			The label for the column to sort based on 
+
+		Returns 
+		======= 
+		frames :: list [elements of type dataframe] 
+			A list of dataframe objects whose elements are those which fall 
+			into the specified bins 
+
+		Raises 
+		====== 
+		KeyError :: 
+			:: The label is not recognized by this dataframe 
+		TypeError :: 
+			:: An element of binspace is non-numerical 
+			:: key is not of type str 
+		""" 
+		if isinstance(key, str): 
+			if key.lower() in self.__labels: 
+				copy = self.__copy_array_like_object(binspace, "binspace") 
+				if all(map(lambda x: isinstance(x, numbers.Number), copy)): 
+					mirrors = (len(copy) - 1) * [None] 
+					for i in range(len(mirrors)): 
+							mirrors[i] = __dataframe()  
+					copy = sorted(copy)[:] 
+					for i in range(len(binspace) - 1): 
+						edges = [binspace[i], binspace[i + 1]] 
+						ptr = 2 * c_double 
+						if clib.dfcolumn_bin(
+							self.__mirror, 
+							byref(mirrors[i]), 
+							c_int(self.__labels.index(key.lower())), 
+							ptr(*edges[:]) 
+						): 
+							raise SystemError("Internal Error") 
+						else: 
+							continue 
+					return [dataframe(i, 
+						labels = self.__labels) for i in mirrors] 
+				else: 
+					raise TypeError("Non-numerical value detected in binspace.") 
+			else: 
+				raise KeyError("Unrecognized key: %s" % (key)) 
+		else: 
+			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
+
 	def order(self, key): 
 		"""
 		Sort the dataframe in ascending order based on the data in a given 
@@ -512,7 +555,7 @@ labels: %d""" % (len(columns), len(labels)))
 					ptr = (len(binspace) - 1) * c_long 
 					counts = ptr( *((len(binspace) - 1) * [0]) ) 
 					ptr = len(binspace) * c_double 
-					binspace = ptr(*copy[:]) 
+					binspace = ptr(*sorted(copy)[:]) 
 					if clib.hist( 
 						self.__mirror, 
 						c_int(self.__labels.index(key.lower())), 
