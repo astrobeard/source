@@ -150,38 +150,43 @@ extern int dfcolumn_mean(DATAFRAME df, int column, double *ptr) {
 } 
 
 /* 
- * Determine the median of a column of the dataframe 
+ * Determine the median of a given column of the data 
  * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
  * column: 		The column number to find the median of 
+ * ptr: 		A pointer to put the median value into 
  * 
  * Returns 
  * ======= 
- * Type double :: The median of the data in that column 
- * 0 if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
  * header: dataframe.h 
  */ 
-// extern double dfcolumn_median(DATAFRAME df, int column) {
+extern int dfcolumn_median(DATAFRAME df, int column, double *ptr) {
 
-// 	if (column < 0 || column >= df.num_cols) {
-// 		return 0; 
-// 	} else {
-// 		double median; 
-// 		DATAFRAME *dummy = rank_by_column(df, column); 
-// 		if (df.num_cols % 2 == 0) {
-// 			median = (df.data[df.num_cols / 2][column] + 
-// 				df.data[df.num_cols / 2 - 1][column]) / 2; 
-// 		} else {
-// 			median = df.data[df.num_cols / 2][column]; 
-// 		} 
-// 		free_dataframe(dummy); 
-// 		return median; 
-// 	}
+	if (column < 0 || column >= df.num_cols) {
+		return 1; /* return 1 on failure */ 
+	} else {
+		/* Sort that row from least to greatest */ 
+		double *sorted_column = ptr_sort(dfcolumn(df, column), df.num_rows); 
+		if (df.num_rows % 2 == 0) { 
+			/* 
+			 * If there's an even number of data points, the median is the 
+			 * arithmetic mean of the middle two data points 
+			 */ 
+			*ptr = (sorted_column[df.num_rows / 2l] + 
+				sorted_column[df.num_rows / 2l - 1l]) / 2; 
+		} else {
+			/* If there's an odd number, the median is the middle value */ 
+			*ptr = sorted_column[(df.num_rows - 1l) / 2l]; 
+		} 
+		free(sorted_column); 
+		return 0; 
+	}
 
-// } 
+}
 
 /* 
  * Determine the standard deviation of a column of the data. 

@@ -304,6 +304,44 @@ labels: %d""" % (len(columns), len(labels)))
 		else: 
 			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
 
+	def median(self, key): 
+		"""
+		Determine the median of a given quantity for all data points. 
+
+		Parameters 
+		========== 
+		key :: str [case-insensitive] 
+			The label for the quantity to find the median of 
+
+		Returns 
+		======= 
+		med :: float 
+			The median value of that quantity across all data points 
+
+		Raises 
+		====== 
+		KeyError :: 
+			:: The label is not recognized by this dataframe 
+		TypeError :: 
+			:: key is not of type str 
+		""" 
+		if isinstance(key, str): 
+			if key.lower() in self.__labels: 
+				ptr = 1 * c_double 
+				x = ptr(*[0]) 
+				if clib.dfcolumn_median(
+					self.__mirror, 
+					c_int(self.__labels.index(key.lower())), 
+					x
+				): 
+					raise SystemError("Internal Error") 
+				else: 
+					return x[0] 
+			else: 
+				raise KeyError("Unrecognized key: %s" % (key)) 
+		else: 
+			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
+
 	def std(self, key): 
 		"""
 		Determine the standard deviation of a given quantity for all data 
@@ -405,7 +443,38 @@ labels: %d""" % (len(columns), len(labels)))
 				raise TypeError("value must be a real number. Got: %s" % (
 					type(value))) 
 		else: 
-			raise TypeError("Key must be of type str. Got: %s" % (type(key)))  
+			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
+
+	def order(self, key): 
+		"""
+		Sort the dataframe in ascending order based on the data in a given 
+		column. 
+
+		Parameters 
+		========== 
+		key :: str [case-insensitive] 
+			The label for the column to sort based on 
+
+		Raises 
+		====== 
+		KeyError :: 
+			:: The label is not recognized by this dataframe 
+		TypeError :: 
+			:: key is not of type str 
+		""" 
+		if isinstance(key, str): 
+			if key.lower() in self.__labels: 
+				if clib.dfcolumn_order(
+					byref(self.__mirror), 
+					c_int(self.__labels.index(key.lower()))
+				): 
+					raise SystemError("Internal Error") 
+				else: 
+					pass 
+			else: 
+				raise KeyError("Unrecognized key: %s" % (key)) 
+		else: 
+			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
 
 	def hist(self, key, binspace): 
 		"""

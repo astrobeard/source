@@ -186,21 +186,21 @@ extern int dfcolumn_sum(DATAFRAME df, int column, double *ptr);
 extern int dfcolumn_mean(DATAFRAME df, int column, double *ptr); 
 
 /* 
- * Determine the median of a column of the dataframe 
+ * Determine the median of a given column of the data 
  * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
  * column: 		The column number to find the median of 
+ * ptr: 		A pointer to put the median value into 
  * 
- * Returns
+ * Returns 
  * ======= 
- * Type double :: The median of the data in that column 
- * 0 if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
- * header: dataframe.h 
+ * source: dataframe_subs.c 
  */ 
-// extern double dfcolumn_median(DATAFRAME df, int column); 
+extern int dfcolumn_median(DATAFRAME df, int column, double *ptr); 
 
 /* 
  * Determine the standard deviation of a column of the data. 
@@ -259,57 +259,21 @@ extern int sieve(DATAFRAME *df, int column, double value, int relational_code);
 /* --------------------------- SORTING FUNCTIONS --------------------------- */ 
 
 /* 
- * Splits the data into equal number bins based on the data in a given column. 
- * 
- * Parameters 
- * ========== 
- * df: 			The dataframe to sort 
- * column: 		The column number to sort based on 
- * num_subs:	The number of subsamples to take 
- * 
- * header: dataframe.h 
- */ 
-extern DATAFRAME **equal_number_samples(DATAFRAME df, int column, 
-	long num_subs); 
-
-/* 
- * Sorts the dataframe based into bins based on the values in a given column. 
- * 
- * Parameters 
- * ========== 
- * df: 			The dataframe to sort 
- * column: 		The column number to sort based on 
- * binspace: 	The bin-edges to sort with 
- * num_bins: 	The number of bins. This should always be one less than the 
- * 				number of elements in the binspace array. 
- * 
- * Returns 
- * ======= 
- * Type **DATAFRAME :: An array of dataframes whose elements correspond to the 
- * data belonging to that bin based on the values in a given column. 
- * 
- * header: dataframe.h 
- */ 
-// extern DATAFRAME **sort(DATAFRAME df, int column, double *binspace, 
-// 	long num_bins); 
-
-/* 
- * Sorts the data from least to greatest based on the values in a given 
+ * Sorts a dataframe pointer in ascending order based on the data in a given 
  * column. 
  * 
  * Parameters 
  * ========== 
- * df: 			The dataframe itself 
- * column: 		The column number to take the index of 
+ * df: 			A pointer to the dataframe to sort 
+ * column: 		The column number to sort based on 
  * 
  * Returns 
  * ======= 
- * Type DATAFRAME :: A new dataframe with the same rows, but sorted least to 
- * greatest according to the column'th value in each row. 
+ * 0 on success, anything else would be a system error. 
  * 
- * header: dataframe.h 
+ * source: dataframe_sorting.c 
  */ 
-extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
+extern int dfcolumn_order(DATAFRAME *df, int column); 
 
 /* 
  * Determine the number of data points that fall within specified bin (i.e. 
@@ -327,7 +291,7 @@ extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column);
  * =======
  * 0 always. If it returns anything else, there was an internal error. 
  * 
- * header: dataframe.h 
+ * source: dataframe_sorting.c 
  */ 
 extern int hist(DATAFRAME df, int column, double *binspace, long num_bins, 
 	long *counts);  
