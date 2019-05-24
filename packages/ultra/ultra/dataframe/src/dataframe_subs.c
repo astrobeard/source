@@ -34,7 +34,9 @@ extern double *dfcolumn(DATAFRAME df, int column) {
 		/* Allocate the memory */ 
 		double *arr = (double *) malloc (df.num_rows * sizeof(double)); 
 		for (i = 0l; i < df.num_rows; i++) { 
-			/* Copy the column'th element from each row and return the pointer */ 
+			/* 
+			 * Copy the column'th element from each row and return the pointer 
+			 */ 
 			arr[i] = df.data[i][column]; 
 		} 
 		return arr; 
@@ -49,25 +51,24 @@ extern double *dfcolumn(DATAFRAME df, int column) {
  * ========== 
  * df: 			The dataframe itself 
  * column: 		The column index to take the minimum value from 
+ * ptr: 		A pointer to put the minimum value in 
  * 
  * Returns 
  * ======= 
- * Type double :: The minimum value stored in that column of the data 
- * 0 if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
  * header: dataframe.h 
  */ 
-extern double dfcolumn_min(DATAFRAME df, int column) {
+extern int dfcolumn_min(DATAFRAME df, int column, double *ptr) {
 
 	if (column < 0 || column >= df.num_cols) {
-		/* If it's outside the allowed range of column numbers */ 
-		return 0; 
+		return 1; /* return 1 on failure */ 
 	} else {
-		/* Take the column and pass to ptr_min */ 
-		return ptr_min(dfcolumn(df, column), df.num_rows); 
+		*ptr = ptr_min(dfcolumn(df, column), df.num_rows); 
+		return 0; 
 	}
 
-} 
+}
 
 /* 
  * Determine the maximum value in a column of the dataframe 
@@ -75,79 +76,76 @@ extern double dfcolumn_min(DATAFRAME df, int column) {
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
- * column: 		The column index to take the minimum value of 
+ * column: 		The column index to take the minimum value from 
+ * ptr: 		A pointer to put the maximum value in 
  * 
  * Returns 
  * ======= 
- * Type double :: The maximum value stored in that column of the data 
- * 0 if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
  * header: dataframe.h 
  */ 
-extern double dfcolumn_max(DATAFRAME df, int column) {
+extern int dfcolumn_max(DATAFRAME df, int column, double *ptr) {
 
 	if (column < 0 || column >= df.num_cols) {
-		/* If it's outside the allowed range of column numbers */ 
-		return 0; 
+		return 1; /* return 1 on failure */ 
 	} else {
-		/* Take the column and pass to ptr_max */ 
-		return ptr_max(dfcolumn(df, column), df.num_rows); 
-	}
+		*ptr = ptr_max(dfcolumn(df, column), df.num_rows); 
+		return 0; 
+	} 
 
 } 
 
 /* 
  * Determine the sum of the values stored in a column of the dataframe 
  * 
- * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
  * column: 		The column index to take the minimum value of 
+ * ptr: 		A pointer to put the sum in 
  * 
  * Returns 
  * ======= 
- * Type double :: The sum of the values in that column 
- * 0 if the column number is not allowed 
+ * 0 on success, 1 on failure
  * 
  * header: dataframe.h 
  */ 
-extern double dfcolumn_sum(DATAFRAME df, int column) {
+extern int dfcolumn_sum(DATAFRAME df, int column, double *ptr) {
 
 	if (column < 0 || column >= df.num_cols) {
-		/* If it's outside the allowed range of column numbers */ 
-		return 0; 
+		return 1; /* return 1 on failure */ 
 	} else {
-		/* Take the column and pass to ptr_sum */ 
-		return ptr_sum(dfcolumn(df, column), df.num_rows); 
+		*ptr = ptr_sum(dfcolumn(df, column), df.num_rows); 
+		return 0; 
 	}
 
-} 
+}
 
 /* 
- * Determine the arithmetic mean of the value stored in a column of the dataframe 
+ * Determine the arithmetic mean of the value stored ina column of the 
+ * dataframe. 
  * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
- * column: 		The column index to take the minimum value of 
+ * column: 		The column index to find the mean value of 
+ * ptr: 		A pointer to put the mean value in 
  * 
  * Returns 
  * ======= 
- * Type double :: The arithmetic mean of the data in that column 
- * 0 if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
  * header: dataframe.h 
  */ 
-extern double dfcolumn_mean(DATAFRAME df, int column) {
+extern int dfcolumn_mean(DATAFRAME df, int column, double *ptr) { 
 
-	if (column < 0 || column >= df.num_cols) {
-		/* If it's outside the allowed range of column numbers */ 
+	if (column < 0 || column >= df.num_cols) { 
+		return 1; /* return 1 on failure */ 
+	} else { 
+		*ptr = ptr_mean(dfcolumn(df, column), df.num_rows); 
 		return 0; 
-	} else {
-		/* Take the column and pass to ptr_mean */ 
-		return ptr_mean(dfcolumn(df, column), df.num_rows); 
-	}
+	} 
 
 } 
 
@@ -159,7 +157,7 @@ extern double dfcolumn_mean(DATAFRAME df, int column) {
  * df: 			The dataframe itself 
  * column: 		The column number to find the median of 
  * 
- * Returns
+ * Returns 
  * ======= 
  * Type double :: The median of the data in that column 
  * 0 if the column number is not allowed 
@@ -183,7 +181,46 @@ extern double dfcolumn_mean(DATAFRAME df, int column) {
 // 		return median; 
 // 	}
 
-// }
+// } 
+
+/* 
+ * Determine the standard deviation of a column of the data. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column:	 	The column number to find the standard deviation of 
+ * ptr: 		A pointer to put the standard deviation into 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_std(DATAFRAME df, int column, double *ptr) {
+
+	if (column < 0 || column >= df.num_cols) {
+		return 1; /* return 1 on failure */ 
+	} else { 
+		/* Find the squared difference between each data point and the mean */ 
+		long i; 
+		double mean = ptr_mean(dfcolumn(df, column), df.num_rows); 
+		double *diff = (double *) malloc (df.num_rows * sizeof(double)); 
+		for (i = 0l; i < df.num_rows; i++) {
+			diff[i] = pow(df.data[i][column] - mean, 2); 
+		} 
+		/* 
+		 * Recast the mean as the mean squared difference, take the sqrt, and 
+		 * return. Free up the memory, then return 0 for success. 
+		 */ 
+		mean = ptr_mean(diff, df.num_rows); 
+		free(diff); 
+		*ptr = sqrt(mean); 
+		return 0; 
+	}
+
+} 
 
 
 

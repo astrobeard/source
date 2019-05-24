@@ -69,22 +69,25 @@ extern void free_dataframe_array(DATAFRAME **df, int n);
 /* --------------------------- FILE I/O FUNCTIONS --------------------------- */ 
 
 /* 
- * Reads in the data from a file and stores it in a dataframe object's data 
- * field. 
+ * Reads in the data from a file and stored it in a dataframe object's data 
+ * field. Takes user-specified columns from the file. 
  * 
  * Parameters 
  * ========== 
- * df: 			A pointer to the dataframe to populate 
- * file:		The name of the file as a character pointer 
+ * df: 			A pointer to the dataframe itself 
+ * file: 		The name of the file 
  * comment: 	The commenting character 
+ * columns: 	The column numbers to take 
+ * num_cols: 	The number of columns being imported 
  * 
  * Returns 
  * ======= 
- * 0 on success, 1 on failure reading the file 
+ * 0 on success, 1 on failure 
  * 
- * source: dataframe_io.c 
+ * header: dataframe.h 
  */
-extern int populate_from_file(DATAFRAME *df, char *file, char comment); 
+extern int populate_from_file(DATAFRAME *df, char *file, char comment, 
+	int *columns, int num_cols); 
 
 
 
@@ -120,15 +123,15 @@ extern double *dfcolumn(DATAFRAME df, int column);
  * ========== 
  * df: 			The dataframe itself 
  * column: 		The column index to take the minimum value from 
+ * ptr: 		A pointer to put the minimum value in 
  * 
  * Returns 
  * ======= 
- * Type double :: The minimum value stored in that column of the data 
- * NULL if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
  * source: dataframe_subs.c 
  */ 
-extern double dfcolumn_min(DATAFRAME df, int column); 
+extern int dfcolumn_min(DATAFRAME df, int column, double *ptr); 
 
 /* 
  * Determine the maximum value in a column of the dataframe 
@@ -136,51 +139,51 @@ extern double dfcolumn_min(DATAFRAME df, int column);
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
- * column: 		The column index to take the minimum value of 
+ * column: 		The column index to take the minimum value from 
+ * ptr: 		A pointer to put the maximum value in 
  * 
  * Returns 
  * ======= 
- * Type double :: The maximum value stored in that column of the data 
- * NULL if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
  * source: dataframe_subs.c 
  */ 
-extern double dfcolumn_max(DATAFRAME df, int column); 
+extern int dfcolumn_max(DATAFRAME df, int column, double *ptr); 
 
 /* 
  * Determine the sum of the values stored in a column of the dataframe 
  * 
- * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
  * column: 		The column index to take the minimum value of 
+ * ptr: 		A pointer to put the sum in 
  * 
  * Returns 
  * ======= 
- * Type double :: The sum of the values in that column 
- * NULL if the column number is not allowed 
+ * 0 on success, 1 on failure
  * 
  * source: dataframe_subs.c 
  */ 
-extern double dfcolumn_sum(DATAFRAME df, int column); 
+extern int dfcolumn_sum(DATAFRAME df, int column, double *ptr); 
 
 /* 
- * Determine the arithmetic mean of the value stored in a column of the dataframe 
+ * Determine the arithmetic mean of the value stored ina column of the 
+ * dataframe. 
  * 
  * Parameters 
  * ========== 
  * df: 			The dataframe itself 
- * column: 		The column index to take the minimum value of 
+ * column: 		The column index to find the mean value of 
+ * ptr: 		A pointer to put the mean value in 
  * 
  * Returns 
  * ======= 
- * Type double :: The arithmetic mean of the data in that column 
- * NULL if the column number is not allowed 
+ * 0 on success, 1 on failure 
  * 
- * header: dataframe.h 
+ * source: dataframe_subs.c 
  */ 
-extern double dfcolumn_mean(DATAFRAME df, int column); 
+extern int dfcolumn_mean(DATAFRAME df, int column, double *ptr); 
 
 /* 
  * Determine the median of a column of the dataframe 
@@ -199,6 +202,23 @@ extern double dfcolumn_mean(DATAFRAME df, int column);
  */ 
 // extern double dfcolumn_median(DATAFRAME df, int column); 
 
+/* 
+ * Determine the standard deviation of a column of the data. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column:	 	The column number to find the standard deviation of 
+ * ptr: 		A pointer to put the standard deviation into 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure 
+ * 
+ * source: dataframe_subs.c 
+ */ 
+extern int dfcolumn_std(DATAFRAME df, int column, double *ptr); 
+
 
 
 
@@ -206,55 +226,29 @@ extern double dfcolumn_mean(DATAFRAME df, int column);
 /* ---------------------------- SIEVE FUNCTIONS ---------------------------- */ 
 
 /* 
- * Filters the data based on a given condition on a given column and returns 
- * a new dataframe object. 
+ * Filter the dataset based on some condition applied to the values stored in 
+ * a given column. 
  * 
  * Parameters 
  * ========== 
- * df: 					The dataframe holding the data to filter 
- * column: 				The column to impose the filter on 
- * value: 				The value to test on 
+ * df: 					A pointer to the dataframe to modify 
+ * column: 				The column number to filter based on 
+ * value: 				The value to compare to for filtering 
  * relational_code:		1 for < 
  * 						2 for <= 
  *						3 for = 
  * 						4 for >= 
  * 						5 for > 
+ * 						6 for != 
  * 
  * Returns 
  * ======= 
- * A new dataframe whose data attribute contains only the rows which satisfy 
- * the condition df[row][column] ?(relational_code) value. 
- * 
- * NULL if the relational_code is not recognized. 
+ * 0 on success, 1 on failure 
  * 
  * source: dataframe_sieve.c 
  */ 
-extern DATAFRAME *sieve_new_frame(DATAFRAME df, int column, int value, 
-	int relational_code); 
+extern int sieve(DATAFRAME *df, int column, double value, int relational_code); 
 
-/* 
- * Filters the data based on a given condition and removes all other data 
- * from the dataframe. 
- * 
- * Parameters 
- * ========== 
- * df: 					The dataframe holding the data to filter 
- * column: 				The column to impose the filter on 
- * value: 				The value to test on 
- * relational_code:		1 for < 
- * 						2 for <= 
- *						3 for = 
- * 						4 for >= 
- * 						5 for > 
- * 
- * Returns 
- * ======= 
- * an int: 0 if successful, 1 if failure. 
- * 
- * source: dataframe_sieve.c 
- */ 
-extern int sieve_same_frame(DATAFRAME *df, int column, int value, 
-	int relational_code); 
 
 
 
@@ -263,6 +257,41 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
 
 
 /* --------------------------- SORTING FUNCTIONS --------------------------- */ 
+
+/* 
+ * Splits the data into equal number bins based on the data in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe to sort 
+ * column: 		The column number to sort based on 
+ * num_subs:	The number of subsamples to take 
+ * 
+ * header: dataframe.h 
+ */ 
+extern DATAFRAME **equal_number_samples(DATAFRAME df, int column, 
+	long num_subs); 
+
+/* 
+ * Sorts the dataframe based into bins based on the values in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe to sort 
+ * column: 		The column number to sort based on 
+ * binspace: 	The bin-edges to sort with 
+ * num_bins: 	The number of bins. This should always be one less than the 
+ * 				number of elements in the binspace array. 
+ * 
+ * Returns 
+ * ======= 
+ * Type **DATAFRAME :: An array of dataframes whose elements correspond to the 
+ * data belonging to that bin based on the values in a given column. 
+ * 
+ * header: dataframe.h 
+ */ 
+// extern DATAFRAME **sort(DATAFRAME df, int column, double *binspace, 
+// 	long num_bins); 
 
 /* 
  * Sorts the data from least to greatest based on the values in a given 
@@ -283,8 +312,8 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
 extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column); 
 
 /* 
- * Determine the number of rows that fall within specified bins (i.e. a 
- * histogram) based on the values in a given column. 
+ * Determine the number of data points that fall within specified bin (i.e. 
+ * a histogram) based on the values in a given column of the dataframe. 
  * 
  * Parameters 
  * ========== 
@@ -295,12 +324,13 @@ extern DATAFRAME *dfcolumn_order(DATAFRAME df, int column);
  * 				than the number of values in the binspace array. 
  * 
  * Returns 
- * ======= 
- * Type *long :: The counts within each bin 
+ * =======
+ * 0 always. If it returns anything else, there was an internal error. 
  * 
  * header: dataframe.h 
  */ 
-extern long *hist(DATAFRAME df, int column, double *binspace, long num_bins); 
+extern int hist(DATAFRAME df, int column, double *binspace, long num_bins, 
+	long *counts);  
 
 
 

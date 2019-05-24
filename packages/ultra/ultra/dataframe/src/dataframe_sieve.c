@@ -9,78 +9,74 @@
 #include "dataframe.h" 
 #include "utils.h" 
 
-static double **copy_only_filtered(DATAFRAME df, int *test); 
-static int *get_test_results(DATAFRAME df, int column, int value, 
+/* ---------- Static routine comment headers not duplicated here  ---------- */ 
+// static double **copy_only_filtered(DATAFRAME df, int *test); 
+static int *get_test_results(DATAFRAME df, int column, double value, 
 	int relational_code); 
 
 /* 
- * Filters the data based on a given condition on a given column and returns 
- * a new dataframe object. 
+ * Filter the dataset based on some condition applied to the values stored in 
+ * a given column. 
  * 
  * Parameters 
  * ========== 
- * df: 					The dataframe holding the data to filter 
- * column: 				The column to impose the filter on 
- * value: 				The value to test on 
+ * df: 					A pointer to the dataframe to modify 
+ * column: 				The column number to filter based on 
+ * value: 				The value to compare to for filtering 
  * relational_code:		1 for < 
  * 						2 for <= 
  *						3 for = 
  * 						4 for >= 
  * 						5 for > 
+ * 						6 for != 
  * 
  * Returns 
  * ======= 
- * A new dataframe whose data attribute contains only the rows which satisfy 
- * the condition df[row][column] ?(relational_code) value. 
- * 
- * NULL if the relational_code is not recognized. 
+ * 0 on success, 1 on failure 
  * 
  * header: dataframe.h 
  */ 
-extern DATAFRAME *sieve_new_frame(DATAFRAME df, int column, int value, 
-	int relational_code) {
+extern int sieve(DATAFRAME *df, int column, double value, int relational_code) {
 
-	int *test = get_test_results(df, column, value, relational_code); 
-	if (test == NULL) return NULL; 
-	DATAFRAME *new = dataframe_initialize(); 
-	new -> num_cols = df.num_cols;
-	new -> num_rows = int_sum(test, df.num_rows); 
-	new -> data = copy_only_filtered(df, test); 
+	/* 
+	 * Bookeeping 
+	 * ========== 
+	 * test: 		0s at the positions of data points that don't pass the test, 
+	 * 				1s at the ones that do 
+	 * new: 		The new data 
+	 * i, j: 		for-looping 
+	 * n: 			The line number of the next row of new to fill 
+	 * 
+	 * Start by figuring out which lines pass the test 
+	 */ 
+	long i, n = 0l; 
+	int j, *test = get_test_results(*df, column, value, relational_code); 
+	if (test == NULL) return 1; /* return 1 on failure */ 
+
+	/* Allocate memory for the number of lines that pass */ 
+	double **new = (double **) malloc (int_sum(test, (*df).num_rows) * 
+		sizeof(double *)); 
+	for (i = 0l; i < (*df).num_rows; i++) { 
+		if (test[i]) {
+			/* 
+			 * If this line passed the test, allocate memory for it and copy 
+			 * each quantity over. 
+			 */ 
+			new[n] = (double *) malloc ((*df).num_cols * sizeof(double)); 
+			for (j = 0; j < (*df).num_cols; j++) {
+				new[n][j] = (*df).data[i][j]; 
+			} 
+			n++; /* Next line */ 
+		} else { 
+			continue; 
+		} 
+	} 
+	/* A new number of rows */ 
+	df -> num_rows = int_sum(test, (*df).num_rows); 
 	free(test); 
-	return new; 
-
-} 
-
-/* 
- * Filters the data based on a given condition and removes all other data 
- * from the dataframe. 
- * 
- * Parameters 
- * ========== 
- * df: 					The dataframe holding the data to filter 
- * column: 				The column to impose the filter on 
- * value: 				The value to test on 
- * relational_code:		1 for < 
- * 						2 for <= 
- *						3 for = 
- * 						4 for >= 
- * 						5 for > 
- * 
- * Returns 
- * ======= 
- * an int: 0 if successful, 1 if failure. 
- * 
- * header: dataframe.h 
- */ 
-extern int sieve_same_frame(DATAFRAME *df, int column, int value, 
-	int relational_code) {
-
-	int *test = get_test_results(*df, column, value, relational_code); 
-	if (test == NULL) return 1; 
-	double **new = copy_only_filtered(*df, test); 
 	free(df -> data); 
 	df -> data = new; 
-	return 0; 
+	return 0; /* return 0 on success */ 
 
 }
 
@@ -98,13 +94,14 @@ extern int sieve_same_frame(DATAFRAME *df, int column, int value,
  *						3 for = 
  * 						4 for >= 
  * 						5 for > 
+ * 						6 for != 
  * 
  * Returns 
  * ======= 
  * An array of 0s and 1. 0s at the position of rows that failed the test and 
  * 1 at the position of those that passed. 
  */ 
-static int *get_test_results(DATAFRAME df, int column, int value, 
+static int *get_test_results(DATAFRAME df, int column, double value, 
 	int relational_code) {
 
 	/* 
@@ -115,16 +112,18 @@ static int *get_test_results(DATAFRAME df, int column, int value,
 	int *test = (int *) malloc (df.num_rows * sizeof(int)); 
 	for (i = 0l; i < df.num_rows; i++) {
 		/* Look at each value and store a 1 if the relation holds, else 0. */ 
-		if (relational_code == 1) {
-			test[i] = value < df.data[i][column]; /* 1: < */ 
-		} else if (relational_code == 2) {
-			test[i] = value <= df.data[i][column]; /* 2: <= */ 
-		} else if (relational_code == 3) {
-			test[i] = value == df.data[i][column]; /* 3: == */ 
+		if (relational_code == 1) { 
+			test[i] = df.data[i][column] < value; /* 1: < */ 
+		} else if (relational_code == 2) { 
+			test[i] = df.data[i][column] <= value; /* 2 <= */  
+		} else if (relational_code == 3) { 
+			test[i] = df.data[i][column] == value; /* 3: == */ 
 		} else if (relational_code == 4) {
-			test[i] = value >= df.data[i][column]; /* 4: >= */ 
+			test[i] = df.data[i][column] >= value; /* 4: >= */ 
 		} else if (relational_code == 5) {
-			test[i] = value > df.data[i][column]; /* 5: > */ 
+			test[i] = df.data[i][column] > value; /* 5: > */ 
+		} else if (relational_code == 6) {
+			test[i] = df.data[i][column] != value; /* 6: != */ 
 		} else { 
 			free(test); 
 			return NULL; /* Unallowed relational code */ 
@@ -134,6 +133,7 @@ static int *get_test_results(DATAFRAME df, int column, int value,
 
 } 
 
+#if 0
 /* 
  * Returns a double pointer to a data table that contains only the rows of the 
  * a dataframed that passed a filter test. 
@@ -177,5 +177,6 @@ static double **copy_only_filtered(DATAFRAME df, int *test) {
 
 	return new; 
 
-}
+} 
+#endif 
 

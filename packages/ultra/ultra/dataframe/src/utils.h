@@ -18,6 +18,10 @@
 }) 
 #endif /* min */ 
 
+#ifndef LINESIZE 
+#define LINESIZE 100000l 
+#endif /* LINESIZE */ 
+
 /* 
  * Determines the sum of an array of longs. 
  * 

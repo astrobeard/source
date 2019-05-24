@@ -1,8 +1,8 @@
 
 CC = gcc 
 CFLAGS = -c -fPIC 
-OBJECTS = dataframe_sieve.o dataframe_utils.o dataframe_sorting.o dataframe_io.o \
-	dataframe_subs.o 
+OBJECTS = dataframe_sieve.o dataframe_utils.o dataframe_sorting.o \
+	dataframe_io.o dataframe_subs.o 
 
 all: dataframe.so 
 

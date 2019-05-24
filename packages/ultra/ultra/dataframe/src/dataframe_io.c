@@ -7,84 +7,101 @@
 #include <stdio.h>
 #include <ctype.h> 
 #include "dataframe.h" 
+#include "utils.h" 
 
-/* ----------- static routine comment headers not duplicated here ----------- */ 
+/* ---------- static routine comment headers not duplicated here ---------- */ 
 static int header_length(char *file, char comment); 
 static int file_dimension(char *file, int hlength); 
 static long num_lines(char *file); 
 
-static long LINESIZE = 100000l; 
-
 /* 
- * Reads in the data from a file and stores it in a dataframe object's data 
- * field. 
+ * Reads in the data from a file and stored it in a dataframe object's data 
+ * field. Takes user-specified columns from the file. 
  * 
  * Parameters 
  * ========== 
- * df: 			A pointer to the dataframe to populate 
- * file:		The name of the file as a character pointer 
+ * df: 			A pointer to the dataframe itself 
+ * file: 		The name of the file 
  * comment: 	The commenting character 
+ * columns: 	The column numbers to take 
+ * num_cols: 	The number of columns being imported 
  * 
  * Returns 
  * ======= 
- * 0 on success, 1 on failure reading the file 
+ * 0 on success, 1 on failure 
  * 
  * header: dataframe.h 
  */
-extern int populate_from_file(DATAFRAME *df, char *file, char comment) { 
-
-	int j, hlen = header_length(file, comment); 
-	long i; 
+extern int populate_from_file(DATAFRAME *df, char *file, char comment, 
+	int *columns, int num_cols) {
 
 	/* 
-	 * Determine the number of data points and the dimensionality of the 
-	 * data file from the static routines below. 
+	 * debugging 
+	 * ========= 
+	 * For some reason this character can't get passed from python properly. 
+	 * This needs to be sorted out before the comment character option can 
+	 * be utilized. 
 	 */ 
-	df -> num_rows = num_lines(file) - header_length(file, comment); 
-	df -> num_cols = file_dimension(file, hlen); 
+	comment = '#'; 
+
+	/* 
+	 * Bookkeeping 
+	 * =========== 
+	 * hlen: 		The length of the header in the file 
+	 * dim: 		The dimensionality of the file 
+	 * i, j: 		For-looping 
+	 */ 
+	long i; 
+	int j, hlen = header_length(file, comment); 
+	int dim = file_dimension(file, hlen); 
+	df -> num_rows = num_lines(file) - hlen; 
+	df -> num_cols = num_cols; 
 
 	/* Error checking */ 
 	if ((*df).num_rows == 0 || (*df).num_cols == -1) {
 		return 1; 
 	} else {} 
 
-	/* Open the file and read past the header */  
+	/* Open the file and read past the header */ 
 	FILE *in; 
 	in = fopen(file, "r"); 
-	if (in == NULL) return 1;
+	if (in == NULL) return 1; 
 	char *line = (char *) malloc (LINESIZE * sizeof(char)); 
 	for (j = 0; j < hlen; j++) {
 		if (fgets(line, LINESIZE, in) == NULL) {
 			return 1; 
-		} else { 
+		} else {
 			continue; 
-		}
-	}
+		} 
+	} 
+	free(line); 
 
 	/* Allocate memory for the data */ 
 	df -> data = (double **) malloc ((*df).num_rows * sizeof(double *)); 
-	for (i = 0l; i < (*df).num_rows; i++) {
-		df -> data[i] = (double *) malloc ((*df).num_cols * sizeof(double)); 
-		/* Read in each value at a time and store it within the dataframe */ 
-		for (j = 0; j < (*df).num_cols; j++) {
-			if (fscanf(in, "%lf", &(df -> data[i][j]))) {
+	for (i = 0l; i < (*df).num_rows; i++) { 
+		/* Read in the next line */ 
+		double *line = (double *) malloc (dim * sizeof(double)); 
+		for (j = 0; j < dim; j++) {
+			if (fscanf(in, "%lf", &line[j])) {
 				continue; 
-			} else { 
-				fclose(in); 
-				free(line); 
+			} else {
 				printf("ERROR reading file: %s\n", file); 
-				printf("Error code: io.4"); 
+				printf("Error code: io.5\n"); 
 				exit(0); 
-			}
-		}
-	}
+			} 
+		} 
 
-	/* Close the file, free up memory, and return a 0 for success */ 
+		/* Allocate memory for the next row of the data and copy it over */ 
+		df -> data[i] = (double *) malloc ((*df).num_cols * sizeof(double)); 
+		for (j = 0; j < (*df).num_cols; j++) { 
+			df -> data[i][j] = line[columns[j]]; 
+		} 
+		free(line); /* Free the temporary copy */ 
+	} 
 	fclose(in); 
-	free(line);
 	return 0; 
 
-}
+} 
 
 /* 
  * Determines the length of a header given the name of the file and a 
