@@ -32,8 +32,8 @@ def initialize_subplot():
 	ax = fig.add_subplot(111, facecolor = "white") 
 	ax.set_xlabel(r"$R_\text{form}$ [kpc]") 
 	ax.set_ylabel(r"$R_\text{final}$ [kpc]") 
-	ax.set_xlim([-1, 16]) 
-	ax.set_ylim([-1, 26])
+	ax.set_xlim([-2, 17]) 
+	ax.set_ylim([-2, 17])
 	return ax 
 
 def analyze(data, rformbins, tformbin): 
@@ -61,9 +61,9 @@ def analyze(data, rformbins, tformbin):
 
 def draw(ax, x, y, err, scat, color): 
 	ax.plot(x, y, c = v.colors()[color]) 
-	ax.fill_between(x, map(lambda y1, y2: y1 - y2, y, err), 
-		map(lambda y1, y2: y1 + y2, y, err), 
-		color = v.colors()[color], alpha = 0.3) 
+	# ax.fill_between(x, map(lambda y1, y2: y1 - y2, y, err), 
+	# 	map(lambda y1, y2: y1 + y2, y, err), 
+	# 	color = v.colors()[color], alpha = 0.3) 
 	ax.plot(x, [i[0] for i in scat], c = v.colors()[color], linestyle = ':') 
 	ax.plot(x, [i[1] for i in scat], c = v.colors()[color], linestyle = ':') 
 
@@ -73,13 +73,16 @@ def one_to_one_line(ax):
 	ax.set_xlim(xlim) 
 
 def legend(ax, tformbins, colors): 
-	labels = (len(tformbins) - 1) * [None]
+	# labels = (len(tformbins) - 1) * [None]
+	labels = len(tformbins) * [None] 
 	lines = len(labels) * [None]
 	for i in range(len(labels)): 
 		# labels[i] = r"$%g\text{ Gyr}\leq T_\text{form}\leq %g\text{ Gyr}$" % (
 		# 	tformbins[i], tformbins[i + 1]) 
-		labels[i] = r"$T_\text{form}\in[%g;%g]$ Gyr" % (tformbins[i], 
-			tformbins[i + 1])
+		# labels[i] = r"$T_\text{form}\in[%g;%g]$ Gyr" % (tformbins[i], 
+		# 	tformbins[i + 1])
+		labels[i] = r"$T_\text{form}\in[%g;%g]$" % (tformbins[i][0], 
+			tformbins[i][1])
 		lines[i] = ax.plot([1, 2], [1, 2], c = v.colors()["white"], 
 			label = labels[i])[0] 
 	leg = ax.legend(loc = v.mpl_loc("upper left"), ncol = 1, frameon = False, 
@@ -91,15 +94,19 @@ def legend(ax, tformbins, colors):
 if __name__ == "__main__": 
 	data = read_data() 
 	ax = initialize_subplot()
-	tformbins = [0, 2, 4, 6, 8, 10]
+	# tformbins = [0, 2, 4, 6, 8, 10]
+	tformbins = [[3, 6], [6, 9], [9, 12]]
 	rformbins = np.linspace(0, 15, 51)
-	colors = ["crimson", "gold", "lime", "blue", "purple"] 
-	for i in range(len(tformbins) - 1): 
+	colors = ["crimson", "lime", "blue", "blue", "purple"] 
+	# for i in range(len(tformbins) - 1): 
+	for i in range(len(tformbins)): 
 		x, y, err, scat = analyze(data, rformbins, 
-			[tformbins[i], tformbins[i + 1]])
+			# [tformbins[i], tformbins[i + 1]])
+			tformbins[i]) 
 		draw(ax, x, y, err, scat, colors[i])
 	one_to_one_line(ax)
 	legend(ax, tformbins, colors)
+	ax.yaxis.set_ticks([0, 5, 10, 15]) 
 	plt.tight_layout()
 	plt.savefig("%sgalaxies/hydro/finalvform.pdf" % (
 		os.environ["PLOTS_DIRECTORY"]))
