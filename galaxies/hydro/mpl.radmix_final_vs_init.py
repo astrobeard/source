@@ -81,7 +81,7 @@ def legend(ax, tformbins, colors):
 		# 	tformbins[i], tformbins[i + 1]) 
 		# labels[i] = r"$T_\text{form}\in[%g;%g]$ Gyr" % (tformbins[i], 
 		# 	tformbins[i + 1])
-		labels[i] = r"$T_\text{form}\in[%g;%g]$" % (tformbins[i][0], 
+		labels[i] = r"$T_\text{form}\in[%g;%g]$ Gyr" % (tformbins[i][0], 
 			tformbins[i][1])
 		lines[i] = ax.plot([1, 2], [1, 2], c = v.colors()["white"], 
 			label = labels[i])[0] 
