@@ -83,6 +83,7 @@ extern int condense(char *file, char comment, char *outfile, double minlogm,
 	free(line); /* free up the dummy line */ 
 
 	double *data; 
+	long counter = 0l; /* keep track of the number of lines parsed */ 
 	do { 
 		/* 
 		 * Go through the data file line by line and compare each mass 
@@ -113,7 +114,11 @@ extern int condense(char *file, char comment, char *outfile, double minlogm,
 		} else {} 
 
 		free(data); 
+
+		/* print the number of lines processed */ 
+		printf("\r%ld lines processed...", counter); 
 	} while (data != NULL); 
+	printf("\n"); 
 
 	/* Close the files and return 0 for success */ 
 	fclose(in); 
