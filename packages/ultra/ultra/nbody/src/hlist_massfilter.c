@@ -32,7 +32,10 @@ static int file_dimension(char *file, int hlength);
  * header: hlists.h 
  */ 
 extern int condense(char *file, char comment, char *outfile, double minlogm, 
-	int masscol) {
+	int masscol) { 
+
+	/* Debugging */ 
+	comment = '#'; 
 
 	/* 
 	 * Bookkeeping 
@@ -79,6 +82,7 @@ extern int condense(char *file, char comment, char *outfile, double minlogm,
 	} 
 	free(line); /* free up the dummy line */ 
 
+	double *data; 
 	do { 
 		/* 
 		 * Go through the data file line by line and compare each mass 
@@ -88,7 +92,7 @@ extern int condense(char *file, char comment, char *outfile, double minlogm,
 		 * Start by allocating memory for one line of the data and read it in, 
 		 * then free it up at the end of every loop. 
 		 */ 
-		double *data = (double *) malloc (dim * sizeof(double)); 
+		data = (double *) malloc (dim * sizeof(double)); 
 		for (i = 0; i < dim; i++) {
 			if (fscanf(in, "%lf", &data[i])) {
 				continue; 
@@ -105,8 +109,8 @@ extern int condense(char *file, char comment, char *outfile, double minlogm,
 			for (i = 0; i < dim; i++) {
 				fprintf(out, "%.5e\t", data[i]); 
 			} 
-			fprintf("\n"); 
-		} else {}s
+			fprintf(out, "\n"); 
+		} else {} 
 
 		free(data); 
 	} while (data != NULL); 
