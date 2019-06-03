@@ -1,10 +1,58 @@
 
 __all__ = ["xticklabel_formatter", "yticklabel_formatter", "colors", 
-	"mpl_loc", "markers"] 
+	"mpl_loc", "markers", "append_subplot_below"]  
 
 import matplotlib as mpl 
 import matplotlib.pyplot as plt 
-from matplotlib.ticker import FormatStrFormatter as _fsf
+from matplotlib.ticker import FormatStrFormatter as _fsf 
+from mpl_toolkits.axes_grid1 import make_axes_locatable 
+from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes as zia 
+import numbers 
+
+def append_subplot_below(subplot, scale, **kwargs): 
+	"""
+	Puts a new subplot on the bottom of the one passed as an argument. 
+
+	Parameters 
+	========== 
+	subplot :: pyplot subplot 
+		Any instance of a subplot from matplotlib 
+	scale :: real number > 0 
+		A number describing the size of the appended subplot relative to the 
+		root one passed to this function 
+	kwargs :: varying types 
+		Other keyword arguments to pass to 
+		mpl_toolkits.axes_grid1.make_axes_locatable 
+
+	Returns 
+	======= 
+	The new subplot instance 
+
+	Raises 
+	====== 
+	TypeError :: 
+		:: subplot is not a matplotlib subplot instance 
+		:: scale is not a real number 
+	ValueError :: 
+		:: scale is less than or equal to zero 
+	Other exceptions will be raised from within matplotlib regarding keyword 
+	arguments 
+	""" 
+	if isinstance(subplot, mpl.axes._subplots.Axes): 
+		if isinstance(scale, numbers.Number): 
+			if scale > 0: 
+				return make_axes_locatable(subplot).append_axes("bottom", 
+					scale, 
+					**kwargs) 
+			else: 
+				raise ValueError("Second argument must be > 0. Got: %g" % (
+					scale)) 
+		else: 
+			raise TypeError("Second argument must be a real number. Got: %s" % (
+				type(scale))) 
+	else: 
+		raise TypeError("First argument must be a matplotlib subplot. Got: %s" % (
+			type(subplots))) 
 
 def xticklabel_formatter(subplot, fmt = "%g"):
 	"""
