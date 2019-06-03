@@ -120,6 +120,7 @@ extern int sieve(DATAFRAME source, DATAFRAME *dest, int column, double value,
 	 * 
 	 * Start by figuring out which lines passed the test 
 	 */
+	printf("a\n"); 
 	long i, n = 0l; 
 	int j, *test = get_test_results(source, column, value, relational_code); 
 	if (test == NULL) return 1; /* return 1 on failure */ 
@@ -128,6 +129,7 @@ extern int sieve(DATAFRAME source, DATAFRAME *dest, int column, double value,
 	 * The new dataframe should have the same dimensionality as the source 
 	 * data. The number of rows will be the sum of the test array
 	 */ 
+	printf("b\n"); 
 	dest -> num_cols = source.num_cols;  
 	dest -> num_rows = int_sum(test, source.num_rows); 
 	dest -> data = (double **) malloc ((*dest).num_rows * sizeof(double *)); 
@@ -136,6 +138,7 @@ extern int sieve(DATAFRAME source, DATAFRAME *dest, int column, double value,
 	 * Go through the old data line by line and copy the lines that pass the 
 	 * filter. 
 	 */ 
+	printf("c\n"); 
 	for (i = 0l; i < source.num_rows; i++) {
 		if (test[i]) {
 			dest -> data[i] = (double *) malloc ((*dest).num_rows * 
@@ -149,6 +152,7 @@ extern int sieve(DATAFRAME source, DATAFRAME *dest, int column, double value,
 		} 
 	} 
 
+	printf("d\n"); 
 	free(test); 
 	return 0; 
 
