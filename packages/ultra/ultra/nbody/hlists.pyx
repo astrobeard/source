@@ -12,13 +12,15 @@ if sys.version_info[:2] <= (3, 5):
 else:
 	pass 
 
+from ctypes import * 
+
 """
 <--------------- C routine comment headers not duplicated here --------------->
 
 Conventionally these would be declared in a .pxd file and imported, but this 
 is simpler when there are only a few of them. 
 """
-cdef extern from "%snbody/src/hlists.h": 
+cdef extern from "src/hlists.h": 
 	int condense(char *file, char comment, char *outfile, double minlogm, 
 		int masscol) 
 
@@ -63,7 +65,26 @@ def resolution_filter(infilename, outfilename, comment = '#',
 	else: 
 		pass 
 
-	cdef int 
+	if not os.path.exists(infilename): 
+		raise IOError("File does not exist: %s" % (infilename)) 
+	else:
+		pass 
+
+	cdef int x = condense(
+		infilename.encode("latin-1"), 
+		comment.encode("latin-1"), 
+		outfilename.encode("latin-1"), 
+		c_double(minlogm), 
+		c_int(masscol)) 
+
+	if x == 1: 
+		raise IOError("Error on reading input file: %s" % (infilename)) 
+	elif x == 2: 
+		raise IOError("Error on writing output file: %s" % (outfilename)) 
+	elif x == 0: 
+		pass 
+	else: 
+		raise SystemError("Unknown return parameter: %d" % (x)) 
 
 
 

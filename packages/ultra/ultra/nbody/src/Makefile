@@ -1,7 +1,14 @@
 
 CC = gcc 
 CFLAGS = -c -fPIC 
-all: hlist_massfilter.o 
+OBJECTS = hlists_massfilter.o hlists_io.o hlists_utils.o 
+
+all: hlists.so 
+
+.PHONY: clean 
+
+hlists.so: $(OBJECTS)  
+	$(CC) *.o -shared -o hlists.so 
 
 %.o: %.c *.h 
 	$(CC) $(CFLAGS) $< -o $@ 

@@ -21,7 +21,7 @@ else:
 		from .version import version as __version__ 
 	except (ImportError, ModuleNotFoundError): 
 		raise ImportError("""\
-Error import ultra. ultra is a pre-compiled package and cannot be ran from \
+Error importing ultra. ultra is a pre-compiled package and cannot be ran from \
 its source directory, because the compiled objects are not stored here. Please \
 exit the ultra source tree and relaunch your python interpreter from there. \
 """) 
@@ -29,6 +29,7 @@ exit the ultra source tree and relaunch your python interpreter from there. \
 	__all__ = ["__author__", "__version__", "dataframe"]  
 
 	from .dataframe import * 
+	from . import nbody 
 
 	del version 
 

@@ -28,7 +28,7 @@ import sys
 import os 
 
 if sys.version_info[:2] < (3, 5): 
-	raise RuntimeError("ultra required python version >= 3.5.") 
+	raise RuntimeError("ultra requires python version >= 3.5.") 
 else:
 	pass 
 
