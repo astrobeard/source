@@ -86,7 +86,7 @@ extern int condense(char *file, char *commenter, char *outfile, double minlogm,
 	free(line); /* free up the dummy line */ 
 
 	double *data; 
-	long j, counter = 0l; /* keep track of the number of lines parsed */ 
+	long j; 
 	for (j = 0l; j < lines - hlen; j++) {
 		/* 
 		 * Go through the data file line by line and compare each mass 
