@@ -14,7 +14,10 @@
 static int *get_test_results(DATAFRAME df, int column, double value, 
 	int relational_code); 
 
+#if 0
 /* 
+ * AN OLD VERSION OF THE SIEVE FUNCTION 
+ * 
  * Filter the dataset based on some condition applied to the values stored in 
  * a given column. 
  * 
@@ -77,6 +80,77 @@ extern int sieve(DATAFRAME *df, int column, double value, int relational_code) {
 	free(df -> data); 
 	df -> data = new; 
 	return 0; /* return 0 on success */ 
+
+} 
+#endif 
+
+/* 
+ * Filter the dataset based on some condition applied to the values stored in 
+ * a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * source: 				The dataframe containing the data to be filtered 
+ * dest: 				A pointer to the dataframe to put the filtered data into 
+ * column: 				The column number to filter based on 
+ * value: 				The value to compare to for filtering 
+ * relational_code:		1 for < 
+ * 						2 for <= 
+ *						3 for = 
+ * 						4 for >= 
+ * 						5 for > 
+ * 						6 for != 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int sieve(DATAFRAME source, DATAFRAME *dest, int column, double value, 
+	int relational_code) {
+
+	/* 
+	 * Bookkeeping 
+	 * =========== 
+	 * test: 		0s at the positions of data points that don't pass the test, 
+	 * 				1s at the ones that do 
+	 * i, j: 		for-looping 
+	 * n: 			The line number in the new dataframe 
+	 * 
+	 * Start by figuring out which lines passed the test 
+	 */
+	long i, n = 0l; 
+	int j, *test = get_test_results(source, column, value, relational_code); 
+	if (test == NULL) return 1; /* return 1 on failure */ 
+	
+	/* 
+	 * The new dataframe should have the same dimensionality as the source 
+	 * data. The number of rows will be the sum of the test array
+	 */ 
+	dest -> num_cols = source.num_cols;  
+	dest -> num_rows = int_sum(test, source.num_rows); 
+	dest -> data = (double **) malloc ((*dest).num_rows * sizeof(double *)); 
+
+	/* 
+	 * Go through the old data line by line and copy the lines that pass the 
+	 * filter. 
+	 */ 
+	for (i = 0l; i < source.num_rows; i++) {
+		if (test[i]) {
+			dest -> data[i] = (double *) malloc ((*dest).num_rows * 
+				sizeof(double)); 
+			for (j = 0; j < (*dest).num_cols; j++) {
+				dest -> data[n][j] = source.data[i][j]; 
+			} 
+			n++; /* Next line */ 
+		} else {
+			continue; 
+		} 
+	} 
+
+	free(test); 
+	return 0; 
 
 }
 

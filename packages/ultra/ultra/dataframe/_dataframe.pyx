@@ -413,15 +413,17 @@ labels: %d""" % (len(columns), len(labels)))
 				if isinstance(relation, str): 
 					if key.lower() in self.__labels: 
 						if relation in relational_codes.keys(): 
+							mirror = __dataframe() 
 							if clib.sieve(
-								byref(self.__mirror), 
+								self.__mirror, 
+								byref(mirror), 
 								c_int(self.__labels.index(key.lower())), 
 								c_double(value), 
 								c_int(relational_codes[relation])
 							): 
 								raise SystemError("Internal Error") 
 							else: 
-								pass 
+								return dataframe(mirror, labels = self.__labels) 
 						else: 
 							raise ValueError("Unrecognized relation: %s" % (
 								relation)) 

@@ -122,7 +122,7 @@ extern int condense(char *file, char *commenter, char *outfile, double minlogm,
 		free(data); 
 		printf("\r%ld of %ld lines processed....", j, lines - hlen); 
 	} 
-	printf("\n"); 
+	printf("\r%ld of %ld lines processed....\n", j, lines - hlen); 
 
 	fclose(in); 
 	fclose(out); 

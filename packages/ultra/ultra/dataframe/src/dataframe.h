@@ -231,7 +231,8 @@ extern int dfcolumn_std(DATAFRAME df, int column, double *ptr);
  * 
  * Parameters 
  * ========== 
- * df: 					A pointer to the dataframe to modify 
+ * source: 				The dataframe containing the data to be filtered 
+ * dest: 				A pointer to the dataframe to put the filtered data into 
  * column: 				The column number to filter based on 
  * value: 				The value to compare to for filtering 
  * relational_code:		1 for < 
@@ -245,9 +246,10 @@ extern int dfcolumn_std(DATAFRAME df, int column, double *ptr);
  * ======= 
  * 0 on success, 1 on failure 
  * 
- * source: dataframe_sieve.c 
+ * header: dataframe.h 
  */ 
-extern int sieve(DATAFRAME *df, int column, double value, int relational_code); 
+extern int sieve(DATAFRAME source, DATAFRAME *dest, int column, double value, 
+	int relational_code); 
 
 
 
