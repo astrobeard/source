@@ -1,7 +1,7 @@
 
 CC = gcc 
 CFLAGS = -c -fPIC 
-OBJECTS = hlists_massfilter.o hlists_io.o hlists_utils.o 
+OBJECTS = hlists_massfilter.o  
 
 all: hlists.so 
 
@@ -15,5 +15,6 @@ hlists.so: $(OBJECTS)
 
 clean: 
 	rm -f *.o 
+	rm -f *.so 
 
 
