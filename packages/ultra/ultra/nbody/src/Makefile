@@ -1,7 +1,7 @@
 
 CC = gcc 
 CFLAGS = -c -fPIC 
-OBJECTS = hlists_massfilter.o  
+OBJECTS = hlists_massfilter.o hlists_io.o 
 
 all: hlists.so 
 

@@ -5,6 +5,7 @@ This script contains source code for wrapping hlist tools implemented in C.
 
 from .._globals import _DIRECTORY_ 
 from .._globals import _VERSION_ERROR_ 
+import numbers 
 import sys 
 import os 
 if sys.version_info[:2] <= (3, 5): 
@@ -21,7 +22,7 @@ Conventionally these would be declared in a .pxd file and imported, but this
 is simpler when there are only a few of them. 
 """
 cdef extern from "src/hlists.h": 
-	int condense(char *file, char comment, char *outfile, double minlogm, 
+	int condense(char *file, char *commenter, char *outfile, double minlogm, 
 		int masscol) 
 
 def resolution_filter(infilename, outfilename, comment = '#', 
@@ -50,7 +51,7 @@ def resolution_filter(infilename, outfilename, comment = '#',
 	if not isinstance(infilename, str): 
 		raise TypeError("First argument must be of type str. Got: %s" % (
 			type(infilename))) 
-	elif not isinstance(outfilenme, str): 
+	elif not isinstance(outfilename, str): 
 		raise TypeError("Second argument must be of type str. Got: %s" % (
 			type(outfilename))) 
 	elif not isinstance(comment, str): 
@@ -74,8 +75,8 @@ def resolution_filter(infilename, outfilename, comment = '#',
 		infilename.encode("latin-1"), 
 		comment.encode("latin-1"), 
 		outfilename.encode("latin-1"), 
-		c_double(minlogm), 
-		c_int(masscol)) 
+		minlogm, 
+		masscol) 
 
 	if x == 1: 
 		raise IOError("Error on reading input file: %s" % (infilename)) 
