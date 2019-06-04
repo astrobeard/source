@@ -45,6 +45,27 @@ def resolution_filter(infilename, outfilename, comment = '#',
 		The minimum logarithmic halo mass 
 	masscol :: int [default :: 10] 
 		The column number of halo masses to filter based on 
+
+	Raises 
+	====== 
+	TypeError :: 
+		:: infilename is not of type str 
+		:: outfilename is not of type str 
+		:: comment is not of type str 
+		:: minlogm is not a real number 
+		:: masscol is not an integer 
+	IOError :: 
+		:: Input data file does not exist 
+		:: An error occurred while reading or writing either file 
+
+	Notes 
+	===== 
+	Default mass column is taken from the output of the ROCKSTAR halo finder 
+	algorithm (Behroozi et al. 2013). 
+
+	References 
+	========== 
+	Behroozi et al. (2013), ApJ, 762, 109 
 	""" 
 
 	# Type checking errors 
