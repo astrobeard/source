@@ -114,7 +114,7 @@
   <mergerTreeOutputReferences value="false"/>
   <outputTimestepHistory      value="false"/>
   <outputVirialData           value="true" />
-  <outputRedshifts            value="0.0"/>
+  <outputRedshifts            value="0.0 0.01 0.02 0.03 0.04 0.05"/>
 
   <!-- Output file -->
   <galacticusOutputFileName value="subhalosCDM.hdf5"/>
