@@ -62,20 +62,4 @@ if __name__ == "__main__":
 					))
 
 
-	for i in range(len(_OUTPUT_Z_)): 
-		z_str = get_z_string(_OUTPUT_Z_[i]) 
-		with h5py.File(sys.argv[2], 'w') as outdata: 
-
-
-
-	# with h5py.File(sys.argv[2], 'w') as outdata: 
-	# 	keys = tuple(["satellitePositionX", "satellitePositionY", 
-	# 		"satellitePositionZ", "satelliteVelocityX", "satelliteVelocityY", 
-	# 		"satelliteVelocityZ"])
-		
-	# 	for i in keys: 
-	# 		outdata[i] = indata[i][:] 
-
-
-
 
