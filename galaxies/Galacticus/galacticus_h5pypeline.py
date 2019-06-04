@@ -23,7 +23,7 @@ def get_z_string(z):
 	======= 
 	z = 0.27 -> 'z0p27' 
 	"""
-	return "z%dp%.2f" % (int(z), z % 1)  
+	return ("z" + str(round(z, 2))).replace('.', 'p')
 
 if __name__ == "__main__": 
 	# open the Galacticus output and the condensed hdf5 output file
