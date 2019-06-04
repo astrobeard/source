@@ -44,8 +44,8 @@ if __name__ == "__main__":
 				example of where this is found in raw Galacticus output: 
 					indata["Outputs/Output1/nodeData/satellitePositionX"]
 				"""
-				indata_key = "Outputs/Output%d/nodeData/%s" % (i, j) 
-				print(indata_key)
+				indata_key = "Outputs/Output%d/nodeData/%s" % (i + 1, j) 
+				# print(indata_key)
 				outdata["%s/%s" % (z_str, j)] = indata[indata_key][:]
 
 			"""
@@ -58,8 +58,10 @@ if __name__ == "__main__":
 			# The concentration 
 			outdata["%s/satelliteConcentration" % (z_str)] = np.array(
 				map(lambda x, y: x / y, 
-					indata["Outputs/Output%d/nodeData/nodeVirialRadius" % (i)][:], 
-					indata["Outputs/Output%d/nodeData/darkMatterProfileScale" % (i)][:]
+					indata["Outputs/Output%d/nodeData/nodeVirialRadius" % (
+						i + 1)][:], 
+					indata["Outputs/Output%d/nodeData/darkMatterProfileScale" % (
+						i + 1)][:]
 					))
 
 
