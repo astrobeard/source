@@ -61,7 +61,7 @@ if __name__ == "__main__":
 			""" 
 			# The mass 
 			indata_key = "Outputs/Output%d/nodeData/basicMass" % (i + 1)
-			outdata["%s/satelliteMass" % (z_str)] = indata[indata_key] 
+			outdata["%s/satelliteMass" % (z_str)] = indata[indata_key][:] 
 
 			# The concentration 
 			outdata["%s/satelliteConcentration" % (z_str)] = np.array(
