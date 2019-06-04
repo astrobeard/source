@@ -51,10 +51,18 @@ if __name__ == "__main__":
 			"""
 			Dwarf Structural Parameters 
 			=========================== 
+			Mass :: 
+				Stored under nodeData/basicMass 
+				Write this out for each satellite at each timestep as well 
+
 			Concentration :: 
 				Rvir / Rscale 
 				Write this at each output timestep to the output file 
 			""" 
+			# The mass 
+			indata_key = "Outputs/Output%d/nodeData/basicMass" % (i + 1)
+			outdata["%s/satelliteMass" % (z_str)] = indata[indata_key] 
+
 			# The concentration 
 			outdata["%s/satelliteConcentration" % (z_str)] = np.array(
 				map(lambda x, y: x / y, 
@@ -62,7 +70,7 @@ if __name__ == "__main__":
 						i + 1)][:], 
 					indata["Outputs/Output%d/nodeData/darkMatterProfileScale" % (
 						i + 1)][:]
-					))
+					)) 
 
 
 
