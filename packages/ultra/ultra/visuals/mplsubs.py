@@ -1,6 +1,13 @@
 
-__all__ = ["xticklabel_formatter", "yticklabel_formatter", "colors", 
-	"mpl_loc", "markers", "append_subplot_below"]  
+__all__ = [
+	"xticklabel_formatter", 
+	"yticklabel_formatter", 
+	"hide_xticklabels", "hide_yticklabels", 
+	"colors", 
+	"mpl_loc", 
+	"markers", 
+	"append_subplot_below"
+] 
 
 import matplotlib as mpl 
 import matplotlib.pyplot as plt 
@@ -9,14 +16,48 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes as zia 
 import numbers 
 
+def hide_xticklabels(subplot): 
+	"""
+	Hides the x-axis tick labels on a subplot 
+
+	Parameters 
+	========== 
+	subplot :: matplotlib axes 
+		An instance of matplotlib axes 
+	
+	Raises 
+	====== 
+	TypeError :: 
+		:: subplot is not an instance of matplotlib axes 
+	""" 
+	plt.setp(subplot.get_xticklabels(), visible = False) 
+	plt.setp(subplot.get_xminorticklabels(), visible = False) 
+
+def hide_yticklabels(subplot): 
+	"""
+	Hides the y-axis tick labels on a subplot 
+
+	Parameters 
+	========== 
+	subplot :: matplotlib axes 
+		An instance of matplotlib axes 
+	
+	Raises 
+	====== 
+	TypeError :: 
+		:: subplot is not an instance of matplotlib axes 
+	""" 
+	plt.setp(subplot.get_yticklabels(), visible = False) 
+	plt.setp(subplot.get_yminorticklabels(), visible = False) 
+
 def append_subplot_below(subplot, scale, **kwargs): 
 	"""
 	Puts a new subplot on the bottom of the one passed as an argument. 
 
 	Parameters 
 	========== 
-	subplot :: pyplot subplot 
-		Any instance of a subplot from matplotlib 
+	subplot :: matplotlib axes  
+		An instance of matplotlib axes 
 	scale :: real number > 0 
 		A number describing the size of the appended subplot relative to the 
 		root one passed to this function 
