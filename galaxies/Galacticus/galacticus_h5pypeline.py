@@ -45,6 +45,7 @@ if __name__ == "__main__":
 					indata["Outputs/Output1/nodeData/satellitePositionX"]
 				"""
 				indata_key = "Outputs/Output%d/nodeData/%s" % (i, j) 
+				print(indata_key)
 				outdata["%s/%s" % (z_str, j)] = indata[indata_key][:]
 
 			"""
