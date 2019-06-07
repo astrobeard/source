@@ -66,6 +66,53 @@ class dataframe(object):
 			raise TypeError("dataframe.__init__ got invalid type: %s" % (
 				type(arg))) 
 
+	def __getitem__(self, key): 
+		if isinstance(key, str): 
+			if key.lower() in self.__labels: 
+				return [self.__mirror.data[i][self.__labels.index(
+					key.lower())] for i in range(self.__mirror.num_rows)] 
+			else: 
+				raise ValueError("Unrecognized key: %s" % (key)) 
+		else: 
+			raise TypeError("Dataframe key must be of type str. Got: %s" % (
+				type(key))) 
+
+	def __setitem__(self, key, value): 
+		if isinstance(key, str): 
+			copy = self.__copy_array_like_object(value, "to __setitem__") 
+			if all(map(lambda x: isinstance(x, numbers.Number), copy)): 
+				if len(copy) == self.__mirror.num_rows: 
+					ptr = self.__mirror.num_rows * c_double 
+					if key.lower() in self.__labels: 
+						if clib.dfcolumn_modify(
+							byref(self.__mirror), 
+							ptr(*copy[:]), 
+							c_int(self.__labels.index(key.lower()))
+						): 
+							raise SystemError("Internal Error.") 
+						else: 
+							pass 
+					else: 
+						if clib.dfcolumn_new(
+							byref(self.__mirror), 
+							ptr(*copy)
+						): 
+							raise SystemError("Internal Error.") 
+						else: 
+							self.__labels = (*self.__labels, key.lower()) 
+				else: 
+					raise ValueError("""Array length mismath. Got: %d. \
+Must be: %d""" % (len(copy), self.__mirror.num_rows)) 
+			else: 
+				raise TypeError("Non-numerical value detected.") 
+		else: 
+			raise TypeError("Dataframe keys must be of type str. Got: %s" % (
+				type(key))) 
+
+	def __del__(self): 
+		del self.__mirror 
+		del self.__labels 
+
 	@property 
 	def size(self): 
 		"""
@@ -126,21 +173,6 @@ Keyword arg labels must be of type list. Got: %s""" % (type(labels)))
 				raise ValueError("""\
 Keyword args columns and labels must be of equal length. columns: %d \
 labels: %d""" % (len(columns), len(labels))) 
-
-	def __getitem__(self, key): 
-		if isinstance(key, str): 
-			if key.lower() in self.__labels: 
-				return [self.__mirror.data[i][self.__labels.index(
-					key.lower())] for i in range(self.__mirror.num_rows)] 
-			else: 
-				raise ValueError("Unrecognized key: %s" % (key)) 
-		else: 
-			raise TypeError("Dataframe key must be of type str. Got: %s" % (
-				type(key))) 
-
-	def __del__(self): 
-		del self.__mirror 
-		del self.__labels 
 
 	def min(self, key): 
 		"""
