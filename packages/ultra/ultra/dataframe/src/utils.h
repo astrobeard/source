@@ -200,6 +200,38 @@ extern double ptr_median(double *arr, long length);
  */ 
 extern double *ptr_sort(double *arr, long length); 
 
+/* 
+ * A classic quickselect function: determine the kth smallest element in an 
+ * array of unsorted values. 
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		A pointer to the array of unsorted values 
+ * low: 		A starting index 
+ * high: 		An ending index 
+ * k: 			The rank order of the element to take 
+ * 
+ * Returns 
+ * ======= 
+ * The kth smallest element in the array 
+ * 
+ * source: dataframe_utils.c 
+ */ 
+extern double ptr_quickselect(double *arr, long low, long high, long k); 
+
+/* 
+ * A classic quicksort function: sort an array of doubles in ascending order 
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 			A pointer to the array to be sorted 
+ * low: 			A starting index 
+ * high: 			An ending index 
+ * 
+ * source: dataframe_utils.c 
+ */ 
+extern void ptr_quicksort(double *arr, long low, long high); 
+
 #endif /* UTILS_H */ 
 
 

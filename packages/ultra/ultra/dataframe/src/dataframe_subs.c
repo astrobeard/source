@@ -280,7 +280,7 @@ extern int dfcolumn_median(DATAFRAME df, int column, double *ptr) {
 		return 0; 
 	}
 
-}
+} 
 
 /* 
  * Determine the standard deviation of a column of the data. 
