@@ -117,6 +117,40 @@ extern int populate_from_file(DATAFRAME *df, char *file, char comment,
 extern double *dfcolumn(DATAFRAME df, int column); 
 
 /* 
+ * Adds a new column to the dataframe. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			A pointer to the dataframe to put the new column into 
+ * arr: 		A pointer to the array to store as the new column 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always; anything else is a SystemError 
+ * 
+ * source: dataframe_subs.c 
+ */ 
+extern int dfcolumn_new(DATAFRAME *df, double *arr); 
+
+/* 
+ * Modify a column of the dataframe. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			A pointer to the dataframe to be modified 
+ * arr: 		A pointer to the array representing the new values in the given 
+ * 				column 
+ * column: 		The column number to modify 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always; anything else is a SystemError 
+ * 
+ * source: dataframe_subs.c 
+ */ 
+extern int dfcolumn_modify(DATAFRAME *df, double *arr, int column); 
+
+/* 
  * Determine the minimum value in a column of the dataframe 
  * 
  * Parameters 

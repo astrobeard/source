@@ -45,6 +45,59 @@ extern double *dfcolumn(DATAFRAME df, int column) {
 } 
 
 /* 
+ * Adds a new column to the dataframe. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			A pointer to the dataframe to put the new column into 
+ * arr: 		A pointer to the array to store as the new column 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always; anything else is a SystemError 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_new(DATAFRAME *df, double *arr) {
+
+	long i; 
+	for (i = 0l; i < (*df).num_rows; i++) {
+		df -> data[i] = (double *) realloc (df -> data[i], 
+			((*df).num_cols + 1) * sizeof(double *)); 
+		df -> data[i][(*df).num_cols] = arr[i]; 
+	} 
+	df -> num_cols++; 
+	return 0; 
+
+} 
+
+/* 
+ * Modify a column of the dataframe. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			A pointer to the dataframe to be modified 
+ * arr: 		A pointer to the array representing the new values in the given 
+ * 				column 
+ * column: 		The column number to modify 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always; anything else is a SystemError 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_modify(DATAFRAME *df, double *arr, int column) {
+
+	long i; 
+	for (i = 0l; i < (*df).num_rows; i++) {
+		df -> data[i][column] = arr[i]; 
+	} 
+	return 0; 
+
+}
+
+/* 
  * Determine the minimum value in a column of the dataframe 
  * 
  * Parameters 
