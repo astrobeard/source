@@ -58,6 +58,61 @@ extern int dfcolumn_order(DATAFRAME *df, int column) {
 
 } 
 
+#if 0 
+/* 
+ * Sorts a dataframe pointer in ascending order based on the data in a given 
+ * column. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			A pointer to the dataframe to sort 
+ * column: 		The column number to sort based on 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, anything else would be a system error. 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_order(DATAFRAME *df, int column) {
+
+	/* 
+	 * Bookkeeping 
+	 * =========== 
+	 * col: 		A copy of the column from the dataframe 
+	 * rank: 		The rank indeces of each row number 
+	 * new: 		The ordered data 
+	 * i, j: 		For-looping 
+	 * 
+	 * Start by allocating memory for the rank indeces and calling 
+	 * ptr_quickrank to determine the rank indeces of each row 
+	 */ 
+	int j; 
+	double *col = dfcolumn(*df, column); 
+	long i, *rank = ptr_rank(col, (*df).num_rows); 
+
+	/* Allocate memory for the new data */ 
+	double **new = (double **) malloc ((*df).num_rows * sizeof(double *)); 
+	for (i = 0l; i < (*df).num_rows; i++) { 
+		new[rank[i]] = (double *) malloc ((*df).num_cols * sizeof(double)); 
+		for (j = 0; j < (*df).num_cols; j++) { 
+			/* Pull the data from the next ranked row */ 
+			new[rank[i]][j] = (*df).data[i][j]; 
+		} 
+	} 
+	/* 
+	 * Free up unnecessary memory as well as the old data. Point the dataframe 
+	 * at the new data, return 0 for success, and call it a day. 
+	 */ 
+	free(col); 
+	free(rank); 
+	free(df -> data); 
+	df -> data = new; 
+	return 0; 
+
+} 
+#endif 
+
 /* 
  * Take the data from a source dataframe and put into a destination dataframe 
  * only the data which lie in a given bin based on the values in a given 
@@ -196,6 +251,7 @@ extern DATAFRAME **equal_number_samples(DATAFRAME df, int column,
 	return samples; 
 
 } 
+#endif 
 
 /* 
  * Sorts the dataframe based into bins based on the values in a given column. 
@@ -228,7 +284,8 @@ extern DATAFRAME **sort(DATAFRAME df, int column, double *binspace,
 	int k; 
 	long i, j; 
 	long *indeces = long_zeroes(num_bins); 
-	long *counts = hist(df, column, binspace, num_bins); 
+	long *counts = (long *) malloc (num_bins * sizeof(long)); 
+	hist(df, column, binspace, num_bins, counts); 
 
 	/* Allocate Memory */ 
 	DATAFRAME **sorted = dataframe_array_initialize(num_bins); 
@@ -268,7 +325,6 @@ extern DATAFRAME **sort(DATAFRAME df, int column, double *binspace,
 	return sorted; 
 
 }
-#endif 
 
 /* 
  * Determines the bin number of a given value within a specified binspace. 
@@ -298,7 +354,7 @@ static long get_bin_number(double value, double *binspace, long num_bins) {
 	/* The value is not within the binspace. Return -1l on failure. */ 
 	return -1l; 
 
-}
+} 
 
 /* 
  * Determine the indeces that would sort the dataframe from least to greatest 
@@ -376,5 +432,4 @@ static void double_ptr_swap(double *arr, long i, long j) {
 	arr[j] = x; 
 
 }
-
 

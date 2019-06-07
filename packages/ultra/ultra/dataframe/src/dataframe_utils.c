@@ -5,8 +5,6 @@
 #include "utils.h" 
 
 /* ---------- Static routine comment headers not duplicated here  ---------- */ 
-// static void ptr_swap(double *arr, long i, long j); 
-// static void ptr_quicksort(double *arr, long low, long high); 
 static long partition(double *arr, long low, long high); 
 static void swap(double *a, double *b); 
 
@@ -327,137 +325,6 @@ extern double ptr_mean(double *arr, long length) {
 
 } 
 
-#if 0
-/* 
- * Find the median of an array stored in a double pointer.  
- * 
- * Parameters 
- * ========== 
- * arr: 		A pointer to the array itself 
- * length: 		The number of elements stored in the array 
- * 
- * Returns 
- * ======= 
- * The median value of the double pointer 
- * 
- * header: utils.h 
- */ 
-extern double ptr_median(double *arr, long length) {
-
-	/* The index and value stored at the center of the array */ 
-	long middle = length / 2; 
-	double x = arr[middle]; 
-
-	/* Start scans from the left and right */ 
-	long i = 0, j = length - 1l; 
-	do {
-		while (arr[i] < x) { 
-			/* 
-			 * From the left, increment i up until we find a value larger 
-			 * than x. 
-			 */ 
-			i++; 
-		} 
-		while (arr[j] > x) { 
-			/* 
-			 * From the right, increment j down until we find a value smaller 
-			 * than x. 
-			 */ 
-			j--; 
-		} 
-		/* Swap the values and keep going */ 
-		// printf("Swapping: i = %ld, j = %ld\n", i, j); 
-		double t = arr[i]; 
-		arr[i] = arr[j]; 
-		arr[j] = t; 
-
-		/* debugging */ 
-		if (arr[i] == arr[j]) { 
-			printf("x = %lf\n", x); 
-			printf("arr[%ld] = %lf\n", i, arr[i]); 
-			printf("arr[%ld] = %lf\n", j, arr[j]); 
-			break; 
-		} else {
-			continue; 
-		}
-
-	} while (i < j); 
-	// printf("\n"); 
-
-	/* 
-	 * i and j have now met in the middle and are adjacent. Half of the values 
-	 * are above them and half of them are below them. 
-	 * 
-	 * If there is an even number of elements, the median is the mean of a[i] 
-	 * and a[j]. If not, it is a[i]. 
-	 */ 
-	if (length % 2l == 0l) {
-		return (arr[i] + arr[j]) / 2; 
-	} else {
-		return arr[i]; 
-	}
-
-}
-
-/* 
- * Sorts a double pointer array from least to greatest. 
- *  
- * Parameters 
- * ========== 
- * arr: 		The array to sort 
- * length: 		The length of the array 
- * 
- * Returns 
- * ======= 
- * Type *double :: The sorted array, which will have the same length 
- * 
- * header: utils.h 
- */ 
-extern double *ptr_sort(double *arr, long length) {
-
-	/* Run the operations on a copy of the array */ 
-	long i, j; 
-	double *sorted = copy_double_ptr(arr, length); 
-
-	for (i = 0l; i < length - 1; i++) { 
-		/* 
-		 * Look at each subsequent element of the array and find the smallest 
-		 * one. Then swap the minimum for the current position.  
-		 */ 
-		long smallest = i; 
-		for (j = i + 1l; j < length; j++) {
-			if (sorted[j] <= sorted[smallest]) {
-				smallest = j; 
-			} else {
-				continue; 
-			}
-		} 
-		ptr_swap(sorted, i, smallest); 
-	} 
-	/* The largest element will naturally fall into the last position */ 
-	return sorted; 
-
-} 
-
-/* 
- * Swap the i'th and j'th elements of a double pointer array 
- * 
- * Parameters 
- * ========== 
- * arr: 		The double pointer array itself 
- * i: 			The first index 
- * j: 			The second index 
- */ 
-static void ptr_swap(double *arr, long i, long j) {
-
-	double x = arr[i]; 
-	double y = arr[j]; 
-	arr[i] = y; 
-	arr[j] = x; 
-
-} 
-#endif 
-
 /* 
  * Find the median of an array stored in a double pointer.  
  * 
@@ -553,8 +420,8 @@ extern void ptr_quicksort(double *arr, long low, long high) {
 		/* 
 		 * The function terminates when low < high is no longer satisfied. 
 		 * Start by moving the final element to its proper position. Then 
-		 * recursively sort the each piece of the array until the whole 
-		 * thing is in ascending order. 
+		 * recursively sort each piece of the array until the whole thing is 
+		 * in ascending order. 
 		 */ 
 		long p = partition(arr, low, high); 
 		ptr_quicksort(arr, low, p - 1l); 
@@ -562,7 +429,7 @@ extern void ptr_quicksort(double *arr, long low, long high) {
 
 	} else {} 
 
-}
+} 
 
 /* 
  * A classic partition function: sort an array according to a given value such 
@@ -577,7 +444,7 @@ extern void ptr_quicksort(double *arr, long low, long high) {
  * 
  * Returns 
  * ======= 
- * The index of the value to be partitioned on following 
+ * The index of the value to be partitioned on following sorting 
  */ 
 static long partition(double *arr, long low, long high) {
 
@@ -620,7 +487,7 @@ static void swap(double *a, double *b) {
 	*a = *b; 
 	*b = x; 
 
-}
+} 
 
 
 
