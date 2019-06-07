@@ -169,6 +169,22 @@ extern double ptr_sum(double *arr, long length);
 extern double ptr_mean(double *arr, long length); 
 
 /* 
+ * Find the median of an array stored in a double pointer.  
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		A pointer to the array itself 
+ * length: 		The number of elements stored in the array 
+ * 
+ * Returns 
+ * ======= 
+ * The median value of the double pointer 
+ * 
+ * source: dataframe_utils.c 
+ */ 
+extern double ptr_median(double *arr, long length); 
+
+/* 
  * Sorts a double pointer array from least to greatest. 
  *  
  * Parameters 

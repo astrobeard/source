@@ -324,6 +324,64 @@ extern double ptr_mean(double *arr, long length) {
 } 
 
 /* 
+ * Find the median of an array stored in a double pointer.  
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		A pointer to the array itself 
+ * length: 		The number of elements stored in the array 
+ * 
+ * Returns 
+ * ======= 
+ * The median value of the double pointer 
+ * 
+ * header: utils.h 
+ */ 
+extern double ptr_median(double *arr, long length) {
+
+	/* The index and value stored at the center of the array */ 
+	long middle = length / 2; 
+	double x = arr[middle]; 
+
+	/* Start scans from the left and right */ 
+	long i = 0, j = length - 1l; 
+	do {
+		while (arr[i] < x) { 
+			/* 
+			 * From the left, increment i up until we find a value larger 
+			 * than x. 
+			 */ 
+			i++; 
+		} 
+		while (arr[j] > x) { 
+			/* 
+			 * From the right, increment j down until we find a value smaller 
+			 * than x. 
+			 */ 
+			j--; 
+		} 
+		/* Swap the values and keep going */ 
+		double t = arr[i]; 
+		arr[i] = arr[j]; 
+		arr[j] = t; 
+	} while (i < j); 
+
+	/* 
+	 * i and j have now met in the middle and are adjacent. Half of the values 
+	 * are above them and half of them are below them. 
+	 * 
+	 * If there is an even number of elements, the median is the mean of a[i] 
+	 * and a[j]. If not, it is a[i]. 
+	 */ 
+	if (length % 2l == 0l) {
+		return (arr[i] + arr[j]) / 2; 
+	} else {
+		return arr[i]; 
+	}
+
+}
+
+/* 
  * Sorts a double pointer array from least to greatest. 
  *  
  * Parameters 

@@ -157,6 +157,7 @@ extern int dfcolumn_mean(DATAFRAME df, int column, double *ptr) {
 
 } 
 
+#if 0 
 /* 
  * Determine the median of a given column of the data 
  * 
@@ -193,6 +194,36 @@ extern int dfcolumn_median(DATAFRAME df, int column, double *ptr) {
 		} 
 		free(col); 
 		free(sorted_column); 
+		return 0; 
+	}
+
+} 
+#endif 
+
+/* 
+ * Determine the median of a given column of the data 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column number to find the median of 
+ * ptr: 		A pointer to put the median value into 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_median(DATAFRAME df, int column, double *ptr) {
+
+	if (column < 0 || column >= df.num_cols) {
+		return 1; /* return 1 on failure */ 
+	} else { 
+		/* Pull the column and send it to ptr_median in dataframe_utils.c */ 
+		double *col = dfcolumn(df, column); 
+		*ptr = ptr_median(col, df.num_rows); 
+		free(col); 
 		return 0; 
 	}
 

@@ -26,7 +26,7 @@ its source directory, because the compiled objects are not stored here. Please \
 exit the ultra source tree and relaunch your python interpreter from there. \
 """) 
 
-	__all__ = ["__author__", "__version__", "dataframe"]  
+	__all__ = ["__author__", "__version__", "dataframe", "nbody"]  
 
 	from .dataframe import * 
 	from . import nbody 
