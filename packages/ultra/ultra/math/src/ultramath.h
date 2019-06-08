@@ -51,7 +51,7 @@ extern long factorial_(long x);
  * 
  * header: ultramath.h 
  */ 
-extern double *sin_(double x, double tolerance); 
+extern double _sin(double x); 
 
 
 

@@ -5,10 +5,16 @@
 #ifndef UTILS_H 
 #define UTILS_H 
 
-/* The maximum number of iterations in recursive functions */ 
+/* 
+ * MAX_ITERS: 		The maximum number of iterations in recursive functions 
+ * TOLERANCE: 		The allowed numerical tolerance of all calculations 
+ */ 
 #ifndef MAX_ITERS 
 #define MAX_ITERS 2e8 
 #endif /* MAX_ITERS */ 
+#ifndef TOLERANCE 
+#define TOLERANCE 1e-12 
+#endif 
 
 /* 
  * Determine the absolute value of x 

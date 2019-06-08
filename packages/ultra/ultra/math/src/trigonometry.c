@@ -53,29 +53,9 @@ extern long _factorial(long x) {
  * 
  * header: ultramath.h 
  */ 
-extern double *_sin(double x, double tolerance) { 
+extern double _sin(double x) { 
 
-	long n = 1l; 
-	double new_sin_x = x, old_sin_x, error; 
-
-	do {
-		old_sin_x = new_sin_x; 
-
-		if (n % 2l) {
-			new_sin_x -= pow(x, 2l * n + 1l) / _factorial(2l * n + 1l); 
-		} else {
-			new_sin_x += pow(x, 2l * n + 1l) / _factorial(2l * n + 1l); 
-		} 
-		error = _absval(old_sin_x / new_sin_x - 1); 
-		n++; 
-
-	} while (error >= tolerance && n < MAX_ITERS); 
-
-	double *results = (double *) malloc (3 * sizeof(double)); 
-	results[0] = new_sin_x; 
-	results[1] = error; 
-	results[2] = n; 
-	return results; 
+	return sin(x); 
 
 }
 
