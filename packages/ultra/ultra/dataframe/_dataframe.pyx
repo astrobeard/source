@@ -66,6 +66,9 @@ class dataframe(object):
 			raise TypeError("dataframe.__init__ got invalid type: %s" % (
 				type(arg))) 
 
+	def __call__(self, key): 
+		return self.__getitem__(key) 
+
 	def __getitem__(self, key): 
 		if isinstance(key, str): 
 			if key.lower() in self.__labels: 
@@ -73,9 +76,19 @@ class dataframe(object):
 					key.lower())] for i in range(self.__mirror.num_rows)] 
 			else: 
 				raise ValueError("Unrecognized key: %s" % (key)) 
+		elif isinstance(key, numbers.Number) and key % 1 == 0: 
+			if 0 <= key < self.__mirror.num_rows: 
+				return [self.__mirror.data[key][i] for i in range(
+					self.__mirror.num_cols)] 
+			elif -1 * self.__mirror.num_rows < key < 0: 
+				key = -1 * key - 1 # The row number to return 
+				return [self.__mirror.data[key][i] for i in range(
+					self.__mirror.num_cols)] 
+			else: 
+				raise ValueError("Key index out of range. Got: %d." % (key)) 
 		else: 
-			raise TypeError("Dataframe key must be of type str. Got: %s" % (
-				type(key))) 
+			raise TypeError("""Dataframe key must be of type int or str. \
+Got: %s""" % (type(key))) 
 
 	def __setitem__(self, key, value): 
 		if isinstance(key, str): 
@@ -108,6 +121,58 @@ Must be: %d""" % (len(copy), self.__mirror.num_rows))
 		else: 
 			raise TypeError("Dataframe keys must be of type str. Got: %s" % (
 				type(key))) 
+
+	def __repr__(self): 
+		rep = ["dataframe{\n", "\t\t"] 
+		for i in self.__labels: 
+			rep[1] += "%s\t\t" % (i) 
+		rep[1] += "\n" 
+		rep.append("\t\t") 
+		for i in self.__labels: 
+			for j in range(len(i)): 
+				rep[2] += "=" 
+			rep[2] += "\t\t"
+		rep[2] += "\n" 
+		if self.__mirror.num_rows > 15: 
+			for i in range(5): 
+				rep.append("%12s ::\t" % (i)) 
+				for j in range(len(self.__labels)): 
+					rep[-1] += "%e\t" % (self.__mirror.data[i][j]) 
+				rep[-1] += "\n" 
+			rep.append("\t...\t") 
+			for i in range(len(self.__labels)): 
+				rep[-1] += "...\t\t" 
+			rep[-1] += "\n" 
+			for i in range(5)[::-1]: 
+				rep.append("%12s ::\t" % (self.__mirror.num_rows - i - 1)) 
+				for j in range(len(self.__labels)): 
+					rep[-1] += "%e\t" % (
+						self.__mirror.data[self.__mirror.num_rows - i - 1][j]) 
+				rep[-1] += "\n" 
+			rep.append("}") 
+		else: 
+			for i in range(self.__mirrow.num_rows): 
+				rep.append("%12s ::\t" % (i)) 
+				for j in range(len(self.__labels)): 
+					rep[-1] += "%e\t" % (self.__mirror.data[i][j]) 
+				rep[-1] += "\n" 
+			rep.append("}") 
+		return "".join(rep) 
+
+	def __str__(self): 
+		return self.__repr__() 
+
+	def __enter__(self): 
+		"""
+		Opens a with statement 
+		"""
+		return self 
+
+	def __exit__(self, exc_type, exc_value, exc_tb): 
+		"""
+		Raise all exceptions inside with statements 
+		"""
+		return exc_value == None 
 
 	def __del__(self): 
 		del self.__mirror 

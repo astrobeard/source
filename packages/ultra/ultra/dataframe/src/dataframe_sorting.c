@@ -8,8 +8,8 @@
 /* ---------- Static routine comment headers not duplicated here  ---------- */ 
 static long get_bin_number(double value, double *binspace, long num_bins); 
 static long *rank_indeces(DATAFRAME df, int column); 
-static void long_ptr_swap(long *arr, long i, long j); 
-static void double_ptr_swap(double *arr, long i, long j); 
+static void long_ptr_swap(long *a, long *b); 
+static void double_ptr_swap(double *a, double *b); 
 
 /* 
  * Sorts a dataframe pointer in ascending order based on the data in a given 
@@ -388,8 +388,8 @@ static long *rank_indeces(DATAFRAME df, int column) {
 				continue; 
 			}
 		} 
-		double_ptr_swap(col, i, smallest); 
-		long_ptr_swap(indeces, i, smallest); 
+		double_ptr_swap(&col[i], &col[smallest]); 
+		long_ptr_swap(&indeces[i], &indeces[smallest]); 
 		/* printf("\r%ld of %ld", i, df.num_rows); */ 
 	} 
 	/* printf("\n"); */ 
@@ -397,6 +397,7 @@ static long *rank_indeces(DATAFRAME df, int column) {
 
 } 
 
+#if 0 
 /* 
  * Swap the i'th and j'th elements of a long pointer array 
  * 
@@ -414,7 +415,17 @@ static void long_ptr_swap(long *arr, long i, long j) {
 	arr[j] = x; 
 
 } 
+#endif 
 
+static void long_ptr_swap(long *a, long *b) {
+
+	long x = *a; 
+	*a = *b; 
+	*b = x; 
+
+}
+
+#if 0 
 /* 
  * Swap the i'th and j'th elements of a double pointer array 
  * 
@@ -430,6 +441,15 @@ static void double_ptr_swap(double *arr, long i, long j) {
 	double y = arr[j]; 
 	arr[i] = y; 
 	arr[j] = x; 
+
+}
+#endif 
+
+static void double_ptr_swap(double *a, double *b) {
+
+	double x = *a; 
+	*a = *b; 
+	*b = x; 
 
 }
 
