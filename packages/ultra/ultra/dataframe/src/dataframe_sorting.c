@@ -254,6 +254,45 @@ extern DATAFRAME **equal_number_samples(DATAFRAME df, int column,
 #endif 
 
 /* 
+ * Generates an equal number subsample off of a dataframe that has already been 
+ * sorted into ascending order based on the data in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * ordered: 		The ordered dataframe 
+ * dest: 			The destination dataframe 
+ * num_subs: 		The number of subsamples being generated 
+ * index: 			The index of the subsample that is being generated 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always; anything else is a SystemError 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_equal_number_subsample(DATAFRAME ordered, DATAFRAME *dest, 
+	int num_subs, int index) {
+
+	long i; 
+	int j; 
+
+	dest -> num_cols = ordered.num_cols; 
+	dest -> num_rows = ordered.num_rows / num_subs; 
+	dest -> data = (double **) malloc ((*dest).num_rows * sizeof(double *)); 
+
+	for (i = 0; i < (*dest).num_rows; i++) {
+		dest -> data[i] = (double *) malloc ((*dest).num_cols * sizeof(double)); 
+		long row_num = ordered.num_rows / num_subs * index + i; 
+		for (j = 0; j < (*dest).num_cols; j++) {
+			dest -> data[i][j] = ordered.data[row_num][j]; 
+		} 
+	} 
+	return 0; 
+
+} 
+
+#if 0 
+/* 
  * Sorts the dataframe based into bins based on the values in a given column. 
  * 
  * Parameters 
@@ -324,7 +363,8 @@ extern DATAFRAME **sort(DATAFRAME df, int column, double *binspace,
 	free(counts); 
 	return sorted; 
 
-}
+} 
+#endif 
 
 /* 
  * Determines the bin number of a given value within a specified binspace. 
@@ -397,53 +437,13 @@ static long *rank_indeces(DATAFRAME df, int column) {
 
 } 
 
-#if 0 
-/* 
- * Swap the i'th and j'th elements of a long pointer array 
- * 
- * Parameters 
- * ========== 
- * arr: 		The long pointer array itself 
- * i: 			The first index 
- * j: 			The second index 
- */ 
-static void long_ptr_swap(long *arr, long i, long j) {
-
-	long x = arr[i]; 
-	long y = arr[j]; 
-	arr[i] = y; 
-	arr[j] = x; 
-
-} 
-#endif 
-
 static void long_ptr_swap(long *a, long *b) {
 
 	long x = *a; 
 	*a = *b; 
 	*b = x; 
 
-}
-
-#if 0 
-/* 
- * Swap the i'th and j'th elements of a double pointer array 
- * 
- * Parameters 
- * ========== 
- * arr: 		The double pointer array itself 
- * i: 			The first index 
- * j: 			The second index 
- */ 
-static void double_ptr_swap(double *arr, long i, long j) {
-
-	double x = arr[i]; 
-	double y = arr[j]; 
-	arr[i] = y; 
-	arr[j] = x; 
-
-}
-#endif 
+} 
 
 static void double_ptr_swap(double *a, double *b) {
 

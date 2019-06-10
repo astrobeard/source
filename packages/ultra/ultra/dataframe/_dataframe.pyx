@@ -33,7 +33,24 @@ else:
 
 # C functions 
 from ctypes import * 
+from libc.stdlib cimport malloc, free 
 clib = cdll.LoadLibrary("%sdataframe/src/dataframe.so" % (_DIRECTORY_)) 
+
+# cdef extern from "./src/dataframe.h": 
+# 	ctypedef struct DATAFRAME: 
+# 		pass 
+# 	DATAFRAME *dataframe_initialize() 
+# 	DATAFRAME **dataframe_array_initialize(int n) 
+
+# cdef DATAFRAME **get_dataframe_array(int n): 
+# 	return dataframe_array_initialize(n) 
+
+# cpdef mirrorDATAFRAME(DATAFRAME df): 
+# 	x = __dataframe() 
+# 	x.data = df.data 
+# 	x.num_rows = df.num_rows 
+# 	x.num_cols = df.num_cols 
+# 	return x 
 
 class __dataframe(Structure): 
 	"""
@@ -75,7 +92,7 @@ class dataframe(object):
 				return [self.__mirror.data[i][self.__labels.index(
 					key.lower())] for i in range(self.__mirror.num_rows)] 
 			else: 
-				raise ValueError("Unrecognized key: %s" % (key)) 
+				raise KeyError("Unrecognized key: %s" % (key)) 
 		elif isinstance(key, numbers.Number) and key % 1 == 0: 
 			if 0 <= key < self.__mirror.num_rows: 
 				return [self.__mirror.data[key][i] for i in range(
@@ -587,6 +604,77 @@ labels: %d""" % (len(columns), len(labels)))
 		else: 
 			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
 
+	def equal_number_subsamples(self, key, n): 
+		"""
+		Generate equal number bins of the data according to the values stored 
+		in a given column. 
+
+		Parameters 
+		========== 
+		key :: str [case-insensitive] 
+			The label for the column to bin based on 
+		n :: integer 
+			The number of samples to generate 
+
+		Returns 
+		======= 
+		sorted :: list 
+			Dataframe objects in a list where each dataframe contains the data 
+			in a given bin. Each dataframe object will be approximately the same 
+			size by design, and they will be sorted from least to greatest 
+			based on the values in the specified column. 
+
+		Raises 
+		====== 
+		TypeError :: 
+			:: key is not of type str 
+			:: n is not an integer 
+		ValueError :: 
+			:: n <= 0 
+		KeyError :: 
+			:: key is not recognized by the dataframe 
+		""" 
+		if not isinstance(key, str): 
+			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
+		elif not key.lower() in self.__labels: 
+			raise KeyError("Unrecognized key: %s" % (key)) 
+		elif not (isinstance(n, numbers.Number) and n % 1 == 0) :
+			raise TypeError("Second argument must be an integer. Got: %s" % (
+				type(n))) 
+		elif n <= 0: 
+			raise ValueError("""Second argument must be larger than zero. \
+Got: %d""" % (n)) 
+		else: 
+			pass 
+
+		# cdef DATAFRAME **mirrors = get_dataframe_array(n) 
+		# if clib.equal_number_samples(self.__mirror, mirros, 
+		# 	c_int(self.__labels.index(key.lower())), c_int(n)): 
+		# 	raise SystemError("Internal Error") 
+		# else: 
+		# 	results = [dataframe(mirrorDATAFRAME(mirrors[i][0]), 
+		# 		labels = self.__labels) for i in range(n)] 
+		# 	free(mirrors) 
+		# 	return results 
+
+		dummy = dataframe(self.__mirror, labels = self.__labels) 
+		dummy.order(key) 
+		mirrors = n * [None] 
+		for i in range(n): 
+			mirrors[i] = __dataframe() 
+			if clib.dfcolumn_equal_number_subsample(
+				dummy._dataframe__mirror, 
+				byref(mirrors[i]), 
+				c_int(n), 
+				c_int(i)
+			): 
+				raise SystemError("Internal Error") 
+			else: 
+				continue 
+			del dummy 
+		return [dataframe(i, labels = self.__labels) for i in mirrors] 
+
+
 	def order(self, key): 
 		"""
 		Sort the dataframe in ascending order based on the data in a given 
@@ -617,6 +705,64 @@ labels: %d""" % (len(columns), len(labels)))
 				raise KeyError("Unrecognized key: %s" % (key)) 
 		else: 
 			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
+
+	def scatter(self, key, value = 68.2): 
+		"""
+		Measure the dispersion in a given column of the data given a percentage 
+		value. 
+
+		Parameters 
+		========== 
+		key :: str [case-insensitive] 
+			The key to the dataframe to measure the scatter for 
+		value :: real number between 0 and 100 
+			The percentile range to measure 
+
+		Returns 
+		======= 
+		lower :: real number 
+			A lower bound 
+		upper :: real number 
+			An upper bound 
+		Lower and upper are defined such that the specified percentage of the 
+		data points lie between these values, centered on the median. 
+
+		Raises 
+		====== 
+		TypeError :: 
+			:: key is not of type str 
+			:: value is not a real number 
+		ValueError :: 
+			:: value is not between 0 and 100 
+		KeyError :: 
+			:: key is not in the dataframe 
+		""" 
+		if isinstance(key, str): 
+			if key.lower() in self.__labels: 
+				if isinstance(value, numbers.Number): 
+					if 0 <= value <= 100: 
+						ptr = 2 * c_double 
+						x = ptr(*[0, 0][:]) 
+						if clib.dfcolumn_scatter(
+							self.__mirror, 
+							c_int(self.__labels.index(key.lower())), 
+							c_double(value / 100), 
+							x
+						): 
+							raise SystemError("Internal Error.") 
+						else: 
+							return [x[0], x[1]] 
+					else: 
+						raise ValueError("""Keyword arg 'value' must be between \
+0 and 100. Got: %g""" % (value)) 
+				else: 
+					raise TypeError("""Keyword arg 'value' must be a numerical \
+value. Got: %s""" % (type(value))) 
+			else: 
+				raise KeyError("Unrecognized key: %s" % (key)) 
+		else: 
+			raise TypeError("Key must be of type str. Got: %s" % (type(key))) 
+
 
 	def hist(self, key, binspace): 
 		"""

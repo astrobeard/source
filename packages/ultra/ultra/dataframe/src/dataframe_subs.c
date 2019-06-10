@@ -280,6 +280,41 @@ extern int dfcolumn_std(DATAFRAME df, int column, double *ptr) {
 
 } 
 
+/* 
+ * Determine a dispersion measurement in a given column of the data. The two 
+ * returned values will contain the specified fraction of the data centered on 
+ * the median. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column to find the dispersion of 
+ * fraction: 	The fraction of the data that is contained between the two 
+ * 				returned lower and upper bounds 
+ * ptr: 		A pointer to put the 2 values into 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_scatter(DATAFRAME df, int column, double fraction, 
+	double *ptr) {
+
+	if (column < 0 || column >= df.num_cols) {
+		return 1; /* return 1 on failure */ 
+	} else { 
+		/* Pull the column and pass to ptr_scatter */ 
+		double *col = dfcolumn(df, column); 
+		ptr_scatter(col, df.num_rows, fraction, ptr); 
+		free(col); 
+		return 0; 
+	}
+
+}
+
+
 
 
 

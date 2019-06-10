@@ -2,6 +2,7 @@
  * The source code for the trigonometry functions in ultra's math library 
  */ 
 
+#include <Python.h> 
 #include <stdlib.h> 
 #include <math.h> 
 #include "ultramath.h" 
@@ -9,6 +10,7 @@
 
 /* ---------- Static Function Comment Headers Not Duplicated Here ---------- */ 
 
+#if 0 
 /* 
  * Determine the value of x! (x factorial), where 
  * x! = 1 (x = 0) 
@@ -34,7 +36,32 @@ extern long _factorial(long x) {
 		return x * _factorial(x - 1l); 
 	}
 
-}
+} 
+#endif 
+
+// static PyObject *PyFactorial(PyObject *self, PyOject *args) {
+
+// 	Py_RETURN_NONE; 
+
+// } 
+
+// static struct PyMethodDef {
+
+// 	char *ml_name; 
+// 	PyCFunction ml_meth; 
+// 	int ml_flags; 
+// 	char *ml_doc; 
+
+// } 
+
+// static PyMethodDef module_methods[] = {
+// 	{"factorial", (PyCFunction) PyFactorial, METHNOARGS, NULL}, 
+// 	{NULL, NULL, 0, NULL} 
+// }; 
+
+// PyMODINIT_FUNC initmath() {
+// 	Py_InitModule3(factorial, module_methods, "Calculate the factorial"); 
+// }
 
 /* 
  * Compute the sine of x to specified precision 

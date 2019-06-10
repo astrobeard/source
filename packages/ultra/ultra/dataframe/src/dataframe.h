@@ -253,6 +253,28 @@ extern int dfcolumn_median(DATAFRAME df, int column, double *ptr);
  */ 
 extern int dfcolumn_std(DATAFRAME df, int column, double *ptr); 
 
+/* 
+ * Determine a dispersion measurement in a given column of the data. The two 
+ * returned values will contain the specified fraction of the data centered on 
+ * the median. 
+ * 
+ * Parameters 
+ * ========== 
+ * df: 			The dataframe itself 
+ * column: 		The column to find the dispersion of 
+ * fraction: 	The fraction of the data that is contained between the two 
+ * 				returned lower and upper bounds 
+ * ptr: 		A pointer to put the 2 values into 
+ * 
+ * Returns 
+ * ======= 
+ * 0 on success, 1 on failure 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_scatter(DATAFRAME df, int column, double fraction, 
+	double *ptr); 
+
 
 
 
@@ -352,6 +374,26 @@ extern int dfcolumn_bin(DATAFRAME source, DATAFRAME *dest, int column,
  */ 
 extern int hist(DATAFRAME df, int column, double *binspace, long num_bins, 
 	long *counts);  
+
+/* 
+ * Generates an equal number subsample off of a dataframe that has already been 
+ * sorted into ascending order based on the data in a given column. 
+ * 
+ * Parameters 
+ * ========== 
+ * ordered: 		The ordered dataframe 
+ * dest: 			The destination dataframe 
+ * num_subs: 		The number of subsamples being generated 
+ * index: 			The index of the subsample that is being generated 
+ * 
+ * Returns 
+ * ======= 
+ * 0 always; anything else is a SystemError 
+ * 
+ * header: dataframe.h 
+ */ 
+extern int dfcolumn_equal_number_subsample(DATAFRAME ordered, DATAFRAME *dest, 
+	int num_subs, int index); 
 
 
 

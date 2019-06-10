@@ -185,20 +185,27 @@ extern double ptr_mean(double *arr, long length);
 extern double ptr_median(double *arr, long length); 
 
 /* 
- * Sorts a double pointer array from least to greatest. 
- *  
+ * Determines a measurement of the scatter in an array of doubles. Centered on 
+ * the median, determines the lower and upper bounds that contain a given 
+ * percentage of the data. 
+ * 
  * Parameters 
  * ========== 
- * arr: 		The array to sort 
- * length: 		The length of the array 
+ * arr: 		A pointer to the data itself 
+ * length: 		The number of points in the data set 
+ * fraction: 	The fraction of the data contained within the lower and upper 
+ * 				bounds. 
+ * ptr: 		A 2-element pointer to put the scatter into 
  * 
  * Returns 
  * ======= 
- * Type *double :: The sorted array, which will have the same length 
+ * Type *double :: The lower and upper bounds at returned[0] and returned[1], 
+ * respectively. 
  * 
  * header: utils.h 
  */ 
-extern double *ptr_sort(double *arr, long length); 
+extern void ptr_scatter(double *arr, long length, double fraction, 
+	double *ptr); 
 
 /* 
  * A classic quickselect function: determine the kth smallest element in an 

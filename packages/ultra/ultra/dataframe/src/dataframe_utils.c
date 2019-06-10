@@ -352,6 +352,52 @@ extern double ptr_median(double *arr, long length) {
 		return ptr_quickselect(arr, 0, length - 1l, length / 2l); 
 	}
 
+} 
+
+/* 
+ * Determines a measurement of the scatter in an array of doubles. Centered on 
+ * the median, determines the lower and upper bounds that contain a given 
+ * percentage of the data. 
+ * 
+ * Parameters 
+ * ========== 
+ * arr: 		A pointer to the data itself 
+ * length: 		The number of points in the data set 
+ * fraction: 	The fraction of the data contained within the lower and upper 
+ * 				bounds. 
+ * ptr: 		A 2-element pointer to put the scatter into 
+ * 
+ * Returns 
+ * ======= 
+ * Type *double :: The lower and upper bounds at returned[0] and returned[1], 
+ * respectively. 
+ * 
+ * header: utils.h 
+ */ 
+extern void ptr_scatter(double *arr, long length, double fraction, 
+	double *ptr) {
+
+	/* First we need to sort the data in ascending order */ 
+	ptr_quicksort(arr, 0, length - 1l); 
+
+	if (fraction < 1) {
+		/* 
+		 * lower is the element half of the fraction between the median and the 
+		 * first element of the data. upper is the element half of the fraction 
+		 * between the median and the final element of the data. Take elements 
+		 * at the proper indeces accordingly. 
+		 */ 
+		ptr[0] = arr[(long)( 0.5 * length * (1 - fraction) )]; 
+		ptr[1] = arr[(long)( 0.5 * length * (1 + fraction) )]; 
+	} else {
+		/* 
+		 * If the fraction is equal to 1, return the min and max values. All 
+		 * other values are impossible because python would catch them
+		 */ 
+		ptr[0] = ptr_min(arr, length); 
+		ptr[1] = ptr_max(arr, length); 
+	}
+
 }
 
 /* 

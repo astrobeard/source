@@ -16,7 +16,6 @@
 #define _EE 2.71828182845905 
 #endif /* EE */ 
 
-
 /* 
  * Determine the value of x! (x factorial), where 
  * x! = 1 (x = 0) 
@@ -32,7 +31,7 @@
  * 
  * header: ultramath.h 
  */ 
-extern long factorial_(long x); 
+// extern long factorial(long x); 
 
 /* 
  * Compute the sine of x to specified precision 
