@@ -2,7 +2,7 @@
  * The source code for the trigonometry functions in ultra's math library 
  */ 
 
-#include <Python.h> 
+// #include <Python.h> 
 #include <stdlib.h> 
 #include <math.h> 
 #include "ultramath.h" 

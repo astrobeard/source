@@ -2,7 +2,7 @@
 CC = gcc 
 CFLAGS = -c -fPIC 
 PYDIR = /Library/Frameworks/Python.framework/Versions/3.7/Headers 
-OBJECTS = trigonometry.o utils.o 
+OBJECTS = trigonometry.o utils.o integral.o 
 
 all: ultramath.so 
 
@@ -12,7 +12,7 @@ ultramath.so: $(OBJECTS)
 	$(CC) *.o -shared -o ultramath.so 
 
 %.o: %.c *.h 
-	$(CC) $(CFLAGS) -I$(PYDIR) $< -o $@ 
+	$(CC) $(CFLAGS) $< -o $@ 
 
 clean: 
 	rm -f *.o 
