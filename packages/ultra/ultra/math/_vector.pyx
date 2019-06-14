@@ -41,6 +41,7 @@ cdef extern from "./src/vector.h":
 	int vector_set_dimension(VECTOR *v, int d) 
 	int vector_set_vector(VECTOR *v, double *arr) 
 	double vector_magnitude(VECTOR v) 
+	VECTOR *vector_direction(VECTOR v) 
 
 cdef double *double_ptr_from_pylist(pylist): 
 	"""
@@ -85,9 +86,36 @@ def __copy_array_like_object(arg):
 cdef class vector(object): 
 
 	cdef VECTOR *_cvector 
+	cdef VECTOR *_dummy 
 
 	def __init__(self, array): 
-		self.vector = array 
+		copy = __copy_array_like_object(array) 
+		self._cvector = vector_initialize() 
+		if vector_set_dimension(self._cvector, len(copy)): 
+			raise SystemError("Internal Error") 
+		elif vector_set_vector(self._cvector, double_ptr_from_pylist(copy)): 
+			raise SystemError("Internal Error") 
+		else: 
+			pass 
+
+	def __repr__(self): 
+		rep = "<" 
+		for i in self.vector[:-1]: 
+			rep += "%g, " % (i) 
+		rep += "%g>" % (self.vector[-1]) 
+		return rep 
+
+	def __str__(self): 
+		return self.__repr__() 
+
+	def __enter__(self): 
+		return self 
+
+	def __exit__(self, exc_type, exc_value, exc_tb): 
+		return exc_value == None 
+
+	def __del__(self): 
+		vector_free(self._cvector) 
 
 	@property 
 	def vector(self): 
@@ -98,6 +126,7 @@ cdef class vector(object):
 	@vector.setter 
 	def vector(self, array): 
 		copy = __copy_array_like_object(array) 
+		vector_free(self._cvector) 
 		self._cvector = vector_initialize() 
 		if vector_set_dimension(self._cvector, len(copy)): 
 			raise SystemError("Internal Error") 
@@ -105,5 +134,24 @@ cdef class vector(object):
 			raise SystemError("Internal Error") 
 		else: 
 			pass 
+
+	@property 
+	def magnitude(self): 
+		"""
+		The magnitude (i.e. norm) of the vector: the square root of the sum 
+		of the components squared. 
+		""" 
+		return vector_magnitude(self._cvector[0]) 
+
+	@property 
+	def direction(self): 
+		"""
+		A unit vector pointing in the same direction as this vector. 
+		""" 
+		self._dummy = vector_direction(self._cvector[0]) 
+		v = tuple([self._dummy.vector[i] for i in range(self._dummy.dimension)]) 
+		vector_free(self._dummy) 
+		return vector(v) 
+
 
 

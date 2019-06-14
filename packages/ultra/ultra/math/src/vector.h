@@ -98,6 +98,22 @@ extern int vector_set_vector(VECTOR *v, double *arr);
  */ 
 extern double vector_magnitude(VECTOR v); 
 
+/* 
+ * Obtain a VECTOR struct corresponding to a unit vector pointing in the same 
+ * direction as another vector v. 
+ * 
+ * Parameters 
+ * ========== 
+ * v: 		The vector itself 
+ * 
+ * Returns 
+ * ======= 
+ * Type VECTOR *: A pointer to the VECTOR struct containing the unit vector 
+ * 
+ * header: vector.h 
+ */ 
+extern VECTOR *vector_direction(VECTOR v); 
+
 #ifdef __cplusplus
 } 
 #endif 
