@@ -671,7 +671,7 @@ Got: %d""" % (n))
 				raise SystemError("Internal Error") 
 			else: 
 				continue 
-			del dummy 
+		del dummy 
 		return [dataframe(i, labels = self.__labels) for i in mirrors] 
 
 
