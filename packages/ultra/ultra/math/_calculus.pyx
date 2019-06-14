@@ -1,4 +1,4 @@
-
+# cython: language_level=3, boundscheck = False 
 from libc.stdlib cimport malloc, free 
 
 cdef extern from "./src/calculus.h": 
