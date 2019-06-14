@@ -110,7 +110,7 @@ extern int vector_set_vector(VECTOR *v, double *arr) {
  */ 
 extern double vector_magnitude(VECTOR v) {
 
-	int i; 
+	int i;  
 	double norm_squared = 0; 
 	for (i = 0; i < v.dimension; i++) {
 		/* Incrementally add the square of each component of the vector */ 
@@ -131,7 +131,8 @@ extern double vector_magnitude(VECTOR v) {
  * 
  * Returns 
  * ======= 
- * Type VECTOR *: A pointer to the VECTOR struct containing the unit vector 
+ * Type VECTOR *: A pointer to the VECTOR struct containing the unit vector; 
+ * NULL if the vector is a NULL pointer 
  * 
  * header: vector.h 
  */ 
@@ -140,11 +141,135 @@ extern VECTOR *vector_direction(VECTOR v) {
 	int i; 
 	double norm = vector_magnitude(v); 
 	VECTOR *new = vector_initialize(); 
+	if (new == NULL) return NULL; 
 	vector_set_dimension(new, v.dimension); 
 	for (i = 0; i < v.dimension; i++) {
 		new -> vector[i] = v.vector[i] / norm; 
 	} 
 	return new; 
+
+} 
+
+/* 
+ * Performs vector scalar multiplication. 
+ * 
+ * Parameters 
+ * ========== 
+ * v: 			The vector to multiply the scalar through 
+ * scalar: 		The scalar itself (how crazy is that) 
+ * 
+ * Returns 
+ * ======= 
+ * A new vector object, whose componenets have been multiplied by the 
+ * scalar 
+ * 
+ * header: vector.h 
+ */ 
+extern VECTOR *vector_scalar_multiplication(VECTOR v, double scalar) {
+
+	int i; 
+	VECTOR *new = vector_initialize(); 
+	if (new == NULL) return NULL; 
+	vector_set_dimension(new, v.dimension); 
+	for (i = 0; i < v.dimension; i++) {
+		new -> vector[i] = scalar * v.vector[i]; 
+	} 
+	return new; 
+
+}
+
+/* 
+ * Implements vector addition. 
+ * 
+ * Parameters 
+ * ========== 
+ * v1: 		The first vector 
+ * v2: 		The second vector 
+ * 
+ * Returns 
+ * ======= 
+ * The resultant vector that arises from v1 + v2; NULL if the v1 
+ * and v2 do not have the same dimensionality, or instantiation of 
+ * a new vector fails. 
+ * 
+ * header: vector.h 
+ */ 
+extern VECTOR *vector_addition(VECTOR v1, VECTOR v2) {
+
+	if (v1.dimension != v2.dimension) {
+		return NULL; 
+	} else {
+		int i; 
+		VECTOR *new = vector_initialize(); 
+		if (new == NULL) return NULL; 
+		vector_set_dimension(new, v1.dimension); 
+		for (i = 0; i < v1.dimension; i++) {
+			new -> vector[i] = v1.vector[i] + v2.vector[i]; 
+		} 
+		return new; 
+	}
+
+} 
+
+/* 
+ * Return the dot product of two vectors 
+ * 
+ * Parameters 
+ * ========== 
+ * v1: 			The first vector 
+ * v2: 			The second vector 
+ * 
+ * Returns 
+ * ======= 
+ * The dot product of the two vectors; 0 if they are not of the same dimension 
+ * 
+ * header: vector.h 
+ */ 
+extern double vector_dot_product(VECTOR v1, VECTOR v2) {
+
+	if (v1.dimension != v2.dimension) {
+		return 0; 
+	} else {
+		int i; 
+		double x = 0; 
+		for (i = 0; i < v1.dimension; i++) { 
+			x += v1.vector[i] * v2.vector[i]; 
+		} 
+		return x; 
+	}
+
+} 
+
+/* 
+ * Determine the cross product of two vectors. 
+ * 
+ * Parameters 
+ * ========== 
+ * v1: 		The first vector 
+ * v2: 		The second vector 
+ * 
+ * Returns 
+ * ======= 
+ * The vector representing the cross product v1 x v2 in that order 
+ * NULL if either vector is not 3-dimensional 
+ * 
+ * header: vector.h 
+ */ 
+extern VECTOR *vector_cross_product(VECTOR v1, VECTOR v2) {
+
+	if (v1.dimension != 3 && v2.dimension != 3) {
+		return NULL; 
+	} else {
+		VECTOR *new = vector_initialize(); 
+		vector_set_dimension(new, 3); 
+		new -> vector[0] = (v1.vector[1] * v2.vector[2] - 
+			v1.vector[2] * v2.vector[1]); 
+		new -> vector[1] = (v1.vector[2] * v2.vector[0] - 
+			v1.vector[0] * v2.vector[2]); 
+		new -> vector[2] = (v1.vector[0] * v2.vector[1] - 
+			v1.vector[1] * v2.vector[0]); 
+		return new; 
+	}
 
 }
 

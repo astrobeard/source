@@ -110,9 +110,77 @@ extern double vector_magnitude(VECTOR v);
  * ======= 
  * Type VECTOR *: A pointer to the VECTOR struct containing the unit vector 
  * 
- * header: vector.h 
+ * source: vector.c 
  */ 
 extern VECTOR *vector_direction(VECTOR v); 
+
+/* 
+ * Performs vector scalar multiplication. 
+ * 
+ * Parameters 
+ * ========== 
+ * v: 			The vector to multiply the scalar through 
+ * scalar: 		The scalar itself (how crazy is that) 
+ * 
+ * Returns 
+ * ======= 
+ * A new vector object, whose componenets have been multiplied by the 
+ * scalar 
+ * 
+ * header: vector.h 
+ */ 
+extern VECTOR *vector_scalar_multiplication(VECTOR v, double scalar); 
+
+/* 
+ * Implements vector addition. 
+ * 
+ * Parameters 
+ * ========== 
+ * v1: 		The first vector 
+ * v2: 		The second vector 
+ * 
+ * Returns 
+ * ======= 
+ * The resultant vector that arises from v1 + v2; NULL if the v1 
+ * and v2 do not have the same dimensionality 
+ * 
+ * source: vector.c 
+ */ 
+extern VECTOR *vector_addition(VECTOR v1, VECTOR v2); 
+
+/* 
+ * Return the dot product of two vectors 
+ * 
+ * Parameters 
+ * ========== 
+ * v1: 			The first vector 
+ * v2: 			The second vector 
+ * 
+ * Returns 
+ * ======= 
+ * A pointer to the dot product of the two vectors; NULL if they are not of 
+ * the same dimensionality. 
+ * 
+ * source: vector.c 
+ */ 
+extern double vector_dot_product(VECTOR v1, VECTOR v2); 
+
+/* 
+ * Determine the cross product of two vectors. 
+ * 
+ * Parameters 
+ * ========== 
+ * v1: 		The first vector 
+ * v2: 		The second vector 
+ * 
+ * Returns 
+ * ======= 
+ * The vector representing the cross product v1 x v2 in that order 
+ * NULL if either vector is not 3-dimensional 
+ * 
+ * header: vector.h 
+ */ 
+extern VECTOR *vector_cross_product(VECTOR v1, VECTOR v2); 
 
 #ifdef __cplusplus
 } 
