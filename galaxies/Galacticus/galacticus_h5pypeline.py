@@ -67,8 +67,8 @@ def write_concentration(indata, outdata):
 		outdata["%s/satelliteConcentration" % (
 			get_z_string(_OUTPUT_Z_[i]))] = np.array(
 				map(lambda x, y: x / y, 
-					indata["%s/nodeVirialRadius" % (stem)], 
-					indata["%s/darkMatterProfileScale" % (stem)]) 
+					indata["%s/nodeVirialRadius" % (stem)][:], 
+					indata["%s/darkMatterProfileScale" % (stem)][:]) 
 			) 
 
 
