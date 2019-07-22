@@ -88,6 +88,7 @@ def write_IDs(indata, outdata):
 				indata["%s/mergerTreeIndex" % (stem)][j], 
 				indata["%s/nodeIndex" % (stem)][j]
 			) 
+		IDs = [j.encode("ascii", "ignore") for j in IDs] 
 		outdata["%s/satelliteID" % (get_z_string(_OUTPUT_Z_[i]))] = np.array(IDs)  
 
 
