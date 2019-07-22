@@ -85,8 +85,8 @@ def write_IDs(indata, outdata):
 		IDs = len(indata["%s/nodeIndex" % (stem)]) * [None] 
 		for j in range(len(IDs)): 
 			IDs[j] = "%d.%d" % (
-				indata["%s/mergerTreeIndex"][j], 
-				indata["%s/nodeIndex"][j]
+				indata["%s/mergerTreeIndex" % (stem)][j], 
+				indata["%s/nodeIndex" % (stem)][j]
 			) 
 		outdata["%s/satelliteID" % (get_z_string(_OUTPUT_Z_[i]))] = np.array(IDs)  
 
