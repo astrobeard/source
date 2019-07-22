@@ -111,8 +111,8 @@
   <timestepSimpleRelative value="10.00"/>
 
   <!-- Output options -->
-  <mergerTreeOutputReferences value="true"/>
-  <outputTimestepHistory      value="true"/>
+  <mergerTreeOutputReferences value="false"/>
+  <outputTimestepHistory      value="false"/>
   <outputVirialData           value="true" />
   <outputTreeIndices          value="true" /> 
   <outputMainBranchStatus     value="true" /> 
