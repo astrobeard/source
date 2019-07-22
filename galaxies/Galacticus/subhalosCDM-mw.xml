@@ -33,7 +33,7 @@
   <!--  Power spectrum options  -->
   <powerSpectrumPrimordialMethod value="powerLaw">
     <index value="0.961"/>
-    <wavenumberReference value="1.0"/>len(data)
+    <wavenumberReference value="1.0"/>
     <running value="0.0"/>
   </powerSpectrumPrimordialMethod>
   <cosmologicalMassVarianceMethod value="filteredPower">
@@ -112,7 +112,7 @@
 
   <!-- Output options -->
   <mergerTreeOutputReferences value="true"/>
-  <outputTimestepHistory      value="false"/>
+  <outputTimestepHistory      value="true"/>
   <outputVirialData           value="true" />
   <outputTreeIndeces          value="true" /> 
   <outputMainBranchStatus     value="true" /> 
@@ -142,3 +142,6 @@
   <galacticusOutputFileName value="subhalosCDM.hdf5"/>
   
 </parameters>
+
+
+
