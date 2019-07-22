@@ -114,7 +114,7 @@
   <mergerTreeOutputReferences value="true"/>
   <outputTimestepHistory      value="true"/>
   <outputVirialData           value="true" />
-  <outputTreeIndeces          value="true" /> 
+  <outputTreeIndices          value="true" /> 
   <outputMainBranchStatus     value="true" /> 
   <treeNodeMethodMergingStatistics value="standard" /> 
   <outputRedshifts            value="0.0 0.01 0.02 0.03 0.04 0.05
