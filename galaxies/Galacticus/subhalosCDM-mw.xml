@@ -2,7 +2,7 @@
 <!-- Subhalos in CDM -->
 <parameters>
   <formatVersion>2</formatVersion>
-  <version>0.9.4</version>
+  <version>0.9.6</version>
 
   <!-- Verbosity -->
   <verbosityLevel value="2"/>
@@ -33,7 +33,7 @@
   <!--  Power spectrum options  -->
   <powerSpectrumPrimordialMethod value="powerLaw">
     <index value="0.961"/>
-    <wavenumberReference value="1.0"/>
+    <wavenumberReference value="1.0"/>len(data)
     <running value="0.0"/>
   </powerSpectrumPrimordialMethod>
   <cosmologicalMassVarianceMethod value="filteredPower">
@@ -111,7 +111,7 @@
   <timestepSimpleRelative value="10.00"/>
 
   <!-- Output options -->
-  <mergerTreeOutputReferences value="false"/>
+  <mergerTreeOutputReferences value="true"/>
   <outputTimestepHistory      value="false"/>
   <outputVirialData           value="true" />
   <outputTreeIndeces          value="true" /> 
