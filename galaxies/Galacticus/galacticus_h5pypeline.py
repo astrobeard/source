@@ -95,8 +95,9 @@ if __name__ == "__main__":
 	# open the Galacticus output and the condensed hdf5 output file
 	indata = h5py.File(sys.argv[1], 'r')  
 	with h5py.File(sys.argv[2], 'w') as outdata: 
-		write_phase_space(indata, outdata) 
+		write_IDs(indata, outdata) 
 		write_mass(indata, outdata) 
+		write_phase_space(indata, outdata) 
 		write_concentration(indata, outdata) 
 
 
