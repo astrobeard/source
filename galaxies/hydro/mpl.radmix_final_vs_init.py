@@ -94,10 +94,10 @@ def legend(ax, tformbins, colors):
 if __name__ == "__main__": 
 	data = read_data() 
 	ax = initialize_subplot()
-	# tformbins = [0, 2, 4, 6, 8, 10]
-	tformbins = [[3, 6], [6, 9], [9, 12]]
+	# tformbins = [[3, 6], [6, 9], [9, 12]]
+	tformbins = [[0, 2], [2, 4], [4, 6], [6, 8], [8, 10], [10, 12]] 
 	rformbins = np.linspace(0, 15, 51)
-	colors = ["crimson", "lime", "blue", "blue", "purple"] 
+	colors = ["black", "crimson", "lime", "blue", "purple"] 
 	# for i in range(len(tformbins) - 1): 
 	for i in range(len(tformbins)): 
 		x, y, err, scat = analyze(data, rformbins, 
